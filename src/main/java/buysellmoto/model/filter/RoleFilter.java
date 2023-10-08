@@ -1,16 +1,21 @@
 package buysellmoto.model.filter;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
-@Data
-@Builder
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class RoleFilter {
 
+    //Dto
     private String name;
+
+    //Filter
+    private List<Long> ids = new ArrayList<>();
 
 }

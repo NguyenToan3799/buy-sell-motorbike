@@ -1,8 +1,8 @@
 package buysellmoto.model.mapper;
 
-import buysellmoto.model.dto.RoleDto;
-import buysellmoto.model.entity.RoleEntity;
-import buysellmoto.model.filter.RoleFilter;
+import buysellmoto.model.dto.UserDto;
+import buysellmoto.model.entity.UserEntity;
+import buysellmoto.model.filter.UserFilter;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -14,25 +14,25 @@ import java.util.List;
         collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED,
         componentModel = "spring",
         uses = {})
-public interface RoleMapper {
+public interface UserMapper {
 
-    RoleMapper INSTANCE = Mappers.getMapper(RoleMapper.class);
+    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     @Named("toEntity")
-    RoleEntity toEntity(RoleDto dto);
+    UserEntity toEntity(UserDto dto);
 
     @Named("toDto")
-    RoleDto toDto(RoleEntity entity);
+    UserDto toDto(UserEntity entity);
 
     @Named("toEntities")
     @IterableMapping(qualifiedByName = "toEntity")
-    List<RoleEntity> toEntity(List<RoleDto> dtos);
+    List<UserEntity> toEntity(List<UserDto> dtos);
 
     @Named("toDtos")
     @IterableMapping(qualifiedByName = "toDto")
-    List<RoleDto> toDto(List<RoleEntity> entities);
+    List<UserDto> toDto(List<UserEntity> entities);
 
     @Named("filterToDto")
-    RoleDto filterToDto(final RoleFilter filter);
+    UserDto filterToDto(final UserFilter filter);
 
 }

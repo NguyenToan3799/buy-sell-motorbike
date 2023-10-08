@@ -1,15 +1,17 @@
 package buysellmoto.controller;
 
 import buysellmoto.model.dto.RoleDto;
+import buysellmoto.model.filter.RoleFilter;
 import buysellmoto.service.RoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
-
 @RequestMapping("/roles")
 public class RoleController {
 
@@ -22,28 +24,35 @@ public class RoleController {
         return ResponseEntity.ok(roleService.getById(id));
     }
 
-//    @Operation(summary = "Search Coupon By Coupon Name")
-//    @GetMapping("/search")
-//    public ResponseEntity<?> searchCouponByCouponName(@RequestParam String name) {
-//        return controllerWrapper(() -> couponService.searchCouponByCouponName(name));
-//    }
-//
-//    @Operation(summary = "Create New Coupon")
-//    @PostMapping()
-//    public ResponseEntity<?> createNewCoupon(@RequestBody CouponRequestEntity entity) {
-//        return controllerWrapper(() -> couponService.createNewCoupon(entity));
-//    }
-//
-//    @Operation(summary = "Update Existing Coupon")
-//    @PutMapping("/{id}")
-//    public ResponseEntity<?> updateExistingCoupon(@PathVariable String id,
-//                                                   @RequestBody CouponRequestEntity entity) {
-//        return controllerWrapper(() -> couponService.updateExistingCoupon(id, entity));
-//    }
-//
-//    @Operation(summary = "Delete Existing Coupon")
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<?> deleteCouponByID(@PathVariable String id) {
-//        return controllerWrapper(() -> couponService.deleteCouponByID(id));
-//    }
+    @Operation(summary = "Get All Role")
+    @GetMapping("/all")
+    public ResponseEntity<List<RoleDto>> getAll() {
+        return ResponseEntity.ok(roleService.getAll());
+    }
+
+    @Operation(summary = "Get Roles By Ids")
+    @PostMapping("/ids")
+    public ResponseEntity<List<RoleDto>> getByIds(@RequestBody RoleFilter filter) {
+        return ResponseEntity.ok(roleService.getByIds(filter));
+    }
+
+    @Operation(summary = "Create New Role")
+    @PostMapping()
+    public ResponseEntity<RoleDto> createOne(@RequestBody RoleFilter filter) {
+        return ResponseEntity.ok(roleService.createOne(filter));
+    }
+
+    @Operation(summary = "Update Existing Role")
+    @PutMapping("/{id}")
+    public ResponseEntity<RoleDto> updateExistingCoupon(@PathVariable Long id,
+                                                        @RequestBody RoleFilter filter) {
+        return ResponseEntity.ok(roleService.updateOne(id, filter));
+    }
+
+    @Operation(summary = "Delete Existing Role")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> deleteCouponByID(@PathVariable Long id) {
+        return ResponseEntity.ok(roleService.deleteById(id));
+    }
+
 }
