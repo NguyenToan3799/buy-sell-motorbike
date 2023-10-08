@@ -1,4 +1,4 @@
-package buysellmoto.model.dto;
+package buysellmoto.model.filter;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleDto {
-
-    private Long id;
+public class RoleFilter {
 
     private String name;
 

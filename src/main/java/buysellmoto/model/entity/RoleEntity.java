@@ -1,44 +1,22 @@
-package hoangdung.springboot.projecthighlands.model.dao;
+package buysellmoto.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import hoangdung.springboot.projecthighlands.config.aop.Transformable;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
+import lombok.*;
 
-@Data
-@Entity
-@Builder
-@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
-@Table(name = "tbl_addresses")
-public class Addresses implements Transformable {
-
+@NoArgsConstructor
+@Entity
+@Table(name = "ROLE")
+public class RoleEntity {
 
     @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    @Column(name = "addressesID")
-    private String id;
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private String addressesName;
-
-    private String address1;
-
-    private String address2;
-
-    private String address3;
-
-    private String address4;
-
-    private String phoneNumber;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userID")
-    @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
-    private User user;
+    private String name;
 
 }

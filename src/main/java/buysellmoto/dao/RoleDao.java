@@ -1,68 +1,49 @@
-package hoangdung.springboot.projecthighlands.service;
+package buysellmoto.dao;
 
-import hoangdung.springboot.projecthighlands.config.aop.MultipleTransferToResponseEntities;
-import hoangdung.springboot.projecthighlands.config.aop.TranferToResponseEntity;
-import hoangdung.springboot.projecthighlands.config.aop.Transformable;
-import hoangdung.springboot.projecthighlands.model.dao.Addresses;
-import hoangdung.springboot.projecthighlands.model.request.AddressesRequestEntity;
-import hoangdung.springboot.projecthighlands.repository.AddressesRepository;
-import hoangdung.springboot.projecthighlands.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
+import buysellmoto.model.dto.RoleDto;
+import buysellmoto.model.mapper.RoleMapper;
+import buysellmoto.repository.RoleRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-public class AddressesService {
+public class RoleDao {
 
-    private final AddressesRepository addressesRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
-    private final UserRepository userRepository;
+    @Autowired
+    private RoleMapper mapper;
 
-    @TranferToResponseEntity
-    public Transformable getAddressesById(String id) {
-        return addressesRepository.findById(id).orElseThrow();
+    public RoleDto getById(Long id) {
+        return mapper.toDto(roleRepository.findById(id).orElseThrow());
     }
 
-    @MultipleTransferToResponseEntities
-    public List<? extends Transformable> getAllAddressesByUserID(String id) {
-        return addressesRepository.getListAddressesByUserID(id);
-
+    public List<RoleDto> getByIds(List<Long> ids) {
+        return mapper.toDto(roleRepository.findAllByIdIn(ids));
     }
 
-    @TranferToResponseEntity
-    public Transformable createNewAddresses(String userID, AddressesRequestEntity entity) {
-        return addressesRepository.save(Addresses.builder()
-                .addressesName(entity.getAddressesName())
-                .address1(entity.getAddress1())
-                .address2(entity.getAddress2())
-                .address3(entity.getAddress3())
-                .address4(entity.getAddress4())
-                .phoneNumber(entity.getPhoneNumber())
-                .user(userRepository.findById(entity.getUserID()).orElseThrow())
-                .build());
+    public List<RoleDto> getAll() {
+        return mapper.toDto(roleRepository.findAll());
     }
 
-    @TranferToResponseEntity
-    public Transformable updateExistingAddresses(String id, AddressesRequestEntity entity) {
-        Addresses loadedAddresses = addressesRepository.findById(id).orElseThrow();
-
-        loadedAddresses.setAddressesName(entity.getAddressesName());
-        loadedAddresses.setAddress1(entity.getAddress1());
-        loadedAddresses.setAddress2(entity.getAddress2());
-        loadedAddresses.setAddress3(entity.getAddress3());
-        loadedAddresses.setAddress4(entity.getAddress4());
-        loadedAddresses.setUser(userRepository.findById(entity.getUserID()).orElseThrow());
-        loadedAddresses.setPhoneNumber(entity.getPhoneNumber());
-
-        return addressesRepository.save(loadedAddresses);
+    @Transactional(rollbackOn = {Exception.class})
+    public RoleDto createOne(RoleDto dto) {
+        return mapper.toDto(roleRepository.save(mapper.toEntity(dto)));
     }
 
-    @TranferToResponseEntity
-    public Transformable deleteAddressesByID(String id) {
-        Addresses loadedAddresses = addressesRepository.findById(id).orElseThrow();
-        addressesRepository.deleteById(id);
-        return loadedAddresses;
+    @Transactional(rollbackOn = {Exception.class})
+    public RoleDto updateOne(RoleDto dto) {
+        return mapper.toDto(roleRepository.save(mapper.toEntity(dto)));
     }
+
+    @Transactional(rollbackOn = {Exception.class})
+    public boolean deleteById(Long id) {
+        roleRepository.delete(roleRepository.findById(id).orElseThrow());
+        return true;
+    }
+
 }

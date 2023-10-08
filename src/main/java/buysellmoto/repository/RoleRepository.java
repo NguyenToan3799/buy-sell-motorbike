@@ -1,18 +1,14 @@
-package hoangdung.springboot.projecthighlands.repository;
+package buysellmoto.repository;
 
-import hoangdung.springboot.projecthighlands.model.dao.Addresses;
+import buysellmoto.model.entity.RoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface AddressesRepository extends JpaRepository<Addresses, String> {
+public interface RoleRepository extends JpaRepository<RoleEntity, Long> {
 
-    @Query("select address from Addresses address where address.user.id = ?1" )
-    List<Addresses> getListAddressesByUserID(String id);
-
-
+    List<RoleEntity> findAllByIdIn(List<Long> ids);
 
 }
