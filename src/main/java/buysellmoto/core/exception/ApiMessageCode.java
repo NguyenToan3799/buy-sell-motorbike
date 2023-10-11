@@ -1,7 +1,5 @@
 package buysellmoto.core.exception;
 
-import buysellmoto.core.exception.ConstructorException;
-
 public final class ApiMessageCode {
 
     public static final String DEACTIVATED_USER = "Deactivated User";

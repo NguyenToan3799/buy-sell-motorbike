@@ -11,15 +11,17 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomerFilter {
+public class ShowroomFilter {
 
     //Dto
-    private String fullName;
-
-    private LocalDateTime dob;
+    private String name;
 
     private String address;
 
-    private Long userId;
+    private String province;
+
+    private String email;
+
+    private String phone;
 
 }

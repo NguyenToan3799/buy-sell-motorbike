@@ -33,9 +33,9 @@ public class UserService {
 
     public UserDto checkLogin(String account, String password) {
         UserDto loadingUser = userDao.checkLogin(account, password);
-//        if(Objects.isNull(loadingUser)){
-//            throw new BusinessException(ApiMessageCode.USER_NOT_EXIST);
-//        }
+        if(Objects.isNull(loadingUser)){
+            throw new BusinessException(ApiMessageCode.USER_NOT_EXIST);
+        }
         if(!loadingUser.getStatus()){
             throw new BusinessException(ApiMessageCode.DEACTIVATED_USER);
         }

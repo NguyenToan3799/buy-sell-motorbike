@@ -1,8 +1,8 @@
 package buysellmoto.model.mapper;
 
-import buysellmoto.model.dto.CustomerDto;
-import buysellmoto.model.entity.CustomerEntity;
-import buysellmoto.model.filter.CustomerFilter;
+import buysellmoto.model.dto.ShowroomDto;
+import buysellmoto.model.entity.ShowroomEntity;
+import buysellmoto.model.filter.ShowroomFilter;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -14,25 +14,25 @@ import java.util.List;
         collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED,
         componentModel = "spring",
         uses = {})
-public interface CustomerMapper {
+public interface ShowroomMapper {
 
-    CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
+    ShowroomMapper INSTANCE = Mappers.getMapper(ShowroomMapper.class);
 
     @Named("toEntity")
-    CustomerEntity toEntity(CustomerDto dto);
+    ShowroomEntity toEntity(ShowroomDto dto);
 
     @Named("toDto")
-    CustomerDto toDto(CustomerEntity entity);
+    ShowroomDto toDto(ShowroomEntity entity);
 
     @Named("toEntities")
     @IterableMapping(qualifiedByName = "toEntity")
-    List<CustomerEntity> toEntity(List<CustomerDto> dtos);
+    List<ShowroomEntity> toEntity(List<ShowroomDto> dtos);
 
     @Named("toDtos")
     @IterableMapping(qualifiedByName = "toDto")
-    List<CustomerDto> toDto(List<CustomerEntity> entities);
+    List<ShowroomDto> toDto(List<ShowroomEntity> entities);
 
     @Named("filterToDto")
-    CustomerDto filterToDto(CustomerFilter filter);
+    ShowroomDto filterToDto(ShowroomFilter filter);
 
 }

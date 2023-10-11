@@ -1,30 +1,31 @@
 package buysellmoto.model.filter;
 
+import buysellmoto.core.ultilities.DateToTimestamp;
+import buysellmoto.core.ultilities.TimestampToDate;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserFilter {
+public class CustomerFilter {
 
     //Dto
-    private String userName;
+    private String fullName;
 
-    private String phone;
+    @JsonSerialize(using = DateToTimestamp.class)
+    @JsonDeserialize(using = TimestampToDate.class)
+    private LocalDateTime dob;
 
-    private String email;
+    private String address;
 
-    private String password;
-
-    private Boolean status;
-
-    private Long roleId;
+    private Long userId;
 
 }

@@ -3,37 +3,88 @@ package buysellmoto.core.exception;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
 
-import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
-@Builder
-@ToString
 @NoArgsConstructor
-@AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ApiMessageField implements Serializable {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ApiResponse<T> {
 
-    private static final long serialVersionUID = 1L;
+    private long ts;
+    private int status;
+    private boolean success;
+    private T data;
 
-    private String fieldName;
-    private String fieldValue;
-    private String fieldType;
-
-    /* error-code for specific field */
     private String message;
+    private List<ApiMessageField> fields = new ArrayList<>();
 
-    private Object object;
-    private String position;
+    public ApiResponse(HttpStatus status) {
+        this.status = status.value();
+        this.success = status.is2xxSuccessful();
+        this.ts = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli();
+    }
 
-    private Integer lengthMin;
-    private Integer lengthMax;
+    public ApiResponse(HttpStatus status, T data) {
+        this(status);
+        this.data = data;
+    }
 
-    public ApiMessageField(String fieldName, String fieldValue) {
-        this.fieldName = fieldName;
-        this.fieldValue = fieldValue;
+    public ApiResponse(HttpStatus status, T data, String errorCode) {
+        this(status, data);
+        this.message = errorCode;
+    }
+
+    public ApiResponse(HttpStatus status, T data, String errorCode, List<ApiMessageField> fields) {
+        this(status, data);
+        this.message = errorCode;
+        this.fields.addAll(fields);
+    }
+
+    public ApiResponse(HttpStatus status, String errorCode) {
+        this(status);
+        this.message = errorCode;
+    }
+
+    public ApiResponse(HttpStatus status, String errorCode, List<ApiMessageField> fields) {
+        this(status);
+        this.message = errorCode;
+        this.fields.addAll(fields);
+    }
+
+    public static <T> ApiResponse<T> ok() {
+        return new ApiResponse<>(HttpStatus.OK);
+    }
+
+    public static <T> ApiResponse<T> ok(T data) {
+        return new ApiResponse<>(HttpStatus.OK, data);
+    }
+
+    public static <T> ApiResponse<T> error(String errorCode) {
+        return new ApiResponse<>(HttpStatus.SERVICE_UNAVAILABLE, errorCode);
+    }
+
+    public static <T> ApiResponse<T> error(String errorCode, List<ApiMessageField> fields) {
+        return new ApiResponse<>(HttpStatus.SERVICE_UNAVAILABLE, errorCode, fields);
+    }
+
+    public static <T> ApiResponse<T> error(HttpStatus status) {
+        return new ApiResponse<>(status, StringUtils.EMPTY);
+    }
+
+    public static <T> ApiResponse<T> error(HttpStatus status, List<ApiMessageField> fields) {
+        return new ApiResponse<>(status, StringUtils.EMPTY, fields);
+    }
+
+    public static <T> ApiResponse<T> error(HttpStatus status, String errorCode, List<ApiMessageField> fields) {
+        return new ApiResponse<>(status, errorCode, fields);
     }
 
 }

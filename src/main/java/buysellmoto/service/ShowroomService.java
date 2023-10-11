@@ -1,10 +1,10 @@
 package buysellmoto.service;
 
 
-import buysellmoto.dao.CustomerDao;
-import buysellmoto.model.dto.CustomerDto;
-import buysellmoto.model.filter.CustomerFilter;
-import buysellmoto.model.mapper.CustomerMapper;
+import buysellmoto.dao.ShowroomDao;
+import buysellmoto.model.dto.ShowroomDto;
+import buysellmoto.model.filter.ShowroomFilter;
+import buysellmoto.model.mapper.ShowroomMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,39 +13,39 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class CustomerService {
+public class ShowroomService {
 
     @Autowired
-    private CustomerDao customerDao;
+    private ShowroomDao showroomDao;
     @Autowired
-    private CustomerMapper customerMapper;
+    private ShowroomMapper customerMapper;
 
-    public CustomerDto getById(Long id) {
+    public ShowroomDto getById(Long id) {
         if(Objects.isNull(id)){
         }
-        return customerDao.getById(id);
+        return showroomDao.getById(id);
     }
     
-    public List<CustomerDto> getAll() {
-        return customerDao.getAll();
+    public List<ShowroomDto> getAll() {
+        return showroomDao.getAll();
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public CustomerDto createOne (CustomerFilter filter) {
-        CustomerDto preparingDto = customerMapper.filterToDto(filter);
-        return customerDao.createOne(preparingDto);
+    public ShowroomDto createOne (ShowroomFilter filter) {
+        ShowroomDto preparingDto = customerMapper.filterToDto(filter);
+        return showroomDao.createOne(preparingDto);
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public CustomerDto updateOne(Long id, CustomerFilter filter) {
-        CustomerDto preparingDto = customerMapper.filterToDto(filter);
+    public ShowroomDto updateOne(Long id, ShowroomFilter filter) {
+        ShowroomDto preparingDto = customerMapper.filterToDto(filter);
         preparingDto.setId(id);
-        return customerDao.updateOne(preparingDto);
+        return showroomDao.updateOne(preparingDto);
     }
 
     @Transactional(rollbackOn = {Exception.class})
     public Boolean deleteById(Long id) {
-        customerDao.deleteById(id);
+        showroomDao.deleteById(id);
         return true;
     }
 

@@ -1,6 +1,5 @@
 package buysellmoto.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Column;
@@ -18,16 +17,18 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomerDto implements Serializable {
+public class ShowroomDto implements Serializable {
 
     private Long id;
 
-    private String fullName;
-
-    private LocalDateTime dob;
+    private String name;
 
     private String address;
 
-    private Long userId;
+    private String province;
+
+    private String email;
+
+    private String phone;
 
 }

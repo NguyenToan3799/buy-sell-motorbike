@@ -1,8 +1,8 @@
 package buysellmoto.controller;
 
-import buysellmoto.model.dto.UserDto;
-import buysellmoto.model.filter.UserFilter;
-import buysellmoto.service.UserService;
+import buysellmoto.model.dto.CustomerDto;
+import buysellmoto.model.filter.CustomerFilter;
+import buysellmoto.service.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,48 +12,41 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/users")
-public class UserController {
+@RequestMapping("/customers")
+public class CustomerController {
 
     @Autowired
-    private UserService userService;
+    private CustomerService customerService;
 
-    @Operation(summary = "Get User By Id")
+    @Operation(summary = "Get Customer By Id")
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getById(id));
+    public ResponseEntity<CustomerDto> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(customerService.getById(id));
     }
 
-    @Operation(summary = "Get All User")
+    @Operation(summary = "Get All Customer")
     @GetMapping("/all")
-    public ResponseEntity<List<UserDto>> getAll() {
-        return ResponseEntity.ok(userService.getAll());
+    public ResponseEntity<List<CustomerDto>> getAll() {
+        return ResponseEntity.ok(customerService.getAll());
     }
 
-    @Operation(summary = "Login")
-    @GetMapping("/login")
-    public ResponseEntity<UserDto> checkLogin(@RequestParam String account,
-                                                    @RequestParam String password) {
-        return ResponseEntity.ok(userService.checkLogin(account, password));
-    }
-
-    @Operation(summary = "Create New User")
+    @Operation(summary = "Create New Customer")
     @PostMapping()
-    public ResponseEntity<UserDto> createOne(@RequestBody UserFilter filter) {
-        return ResponseEntity.ok(userService.createOne(filter));
+    public ResponseEntity<CustomerDto> createOne(@RequestBody CustomerFilter filter) {
+        return ResponseEntity.ok(customerService.createOne(filter));
     }
 
-    @Operation(summary = "Update Existing User")
+    @Operation(summary = "Update Existing Customer")
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateExistingCoupon(@PathVariable Long id,
-                                                        @RequestBody UserFilter filter) {
-        return ResponseEntity.ok(userService.updateOne(id, filter));
+    public ResponseEntity<CustomerDto> updateExistingCoupon(@PathVariable Long id,
+                                                        @RequestBody CustomerFilter filter) {
+        return ResponseEntity.ok(customerService.updateOne(id, filter));
     }
 
-    @Operation(summary = "Delete Existing User")
+    @Operation(summary = "Delete Existing Customer")
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteCouponByID(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.deleteById(id));
+        return ResponseEntity.ok(customerService.deleteById(id));
     }
 
 }

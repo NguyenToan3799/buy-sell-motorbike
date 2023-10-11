@@ -1,11 +1,10 @@
 package buysellmoto.service;
 
-import buysellmoto.core.exception.ApiMessageCode;
-import buysellmoto.core.exception.BusinessException;
-import buysellmoto.dao.UserDao;
-import buysellmoto.model.dto.UserDto;
-import buysellmoto.model.filter.UserFilter;
-import buysellmoto.model.mapper.UserMapper;
+
+import buysellmoto.dao.CustomerDao;
+import buysellmoto.model.dto.CustomerDto;
+import buysellmoto.model.filter.CustomerFilter;
+import buysellmoto.model.mapper.CustomerMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,50 +13,39 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class UserService {
+public class CustomerService {
 
     @Autowired
-    private UserDao userDao;
+    private CustomerDao customerDao;
     @Autowired
-    private UserMapper userMapper;
+    private CustomerMapper customerMapper;
 
-    public UserDto getById(Long id) {
+    public CustomerDto getById(Long id) {
         if(Objects.isNull(id)){
         }
-        return userDao.getById(id);
+        return customerDao.getById(id);
     }
     
-    public List<UserDto> getAll() {
-        return userDao.getAll();
-    }
-
-    public UserDto checkLogin(String account, String password) {
-        UserDto loadingUser = userDao.checkLogin(account, password);
-        if(Objects.isNull(loadingUser)){
-            throw new BusinessException(ApiMessageCode.USER_NOT_EXIST);
-        }
-        if(!loadingUser.getStatus()){
-            throw new BusinessException(ApiMessageCode.DEACTIVATED_USER);
-        }
-        return loadingUser;
+    public List<CustomerDto> getAll() {
+        return customerDao.getAll();
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public UserDto createOne (UserFilter filter) {
-        UserDto preparingDto = userMapper.filterToDto(filter);
-        return userDao.createOne(preparingDto);
+    public CustomerDto createOne (CustomerFilter filter) {
+        CustomerDto preparingDto = customerMapper.filterToDto(filter);
+        return customerDao.createOne(preparingDto);
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public UserDto updateOne(Long id, UserFilter filter) {
-        UserDto preparingDto = userMapper.filterToDto(filter);
+    public CustomerDto updateOne(Long id, CustomerFilter filter) {
+        CustomerDto preparingDto = customerMapper.filterToDto(filter);
         preparingDto.setId(id);
-        return userDao.updateOne(preparingDto);
+        return customerDao.updateOne(preparingDto);
     }
 
     @Transactional(rollbackOn = {Exception.class})
     public Boolean deleteById(Long id) {
-        userDao.deleteById(id);
+        customerDao.deleteById(id);
         return true;
     }
 

@@ -13,41 +13,26 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "SHOWROOM")
-public class ShowroomEntity implements Serializable {
+@Table(name = "EMPLOYEE_SHOWROOM")
+public class EmployeeShowroomEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String fullName;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "TIMESTAMP")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime dob;
+
     private String address;
 
-    @Column(nullable = false)
-    private String province;
+    @Column(nullable = false, columnDefinition = "BIGINT")
+    private Long userId;
 
-    @Column(nullable = false)
-    private String email;
-
-    @Column(nullable = false)
-    private String phone;
-
-//    @Column(nullable = false)
-//    private String fullName;
-//
-//    @Column(columnDefinition = "TIMESTAMP")
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-//    private LocalDateTime dob;
-//
-//    private String address;
-//
-//    @Column(nullable = false, columnDefinition = "BIGINT")
-//    private Long userId;
-//
-//    @Column(nullable = false, columnDefinition = "BIGINT")
-//    private Long showroomId;
+    @Column(nullable = false, columnDefinition = "BIGINT")
+    private Long showroomId;
 
 }

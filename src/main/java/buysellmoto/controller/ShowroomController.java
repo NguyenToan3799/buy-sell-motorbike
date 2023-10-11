@@ -1,8 +1,8 @@
 package buysellmoto.controller;
 
-import buysellmoto.model.dto.CustomerDto;
-import buysellmoto.model.filter.CustomerFilter;
-import buysellmoto.service.CustomerService;
+import buysellmoto.model.dto.ShowroomDto;
+import buysellmoto.model.filter.ShowroomFilter;
+import buysellmoto.service.ShowroomService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,41 +12,41 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/customers")
-public class CustomerController {
+@RequestMapping("/showrooms")
+public class ShowroomController {
 
     @Autowired
-    private CustomerService customerService;
+    private ShowroomService showroomService;
 
-    @Operation(summary = "Get Customer By Id")
+    @Operation(summary = "Get Showroom By Id")
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerDto> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(customerService.getById(id));
+    public ResponseEntity<ShowroomDto> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(showroomService.getById(id));
     }
 
-    @Operation(summary = "Get All Customer")
+    @Operation(summary = "Get All Showroom")
     @GetMapping("/all")
-    public ResponseEntity<List<CustomerDto>> getAll() {
-        return ResponseEntity.ok(customerService.getAll());
+    public ResponseEntity<List<ShowroomDto>> getAll() {
+        return ResponseEntity.ok(showroomService.getAll());
     }
 
-    @Operation(summary = "Create New Customer")
+    @Operation(summary = "Create New Showroom")
     @PostMapping()
-    public ResponseEntity<CustomerDto> createOne(@RequestBody CustomerFilter filter) {
-        return ResponseEntity.ok(customerService.createOne(filter));
+    public ResponseEntity<ShowroomDto> createOne(@RequestBody ShowroomFilter filter) {
+        return ResponseEntity.ok(showroomService.createOne(filter));
     }
 
-    @Operation(summary = "Update Existing Customer")
+    @Operation(summary = "Update Existing Showroom")
     @PutMapping("/{id}")
-    public ResponseEntity<CustomerDto> updateExistingCoupon(@PathVariable Long id,
-                                                        @RequestBody CustomerFilter filter) {
-        return ResponseEntity.ok(customerService.updateOne(id, filter));
+    public ResponseEntity<ShowroomDto> updateExistingCoupon(@PathVariable Long id,
+                                                        @RequestBody ShowroomFilter filter) {
+        return ResponseEntity.ok(showroomService.updateOne(id, filter));
     }
 
-    @Operation(summary = "Delete Existing Customer")
+    @Operation(summary = "Delete Existing Showroom")
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteCouponByID(@PathVariable Long id) {
-        return ResponseEntity.ok(customerService.deleteById(id));
+        return ResponseEntity.ok(showroomService.deleteById(id));
     }
 
 }

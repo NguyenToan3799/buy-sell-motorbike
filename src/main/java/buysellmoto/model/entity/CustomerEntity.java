@@ -1,9 +1,11 @@
 package buysellmoto.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -11,28 +13,23 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "USER_INFO")
-public class UserEntity implements Serializable {
+@Table(name = "CUSTOMER")
+public class CustomerEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String userName;
+    private String fullName;
 
-    @Column(nullable = false)
-    private String phone;
+    @Column(columnDefinition = "TIMESTAMP")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime dob;
 
-    private String email;
-
-    @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false)
-    private Boolean status;
+    private String address;
 
     @Column(nullable = false, columnDefinition = "BIGINT")
-    private Long roleId;
+    private Long userId;
 
 }

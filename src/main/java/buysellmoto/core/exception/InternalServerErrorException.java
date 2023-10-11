@@ -7,45 +7,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR, reason = "")
-public class BusinessException extends RuntimeException {
+public class InternalServerErrorException extends RuntimeException {
 
     private final String message;
     private final List<ApiMessageField> fields = new ArrayList<>();
 
-    public BusinessException(String errorCode) {
+    public InternalServerErrorException(String errorCode) {
         super(errorCode);
         this.message = errorCode;
     }
 
-    public BusinessException(String errorCode, ApiMessageField field) {
+    public InternalServerErrorException(String errorCode, ApiMessageField field) {
         super(errorCode);
         this.message = errorCode;
         this.fields.add(field);
     }
 
-    public BusinessException(String errorCode, List<ApiMessageField> fields) {
+    public InternalServerErrorException(String errorCode, List<ApiMessageField> fields) {
         super(errorCode);
         this.message = errorCode;
         this.fields.addAll(fields);
     }
 
-    public BusinessException(Throwable throwable) {
+    public InternalServerErrorException(Throwable throwable) {
         super(throwable);
         this.message = throwable.getMessage();
     }
 
-    public BusinessException(Throwable throwable, List<ApiMessageField> fields) {
+    public InternalServerErrorException(Throwable throwable, List<ApiMessageField> fields) {
         super(throwable);
         this.message = throwable.getMessage();
         this.fields.addAll(fields);
     }
 
-    public BusinessException(String errorCode, Throwable throwable) {
+    public InternalServerErrorException(String errorCode, Throwable throwable) {
         super(errorCode, throwable);
         this.message = errorCode;
     }
 
-    public BusinessException(String errorCode, Throwable throwable, List<ApiMessageField> fields) {
+    public InternalServerErrorException(String errorCode, Throwable throwable, List<ApiMessageField> fields) {
         super(errorCode, throwable);
         this.message = errorCode;
         this.fields.addAll(fields);
