@@ -11,20 +11,16 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "SHOWROOM_IMAGE")
-public class ShowroomImageEntity implements Serializable {
+@Table(name = "MOTO_BRAND")
+public class MotoBrandEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String url;
-
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String type;
+    private String logo;
 
 }
