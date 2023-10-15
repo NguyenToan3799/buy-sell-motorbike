@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin("http://localhost:8080")
 @RequestMapping("/roles")
 public class RoleController {
 
@@ -20,6 +20,7 @@ public class RoleController {
 
     @Operation(summary = "Get Role By Id")
     @GetMapping("/{id}")
+    @CrossOrigin("http://localhost:8080")
     public ResponseEntity<RoleDto> getById(@PathVariable Long id) {
         return ResponseEntity.ok(roleService.getById(id));
     }
