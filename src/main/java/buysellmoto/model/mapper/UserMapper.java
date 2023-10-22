@@ -3,6 +3,7 @@ package buysellmoto.model.mapper;
 import buysellmoto.model.dto.UserDto;
 import buysellmoto.model.entity.UserEntity;
 import buysellmoto.model.filter.UserFilter;
+import buysellmoto.model.vo.UserVo;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -34,5 +35,12 @@ public interface UserMapper {
 
     @Named("filterToDto")
     UserDto filterToDto(final UserFilter filter);
+
+    @Named("dtoToVo")
+    UserVo dtoToVo(UserDto dto);
+
+    @Named("dtosToVos")
+    @IterableMapping(qualifiedByName = "dtoToVo")
+    List<UserVo> dtoToVo(List<UserDto> dtos);
 
 }

@@ -28,6 +28,7 @@ public class KafkaConfig {
 //        System.out.println("Received Messasge: " + message);
 //    }
 //
+
 //    @KafkaListener(topics = "test-topic")
 //    public void listen2(String message) {
 //        System.out.println("Received Messasge: " + message);

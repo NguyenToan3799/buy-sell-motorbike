@@ -2,10 +2,13 @@ package buysellmoto.service;
 
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
+import buysellmoto.dao.CustomerDao;
+import buysellmoto.dao.RoleDao;
 import buysellmoto.dao.UserDao;
 import buysellmoto.model.dto.UserDto;
 import buysellmoto.model.filter.UserFilter;
 import buysellmoto.model.mapper.UserMapper;
+import buysellmoto.model.vo.UserVo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,14 +22,25 @@ public class UserService {
     @Autowired
     private UserDao userDao;
     @Autowired
+    private CustomerDao customerDao;
+    @Autowired
+    private RoleDao roleDao;
+    @Autowired
     private UserMapper userMapper;
 
-    public UserDto getById(Long id) {
-        if(Objects.isNull(id)){
-        }
-        return userDao.getById(id);
-    }
-    
+//    public UserVo getById(Long id) {
+//        if(Objects.isNull(userDao.getById(id))){
+//            throw new BusinessException(ApiMessageCode.USER_NOT_EXIST);
+//        }
+//        UserVo userVo = userMapper.dtoToVo(userDao.getById(id));
+//        userVo.setRoleDto(ro);
+//        if
+//
+//        return userVo;
+//    }
+
+
+
     public List<UserDto> getAll() {
         return userDao.getAll();
     }

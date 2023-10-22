@@ -20,9 +20,13 @@ public class RoleService {
     @Autowired
     private RoleMapper roleMapper;
 
+//    @Autowired
+//    private KafkaTemplate<String, String> kafkaTemplate;
+
     public RoleDto getById(Long id) {
         if(Objects.isNull(id)){
         }
+//        kafkaTemplate.send("test-topic", "Hello Kafka!");
         return roleDao.getById(id);
     }
 

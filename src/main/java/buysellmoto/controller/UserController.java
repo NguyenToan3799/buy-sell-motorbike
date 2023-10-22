@@ -18,11 +18,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Operation(summary = "Get User By Id")
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getById(id));
-    }
+//    @Operation(summary = "Get User By Id")
+//    @GetMapping("/{id}")
+//    public ResponseEntity<UserDto> getById(@PathVariable Long id) {
+//        return ResponseEntity.ok(userService.getById(id));
+//    }
 
     @Operation(summary = "Get All User")
     @GetMapping("/all")

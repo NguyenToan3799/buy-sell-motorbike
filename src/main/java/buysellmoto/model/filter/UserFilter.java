@@ -1,5 +1,6 @@
 package buysellmoto.model.filter;
 
+import buysellmoto.model.dto.CustomerDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,5 +27,8 @@ public class UserFilter {
     private Boolean status;
 
     private Long roleId;
+
+    //Other
+    private List<CustomerDto> customerDtos = new ArrayList<>();
 
 }
