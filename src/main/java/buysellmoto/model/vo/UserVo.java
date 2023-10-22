@@ -1,6 +1,7 @@
 package buysellmoto.model.vo;
 
 import buysellmoto.model.dto.CustomerDto;
+import buysellmoto.model.dto.EmployeeShowroomDto;
 import buysellmoto.model.dto.RoleDto;
 import buysellmoto.model.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -14,7 +15,12 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserVo extends UserDto {
 
-    private CustomerDto customerDto;
     private RoleDto roleDto;
+
+    //for customer
+    private CustomerDto customerDto;
+
+    //for showroom employeee
+    private EmployeeShowroomDto employeeShowroomDto;
 
 }

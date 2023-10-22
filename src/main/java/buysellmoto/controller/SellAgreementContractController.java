@@ -38,14 +38,14 @@ public class SellAgreementContractController {
 
     @Operation(summary = "Update Existing Sell Agreement Contract")
     @PutMapping("/{id}")
-    public ResponseEntity<SellAgreementContractDto> updateExistingCoupon(@PathVariable Long id,
+    public ResponseEntity<SellAgreementContractDto> updateOne(@PathVariable Long id,
                                                                  @RequestBody SellAgreementContractFilter filter) {
         return ResponseEntity.ok(sellAgreementContractService.updateOne(id, filter));
     }
 
     @Operation(summary = "Delete Existing Sell Agreement Contract")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteCouponByID(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {
         return ResponseEntity.ok(sellAgreementContractService.deleteById(id));
     }
 

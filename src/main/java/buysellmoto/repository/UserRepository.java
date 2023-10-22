@@ -18,4 +18,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
             + "AND ui.password = :password", nativeQuery = true)
     UserEntity checkLogin(String account, String password);
 
+    Optional<UserEntity> getByEmail(String email);
+
 }

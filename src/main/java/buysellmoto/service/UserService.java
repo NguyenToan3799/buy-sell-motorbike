@@ -1,20 +1,26 @@
 package buysellmoto.service;
 
+import buysellmoto.core.enumeration.RoleEnum;
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
+import buysellmoto.core.mail.MailService;
 import buysellmoto.dao.CustomerDao;
+import buysellmoto.dao.EmployeeShowroomDao;
 import buysellmoto.dao.RoleDao;
 import buysellmoto.dao.UserDao;
+import buysellmoto.model.dto.RoleDto;
 import buysellmoto.model.dto.UserDto;
 import buysellmoto.model.filter.UserFilter;
 import buysellmoto.model.mapper.UserMapper;
 import buysellmoto.model.vo.UserVo;
 import jakarta.transaction.Transactional;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 @Service
 public class UserService {
@@ -26,20 +32,41 @@ public class UserService {
     @Autowired
     private RoleDao roleDao;
     @Autowired
+    private EmployeeShowroomDao employeeShowroomDao;
+    @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private MailService mailService;
 
-//    public UserVo getById(Long id) {
-//        if(Objects.isNull(userDao.getById(id))){
-//            throw new BusinessException(ApiMessageCode.USER_NOT_EXIST);
-//        }
-//        UserVo userVo = userMapper.dtoToVo(userDao.getById(id));
-//        userVo.setRoleDto(ro);
-//        if
-//
-//        return userVo;
-//    }
+    public UserVo getById(Long id) {
+        UserVo userVo = userMapper.dtoToVo(userDao.getById(id));
+        RoleDto roleDto = roleDao.getById(userVo.getRoleId());
+        userVo.setRoleDto(roleDto);
 
+        if (roleDto.getName().equals(RoleEnum.CUSTOMER.getCode())) {
+            userVo.setCustomerDto(customerDao.getByUserId(userVo.getId()));
+        }
+        if (roleDto.getName().equals(RoleEnum.MANAGER.getCode()) || roleDto.getName().equals(RoleEnum.STAFF.getCode())) {
+            userVo.setEmployeeShowroomDto(employeeShowroomDao.getByUserId(userVo.getId()));
+        }
+        return userVo;
+    }
 
+    @SneakyThrows
+    public Boolean resetPassword(String email) {
+        UserDto userDto = userDao.getByEmail(email);
+        if (!userDto.getStatus()) {
+            throw new BusinessException(ApiMessageCode.DEACTIVATED_USER);
+        }
+        UserVo userVo = this.getById(userDto.getId());
+
+        String newPassword = this.randomPassword();
+        userDto.setPassword(newPassword);
+        userDao.updateOne(userDto);
+
+        mailService.resetPassword(userVo, newPassword);
+        return true;
+    }
 
     public List<UserDto> getAll() {
         return userDao.getAll();
@@ -47,17 +74,17 @@ public class UserService {
 
     public UserDto checkLogin(String account, String password) {
         UserDto loadingUser = userDao.checkLogin(account, password);
-        if(Objects.isNull(loadingUser)){
+        if (Objects.isNull(loadingUser)) {
             throw new BusinessException(ApiMessageCode.USER_NOT_EXIST);
         }
-        if(!loadingUser.getStatus()){
+        if (!loadingUser.getStatus()) {
             throw new BusinessException(ApiMessageCode.DEACTIVATED_USER);
         }
         return loadingUser;
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public UserDto createOne (UserFilter filter) {
+    public UserDto createOne(UserFilter filter) {
         UserDto preparingDto = userMapper.filterToDto(filter);
         return userDao.createOne(preparingDto);
     }
@@ -73,6 +100,18 @@ public class UserService {
     public Boolean deleteById(Long id) {
         userDao.deleteById(id);
         return true;
+    }
+
+    private String randomPassword() {
+        int leftLimit = 97; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 8;
+        Random random = new Random();
+
+        return random.ints(leftLimit, rightLimit + 1)
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
     }
 
 }

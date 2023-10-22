@@ -9,7 +9,10 @@ import java.util.Arrays;
 @AllArgsConstructor
 public enum RoleEnum {
 
-    READY("READY"),
+    ADMIN("ADMIN"),
+    MANAGER("MANAGER"),
+    STAFF("STAFF"),
+    CUSTOMER("CUSTOMER"),
     INVALID("INVALID");
 
     private final String code;

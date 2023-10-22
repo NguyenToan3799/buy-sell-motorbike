@@ -38,14 +38,14 @@ public class BuyRequestController {
 
     @Operation(summary = "Update Existing Buy Request")
     @PutMapping("/{id}")
-    public ResponseEntity<BuyRequestDto> updateExistingCoupon(@PathVariable Long id,
+    public ResponseEntity<BuyRequestDto> updateOne(@PathVariable Long id,
                                                                  @RequestBody BuyRequestFilter filter) {
         return ResponseEntity.ok(buyRequestService.updateOne(id, filter));
     }
 
     @Operation(summary = "Delete Existing Buy Request")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteCouponByID(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {
         return ResponseEntity.ok(buyRequestService.deleteById(id));
     }
 

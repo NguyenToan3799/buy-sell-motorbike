@@ -38,14 +38,14 @@ public class ShowroomController {
 
     @Operation(summary = "Update Existing Showroom")
     @PutMapping("/{id}")
-    public ResponseEntity<ShowroomDto> updateExistingCoupon(@PathVariable Long id,
+    public ResponseEntity<ShowroomDto> updateOne(@PathVariable Long id,
                                                         @RequestBody ShowroomFilter filter) {
         return ResponseEntity.ok(showroomService.updateOne(id, filter));
     }
 
     @Operation(summary = "Delete Existing Showroom")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteCouponByID(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {
         return ResponseEntity.ok(showroomService.deleteById(id));
     }
 

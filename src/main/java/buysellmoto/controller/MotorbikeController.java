@@ -38,14 +38,14 @@ public class MotorbikeController {
 
     @Operation(summary = "Update Existing Motorbike")
     @PutMapping("/{id}")
-    public ResponseEntity<MotorbikeDto> updateExistingCoupon(@PathVariable Long id,
+    public ResponseEntity<MotorbikeDto> updateOne(@PathVariable Long id,
                                                         @RequestBody MotorbikeFilter filter) {
         return ResponseEntity.ok(motorbikeService.updateOne(id, filter));
     }
 
     @Operation(summary = "Delete Existing Motorbike")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteCouponByID(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {
         return ResponseEntity.ok(motorbikeService.deleteById(id));
     }
 

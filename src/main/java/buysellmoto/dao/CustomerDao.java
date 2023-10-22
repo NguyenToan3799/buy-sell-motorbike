@@ -22,6 +22,10 @@ public class CustomerDao {
         return mapper.toDto(customerRepository.findById(id).orElseThrow());
     }
 
+    public CustomerDto getByUserId(Long userId) {
+        return mapper.toDto(customerRepository.getByUserId(userId));
+    }
+
     public List<CustomerDto> getAll() {
         return mapper.toDto(customerRepository.findAll());
     }

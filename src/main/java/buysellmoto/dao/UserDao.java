@@ -21,7 +21,8 @@ public class UserDao {
     private UserMapper mapper;
 
     public UserDto getById(Long id) {
-        return mapper.toDto(userRepository.findById(id).orElseThrow());
+        return mapper.toDto(userRepository.findById(id).orElseThrow(
+                () -> new BusinessException(ApiMessageCode.USER_NOT_EXIST)));
     }
 
     public List<UserDto> getAll() {
@@ -30,6 +31,11 @@ public class UserDao {
 
     public UserDto checkLogin(String account, String password) {
         return mapper.toDto(userRepository.checkLogin(account, password));
+    }
+
+    public UserDto getByEmail(String email){
+        return mapper.toDto(userRepository.getByEmail(email).orElseThrow(
+                () -> new BusinessException(ApiMessageCode.USER_NOT_EXIST)));
     }
 
     @Transactional(rollbackOn = {Exception.class})

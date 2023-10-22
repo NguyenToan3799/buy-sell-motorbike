@@ -22,6 +22,10 @@ public class EmployeeShowroomDao {
         return mapper.toDto(employeeShowroomRepository.findById(id).orElseThrow());
     }
 
+    public EmployeeShowroomDto getByUserId(Long userId) {
+        return mapper.toDto(employeeShowroomRepository.getByUserId(userId));
+    }
+
     public List<EmployeeShowroomDto> getAll() {
         return mapper.toDto(employeeShowroomRepository.findAll());
     }

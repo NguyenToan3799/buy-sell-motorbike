@@ -38,14 +38,14 @@ public class RejectRequestController {
 
     @Operation(summary = "Update Existing Reject Request")
     @PutMapping("/{id}")
-    public ResponseEntity<RejectRequestDto> updateExistingCoupon(@PathVariable Long id,
+    public ResponseEntity<RejectRequestDto> updateOne(@PathVariable Long id,
                                                                  @RequestBody RejectRequestFilter filter) {
         return ResponseEntity.ok(rejectRequestService.updateOne(id, filter));
     }
 
     @Operation(summary = "Delete Existing Reject Request")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteCouponByID(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {
         return ResponseEntity.ok(rejectRequestService.deleteById(id));
     }
 

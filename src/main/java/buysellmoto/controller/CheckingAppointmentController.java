@@ -38,14 +38,14 @@ public class CheckingAppointmentController {
 
     @Operation(summary = "Update Existing Checking Appointment")
     @PutMapping("/{id}")
-    public ResponseEntity<CheckingAppointmentDto> updateExistingCoupon(@PathVariable Long id,
+    public ResponseEntity<CheckingAppointmentDto> updateOne(@PathVariable Long id,
                                                                  @RequestBody CheckingAppointmentFilter filter) {
         return ResponseEntity.ok(checkingAppointmentService.updateOne(id, filter));
     }
 
     @Operation(summary = "Delete Existing Checking Appointment")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteCouponByID(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {
         return ResponseEntity.ok(checkingAppointmentService.deleteById(id));
     }
 

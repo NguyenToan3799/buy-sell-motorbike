@@ -38,14 +38,14 @@ public class CustomerReviewsController {
 
     @Operation(summary = "Update Existing Customer Reviews")
     @PutMapping("/{id}")
-    public ResponseEntity<CustomerReviewsDto> updateExistingCoupon(@PathVariable Long id,
+    public ResponseEntity<CustomerReviewsDto> updateOne(@PathVariable Long id,
                                                         @RequestBody CustomerReviewsFilter filter) {
         return ResponseEntity.ok(customerReviewsService.updateOne(id, filter));
     }
 
     @Operation(summary = "Delete Existing Customer Reviews")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteCouponByID(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {
         return ResponseEntity.ok(customerReviewsService.deleteById(id));
     }
 

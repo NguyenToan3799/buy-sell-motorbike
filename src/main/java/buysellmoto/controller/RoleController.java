@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin()
+
+@CrossOrigin
 @RequestMapping("/roles")
 public class RoleController {
 
@@ -20,7 +21,6 @@ public class RoleController {
 
     @Operation(summary = "Get Role By Id")
     @GetMapping("/{id}")
-    @CrossOrigin("http://localhost:8080")
     public ResponseEntity<RoleDto> getById(@PathVariable Long id) {
         return ResponseEntity.ok(roleService.getById(id));
     }
@@ -45,14 +45,14 @@ public class RoleController {
 
     @Operation(summary = "Update Existing Role")
     @PutMapping("/{id}")
-    public ResponseEntity<RoleDto> updateExistingCoupon(@PathVariable Long id,
+    public ResponseEntity<RoleDto> updateOne(@PathVariable Long id,
                                                         @RequestBody RoleFilter filter) {
         return ResponseEntity.ok(roleService.updateOne(id, filter));
     }
 
     @Operation(summary = "Delete Existing Role")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteCouponByID(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {
         return ResponseEntity.ok(roleService.deleteById(id));
     }
 

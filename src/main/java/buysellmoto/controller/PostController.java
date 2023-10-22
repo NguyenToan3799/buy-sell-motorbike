@@ -38,14 +38,14 @@ public class PostController {
 
     @Operation(summary = "Update Existing Post")
     @PutMapping("/{id}")
-    public ResponseEntity<PostDto> updateExistingCoupon(@PathVariable Long id,
+    public ResponseEntity<PostDto> updateOne(@PathVariable Long id,
                                                                  @RequestBody PostFilter filter) {
         return ResponseEntity.ok(postService.updateOne(id, filter));
     }
 
     @Operation(summary = "Delete Existing Post")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteCouponByID(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {
         return ResponseEntity.ok(postService.deleteById(id));
     }
 
