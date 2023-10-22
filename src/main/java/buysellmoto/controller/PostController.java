@@ -30,7 +30,7 @@ public class PostController {
         return ResponseEntity.ok(postService.getAll());
     }
 
-    @Operation(summary = "Create wNew Post")
+    @Operation(summary = "Create New Post")
     @PostMapping()
     public ResponseEntity<PostDto> createOne(@RequestBody PostFilter filter) {
         return ResponseEntity.ok(postService.createOne(filter));
