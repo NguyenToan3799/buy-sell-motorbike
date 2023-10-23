@@ -32,8 +32,8 @@ public class MailService {
         // Create a Thymeleaf context
         Context context = new Context();
 
-        context.setVariable("name", userVo.getCustomerDto().getFullName());
-        context.setVariable("content", newPassword);
+        context.setVariable("hello", "Xin chào, " + userVo.getCustomerDto().getFullName());
+        context.setVariable("newpassword", newPassword);
 
         // Process the Thymeleaf template with the context
         String emailContent = templateEngine.process("email-template", context);
