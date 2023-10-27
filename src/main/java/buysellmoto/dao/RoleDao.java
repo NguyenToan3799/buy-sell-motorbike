@@ -30,6 +30,10 @@ public class RoleDao {
         return mapper.toDto(roleRepository.findAll());
     }
 
+    public RoleDto getByName(String name){
+        return mapper.toDto(roleRepository.findByName(name));
+    }
+
     @Transactional(rollbackOn = {Exception.class})
     public RoleDto createOne(RoleDto dto) {
         return mapper.toDto(roleRepository.save(mapper.toEntity(dto)));

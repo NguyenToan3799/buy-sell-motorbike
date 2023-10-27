@@ -50,6 +50,12 @@ public class UserController {
         return ResponseEntity.ok(userService.createOne(filter));
     }
 
+    @Operation(summary = "Create New Customer")
+    @PostMapping("/customer")
+    public ResponseEntity<UserVo> createCustomer(@RequestBody UserFilter filter) {
+        return ResponseEntity.ok(userService.createCustomer(filter));
+    }
+
     @Operation(summary = "Update Existing User")
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> updateOne(@PathVariable Long id,

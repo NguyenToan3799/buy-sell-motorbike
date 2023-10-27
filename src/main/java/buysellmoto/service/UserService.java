@@ -8,6 +8,7 @@ import buysellmoto.dao.CustomerDao;
 import buysellmoto.dao.EmployeeShowroomDao;
 import buysellmoto.dao.RoleDao;
 import buysellmoto.dao.UserDao;
+import buysellmoto.model.dto.CustomerDto;
 import buysellmoto.model.dto.RoleDto;
 import buysellmoto.model.dto.UserDto;
 import buysellmoto.model.filter.UserFilter;
@@ -90,6 +91,23 @@ public class UserService {
     }
 
     @Transactional(rollbackOn = {Exception.class})
+    public UserVo createCustomer(UserFilter filter) {
+        UserDto preparingDto = userMapper.filterToDto(filter);
+        preparingDto.setId(null);
+        preparingDto.setStatus(true);
+        preparingDto.setRoleId(roleDao.getByName(RoleEnum.CUSTOMER.getCode()).getId());
+
+        UserVo userVo = userMapper.dtoToVo(userDao.createOne(preparingDto));
+
+        CustomerDto preparingCustomer = filter.getCustomerDto();
+        preparingCustomer.setUserId(userVo.getId());
+        preparingCustomer.setId(null);
+        userVo.setCustomerDto(customerDao.createOne(preparingCustomer));
+
+        return userVo;
+    }
+
+    @Transactional(rollbackOn = {Exception.class})
     public UserDto updateOne(Long id, UserFilter filter) {
         UserDto preparingDto = userMapper.filterToDto(filter);
         preparingDto.setId(id);
@@ -105,7 +123,7 @@ public class UserService {
     private String randomPassword() {
         int leftLimit = 97; // letter 'a'
         int rightLimit = 122; // letter 'z'
-        int targetStringLength = 8;
+        int targetStringLength = 10;
         Random random = new Random();
 
         return random.ints(leftLimit, rightLimit + 1)

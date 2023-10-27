@@ -29,6 +29,6 @@ public class UserFilter {
     private Long roleId;
 
     //Other
-    private List<CustomerDto> customerDtos = new ArrayList<>();
+    private CustomerDto customerDto;
 
 }
