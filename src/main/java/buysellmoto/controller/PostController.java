@@ -25,7 +25,7 @@ public class PostController {
     }
 
     @Operation(summary = "Get All Post")
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<PostDto>> getAll() {
         return ResponseEntity.ok(postService.getAll());
     }

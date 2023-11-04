@@ -25,7 +25,7 @@ public class ShowroomImageController {
     }
 
     @Operation(summary = "Get All Showroom Image")
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<ShowroomImageDto>> getAll() {
         return ResponseEntity.ok(showroomImageService.getAll());
     }

@@ -25,7 +25,7 @@ public class MotoTypeController {
     }
 
     @Operation(summary = "Get All Moto Type")
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<MotoTypeDto>> getAll() {
         return ResponseEntity.ok(motoTypeService.getAll());
     }

@@ -25,7 +25,7 @@ public class CustomerReviewsController {
     }
 
     @Operation(summary = "Get All Customer Reviews")
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<CustomerReviewsDto>> getAll() {
         return ResponseEntity.ok(customerReviewsService.getAll());
     }

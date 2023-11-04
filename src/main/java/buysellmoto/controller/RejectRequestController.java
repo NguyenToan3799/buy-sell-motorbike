@@ -25,7 +25,7 @@ public class RejectRequestController {
     }
 
     @Operation(summary = "Get All Reject Request")
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<RejectRequestDto>> getAll() {
         return ResponseEntity.ok(rejectRequestService.getAll());
     }

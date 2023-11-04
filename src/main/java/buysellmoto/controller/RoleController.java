@@ -26,7 +26,7 @@ public class RoleController {
     }
 
     @Operation(summary = "Get All Role")
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<RoleDto>> getAll() {
         return ResponseEntity.ok(roleService.getAll());
     }

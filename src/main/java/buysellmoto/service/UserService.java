@@ -56,6 +56,9 @@ public class UserService {
     @SneakyThrows
     public Boolean resetPassword(String email) {
         UserDto userDto = userDao.getByEmail(email);
+        if(!roleDao.getById(userDto.getRoleId()).getName().equals(RoleEnum.CUSTOMER.getCode())){
+            throw new BusinessException(ApiMessageCode.INVALID_ROLE);
+        }
         if (!userDto.getStatus()) {
             throw new BusinessException(ApiMessageCode.DEACTIVATED_USER);
         }

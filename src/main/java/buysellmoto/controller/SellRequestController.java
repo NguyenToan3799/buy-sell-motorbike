@@ -25,7 +25,7 @@ public class SellRequestController {
     }
 
     @Operation(summary = "Get All Sell Request")
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<SellRequestDto>> getAll() {
         return ResponseEntity.ok(sellRequestService.getAll());
     }

@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @Operation(summary = "Get All User")
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<UserDto>> getAll() {
         return ResponseEntity.ok(userService.getAll());
     }

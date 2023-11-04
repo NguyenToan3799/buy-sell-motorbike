@@ -25,7 +25,7 @@ public class CheckingAppointmentController {
     }
 
     @Operation(summary = "Get All Checking Appointment")
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<CheckingAppointmentDto>> getAll() {
         return ResponseEntity.ok(checkingAppointmentService.getAll());
     }

@@ -25,8 +25,6 @@ public class SellAgreementContractDto implements Serializable {
 
     private Long id;
 
-    private String code;
-
     @JsonSerialize(using = DateToTimestamp.class)
     @JsonDeserialize(using = TimestampToDate.class)
     private LocalDateTime contractSignDate;

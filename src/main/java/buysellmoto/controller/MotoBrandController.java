@@ -25,7 +25,7 @@ public class MotoBrandController {
     }
 
     @Operation(summary = "Get All Moto Brand")
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<MotoBrandDto>> getAll() {
         return ResponseEntity.ok(motoBrandService.getAll());
     }

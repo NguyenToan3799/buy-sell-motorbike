@@ -25,7 +25,7 @@ public class ShowroomController {
     }
 
     @Operation(summary = "Get All Showroom")
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<ShowroomDto>> getAll() {
         return ResponseEntity.ok(showroomService.getAll());
     }

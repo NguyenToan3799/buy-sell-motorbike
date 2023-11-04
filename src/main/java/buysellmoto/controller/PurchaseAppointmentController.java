@@ -25,7 +25,7 @@ public class PurchaseAppointmentController {
     }
 
     @Operation(summary = "Get All Purchase Appointment")
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<PurchaseAppointmentDto>> getAll() {
         return ResponseEntity.ok(purchaseAppointmentService.getAll());
     }

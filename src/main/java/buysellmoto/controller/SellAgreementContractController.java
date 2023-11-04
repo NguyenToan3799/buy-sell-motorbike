@@ -25,7 +25,7 @@ public class SellAgreementContractController {
     }
 
     @Operation(summary = "Get All Sell Agreement Contract")
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<SellAgreementContractDto>> getAll() {
         return ResponseEntity.ok(sellAgreementContractService.getAll());
     }

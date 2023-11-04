@@ -25,7 +25,7 @@ public class MotorbikeImageController {
     }
 
     @Operation(summary = "Get All Motorbike Image")
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<MotorbikeImageDto>> getAll() {
         return ResponseEntity.ok(motorbikeImageService.getAll());
     }
