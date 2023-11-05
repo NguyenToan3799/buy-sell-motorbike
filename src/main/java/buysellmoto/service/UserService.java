@@ -3,6 +3,8 @@ package buysellmoto.service;
 import buysellmoto.core.enumeration.RoleEnum;
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
+import buysellmoto.core.exception.NotFoundException;
+import buysellmoto.core.exception.UnauthorizedException;
 import buysellmoto.core.mail.MailService;
 import buysellmoto.dao.CustomerDao;
 import buysellmoto.dao.EmployeeShowroomDao;
@@ -18,6 +20,7 @@ import buysellmoto.model.vo.UserVo;
 import jakarta.transaction.Transactional;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,9 +60,6 @@ public class UserService {
     @SneakyThrows
     public Boolean resetPassword(String email) {
         UserDto userDto = userDao.getByEmail(email);
-        if(!roleDao.getById(userDto.getRoleId()).getName().equals(RoleEnum.CUSTOMER.getCode())){
-            throw new BusinessException(ApiMessageCode.INVALID_ROLE);
-        }
         if (!userDto.getStatus()) {
             throw new BusinessException(ApiMessageCode.DEACTIVATED_USER);
         }
@@ -80,10 +80,10 @@ public class UserService {
     public UserDto checkLogin(LoginFilter loginFilter) {
         UserDto loadingUser = userDao.checkLogin(loginFilter.getLoginIdentity(), loginFilter.getPassword());
         if (Objects.isNull(loadingUser)) {
-            throw new BusinessException(ApiMessageCode.USER_NOT_EXIST);
+            throw new NotFoundException(ApiMessageCode.INVALID_LOGIN_IDENTITIES_OR_PASSWORD);
         }
         if (!loadingUser.getStatus()) {
-            throw new BusinessException(ApiMessageCode.DEACTIVATED_USER);
+            throw new NotFoundException(ApiMessageCode.DEACTIVATED_USER);
         }
         return loadingUser;
     }

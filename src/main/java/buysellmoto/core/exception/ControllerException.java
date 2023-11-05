@@ -54,4 +54,17 @@ public class ControllerException {
         return ApiResponse.error(HttpStatus.BAD_REQUEST, ex.getMessage(), fields);
     }
 
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public ApiResponse<Object> handleNotFoundException(NotFoundException ex) {
+        log.error(ex.getMessage(), ex);
+        return ApiResponse.error(HttpStatus.NOT_FOUND, ex.getMessage(), ex.getFields());
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    public ApiResponse<Object> handleUnauthorizedException(UnauthorizedException ex) {
+        log.error(ex.getMessage(), ex);
+        return ApiResponse.error(HttpStatus.UNAUTHORIZED, ex.getMessage(), ex.getFields());
+    }
 }
