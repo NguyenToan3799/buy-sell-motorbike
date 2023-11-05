@@ -12,6 +12,7 @@ import buysellmoto.model.dto.CustomerDto;
 import buysellmoto.model.dto.RoleDto;
 import buysellmoto.model.dto.UserDto;
 import buysellmoto.model.filter.UserFilter;
+import buysellmoto.model.filter.other.LoginFilter;
 import buysellmoto.model.mapper.UserMapper;
 import buysellmoto.model.vo.UserVo;
 import jakarta.transaction.Transactional;
@@ -76,8 +77,8 @@ public class UserService {
         return userDao.getAll();
     }
 
-    public UserDto checkLogin(UserFilter userFilter) {
-        UserDto loadingUser = userDao.checkLogin(userFilter.getUserName(), userFilter.getPassword());
+    public UserDto checkLogin(LoginFilter loginFilter) {
+        UserDto loadingUser = userDao.checkLogin(loginFilter.getLoginIdentity(), loginFilter.getPassword());
         if (Objects.isNull(loadingUser)) {
             throw new BusinessException(ApiMessageCode.USER_NOT_EXIST);
         }

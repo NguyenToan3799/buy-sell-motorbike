@@ -2,6 +2,7 @@ package buysellmoto.controller;
 
 import buysellmoto.model.dto.UserDto;
 import buysellmoto.model.filter.UserFilter;
+import buysellmoto.model.filter.other.LoginFilter;
 import buysellmoto.model.vo.UserVo;
 import buysellmoto.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,8 +34,8 @@ public class UserController {
 
     @Operation(summary = "Login")
     @PostMapping("/login")
-    public ResponseEntity<UserDto> checkLogin(@RequestBody UserFilter userFilter) {
-        return ResponseEntity.ok(userService.checkLogin(userFilter));
+    public ResponseEntity<UserDto> checkLogin(@RequestBody LoginFilter loginFilter) {
+        return ResponseEntity.ok(userService.checkLogin(loginFilter));
     }
 
     @Operation(summary = "Reset password")
