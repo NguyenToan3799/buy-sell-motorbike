@@ -32,10 +32,9 @@ public class UserController {
     }
 
     @Operation(summary = "Login")
-    @GetMapping("/login")
-    public ResponseEntity<UserDto> checkLogin(@RequestParam String account,
-                                              @RequestParam String password) {
-        return ResponseEntity.ok(userService.checkLogin(account, password));
+    @PostMapping("/login")
+    public ResponseEntity<UserDto> checkLogin(@RequestBody UserFilter userFilter) {
+        return ResponseEntity.ok(userService.checkLogin(userFilter));
     }
 
     @Operation(summary = "Reset password")
