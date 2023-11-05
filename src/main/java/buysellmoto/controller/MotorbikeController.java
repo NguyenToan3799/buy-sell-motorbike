@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/motorbike")
+@RequestMapping("/motorbikes")
 public class MotorbikeController {
 
     @Autowired

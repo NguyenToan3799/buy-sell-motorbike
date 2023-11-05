@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/post")
+@RequestMapping("/posts")
 public class PostController {
 
     @Autowired

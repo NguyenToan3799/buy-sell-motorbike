@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/moto-brand")
+@RequestMapping("/moto-brands")
 public class MotoBrandController {
 
     @Autowired

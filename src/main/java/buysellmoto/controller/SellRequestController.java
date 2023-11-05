@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/sell-request")
+@RequestMapping("/sell-requests")
 public class SellRequestController {
 
     @Autowired

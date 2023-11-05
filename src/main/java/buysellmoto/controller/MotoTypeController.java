@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/moto-type")
+@RequestMapping("/moto-types")
 public class MotoTypeController {
 
     @Autowired

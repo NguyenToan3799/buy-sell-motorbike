@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/reject-request")
+@RequestMapping("/reject-requests")
 public class RejectRequestController {
 
     @Autowired
