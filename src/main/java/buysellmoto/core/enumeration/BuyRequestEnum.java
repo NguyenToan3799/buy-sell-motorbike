@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 @Getter
 @AllArgsConstructor
-public enum SellRequestEnum {
+public enum BuyRequestEnum {
 
     // Người bán
     DRAFT("DRAFT", "Bảng nháp"),
@@ -24,8 +24,8 @@ public enum SellRequestEnum {
     private final String code;
     private final String description;
 
-    public static SellRequestEnum of(String code) {
-        return Arrays.stream(SellRequestEnum.values())
+    public static BuyRequestEnum of(String code) {
+        return Arrays.stream(BuyRequestEnum.values())
                 .filter(z -> z.getCode().equals(code))
                 .findFirst()
                 .orElse(INVALID);
