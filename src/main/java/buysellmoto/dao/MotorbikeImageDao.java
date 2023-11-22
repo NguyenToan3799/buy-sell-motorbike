@@ -32,8 +32,18 @@ public class MotorbikeImageDao {
     }
 
     @Transactional(rollbackOn = {Exception.class})
+    public List<MotorbikeImageDto> createAll(List<MotorbikeImageDto> dto) {
+        return mapper.toDto(motorbikeImageRepository.saveAll(mapper.toEntity(dto)));
+    }
+
+    @Transactional(rollbackOn = {Exception.class})
     public MotorbikeImageDto updateOne(MotorbikeImageDto dto) {
         return mapper.toDto(motorbikeImageRepository.save(mapper.toEntity(dto)));
+    }
+
+    @Transactional(rollbackOn = {Exception.class})
+    public List<MotorbikeImageDto> updateAll(List<MotorbikeImageDto> dto) {
+        return mapper.toDto(motorbikeImageRepository.saveAll(mapper.toEntity(dto)));
     }
 
     @Transactional(rollbackOn = {Exception.class})

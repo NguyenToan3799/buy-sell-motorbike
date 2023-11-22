@@ -29,4 +29,7 @@ public class MotorbikeImageEntity implements Serializable {
     @Column(nullable = false)
     private Boolean isThumbnail;
 
+    @Column(nullable = false)
+    private Long motorbikeId;
+
 }

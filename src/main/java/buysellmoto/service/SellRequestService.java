@@ -1,22 +1,33 @@
 package buysellmoto.service;
 
+import buysellmoto.core.enumeration.MotorbikeEnum;
 import buysellmoto.core.enumeration.SellRequestEnum;
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
 import buysellmoto.core.exception.UnauthorizedException;
+import buysellmoto.dao.MotorbikeDao;
+import buysellmoto.dao.MotorbikeImageDao;
 import buysellmoto.dao.RejectRequestDao;
 import buysellmoto.dao.SellRequestDao;
+import buysellmoto.model.dto.MotorbikeDto;
+import buysellmoto.model.dto.MotorbikeImageDto;
 import buysellmoto.model.dto.RejectRequestDto;
 import buysellmoto.model.dto.SellRequestDto;
 import buysellmoto.model.filter.RejectRequestFilter;
 import buysellmoto.model.filter.SellRequestFilter;
+import buysellmoto.model.mapper.MotorbikeImageMapper;
+import buysellmoto.model.mapper.MotorbikeMapper;
 import buysellmoto.model.mapper.RejectRequestMapper;
 import buysellmoto.model.mapper.SellRequestMapper;
+import buysellmoto.model.vo.MotorbikeVo;
 import jakarta.transaction.Transactional;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,9 +39,17 @@ public class SellRequestService {
     @Autowired
     private RejectRequestDao rejectRequestDao;
     @Autowired
+    private MotorbikeDao motorbikeDao;
+    @Autowired
+    private MotorbikeImageDao motorbikeImageDao;
+    @Autowired
     private SellRequestMapper sellRequestMapper;
     @Autowired
     private RejectRequestMapper rejectRequestMapper;
+    @Autowired
+    private MotorbikeMapper motorbikeMapper;
+    @Autowired
+    private MotorbikeImageMapper motorbikeImageMapper;
 
     public SellRequestDto getById(Long id) {
         if(Objects.isNull(id)){
@@ -44,8 +63,32 @@ public class SellRequestService {
 
     @Transactional(rollbackOn = {Exception.class})
     public SellRequestDto createOne (SellRequestFilter filter) {
-        SellRequestDto preparingDto = sellRequestMapper.filterToDto(filter);
-        return sellRequestDao.createOne(preparingDto);
+
+        // Create Motorbike
+        MotorbikeVo motorbikeVo = filter.getMotorbikeVo();
+        motorbikeVo.setId(null);
+        motorbikeVo.setStatus(MotorbikeEnum.IN_SELL_REQUEST.getCode());
+        MotorbikeDto motorbikeDto = motorbikeDao.createOne(motorbikeMapper.voToDto(motorbikeVo));
+
+        //Crate List Image
+        if(ObjectUtils.isEmpty(motorbikeVo.getMotorbikeImageDtos())){
+            List<MotorbikeImageDto> motorbikeImageDtos = motorbikeVo.getMotorbikeImageDtos();
+            motorbikeImageDtos.forEach(motorbikeImageDto -> {
+                motorbikeImageDto.setId(null);
+                motorbikeImageDto.setMotorbikeId(motorbikeDto.getId());
+            });
+            motorbikeImageDao.createAll(motorbikeImageDtos);
+        }
+
+        // Create
+        SellRequestDto sellRequestDto = sellRequestMapper.filterToDto(filter);
+        sellRequestDto.setId(null);
+        sellRequestDto.setCode(generateCode());
+        sellRequestDto.setStatus(SellRequestEnum.CREATED.getCode());
+        sellRequestDto.setCreatedDate(LocalDateTime.now());
+        sellRequestDto.setMotorbikeId(motorbikeDto.getId());
+
+        return sellRequestDao.createOne(sellRequestDto);
     }
 
     @Transactional(rollbackOn = {Exception.class})
@@ -94,13 +137,19 @@ public class SellRequestService {
         return true;
     }
 
+    private String generateCode() {
+        Long timestamp = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli();
+        String serial = "SR" + RandomStringUtils.random(13, timestamp.toString());
+        return serial;
+    }
+
     private boolean validateStatusMoving(SellRequestEnum preStatus, SellRequestEnum newStatus) {
         switch (preStatus) {
-            case DRAFT:
-                if (newStatus == SellRequestEnum.CONFIRMED || newStatus == SellRequestEnum.CANCELLED) {
-                    return true;
-                }
-            case CONFIRMED:
+//            case DRAFT:
+//                if (newStatus == SellRequestEnum.CONFIRMED || newStatus == SellRequestEnum.CANCELLED) {
+//                    return true;
+//                }
+            case CREATED:
                 if (newStatus == SellRequestEnum.APPROVED || newStatus == SellRequestEnum.REJECTED) {
                     return true;
                 }

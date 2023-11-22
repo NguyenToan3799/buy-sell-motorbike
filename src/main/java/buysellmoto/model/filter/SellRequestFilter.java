@@ -2,6 +2,8 @@ package buysellmoto.model.filter;
 
 import buysellmoto.core.ultilities.DateToTimestamp;
 import buysellmoto.core.ultilities.TimestampToDate;
+import buysellmoto.model.dto.MotorbikeDto;
+import buysellmoto.model.vo.MotorbikeVo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
@@ -33,5 +35,7 @@ public class SellRequestFilter {
     private Long customerId;
 
     private Long showroomId;
+
+    private MotorbikeVo motorbikeVo;
 
 }

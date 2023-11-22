@@ -22,8 +22,6 @@ public class MotoTypeDto implements Serializable {
 
     private String name;
 
-    private Double engineSize;
-
     private Long motoBrandId;
 
 }

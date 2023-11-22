@@ -2,6 +2,7 @@ package buysellmoto.model.filter;
 
 import buysellmoto.core.ultilities.DateToTimestamp;
 import buysellmoto.core.ultilities.TimestampToDate;
+import buysellmoto.model.dto.MotorbikeImageDto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,6 +21,12 @@ import java.time.LocalDateTime;
 public class MotorbikeFilter {
 
     //Dto
+    private String name;
+
+    private String licensePlate;
+
+    private Double engineSize;
+
     private String description;
 
     private String condition;
@@ -30,10 +39,15 @@ public class MotorbikeFilter {
 
     private String status;
 
-    private Long motoTypeId;
+    private String motoType;
+
+    private Long motoBrandId;
 
     private Long customerId;
 
     private Long showroomId;
+
+    // For create
+    private List<MotorbikeImageDto> motorbikeImageDtos = new ArrayList<>();
 
 }

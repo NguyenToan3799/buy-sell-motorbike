@@ -24,4 +24,6 @@ public class MotorbikeImageFilter {
 
     private Boolean isThumbnail;
 
+    private Long motorbikeId;
+
 }

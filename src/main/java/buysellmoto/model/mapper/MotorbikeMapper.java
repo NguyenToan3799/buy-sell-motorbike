@@ -3,6 +3,7 @@ package buysellmoto.model.mapper;
 import buysellmoto.model.dto.MotorbikeDto;
 import buysellmoto.model.entity.MotorbikeEntity;
 import buysellmoto.model.filter.MotorbikeFilter;
+import buysellmoto.model.vo.MotorbikeVo;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -34,5 +35,11 @@ public interface MotorbikeMapper {
 
     @Named("filterToDto")
     MotorbikeDto filterToDto(MotorbikeFilter filter);
+
+    @Named("dtoToVo")
+    MotorbikeDto dtoToVo(MotorbikeVo vo);
+
+    @Named("voToDto")
+    MotorbikeVo voToDto(MotorbikeDto dto);
 
 }

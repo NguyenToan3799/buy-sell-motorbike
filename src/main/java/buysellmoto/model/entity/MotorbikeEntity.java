@@ -20,6 +20,12 @@ public class MotorbikeEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+
+    private String licensePlate;
+
+    private Double engineSize;
+
     private String description;
 
     @Column(nullable = false)
@@ -35,8 +41,14 @@ public class MotorbikeEntity implements Serializable {
     @Column(nullable = false)
     private String status;
 
+//    @Column(nullable = false)
+//    private Long motoTypeId;
+
     @Column(nullable = false)
-    private Long motoTypeId;
+    private String motoType;
+
+    @Column(nullable = false)
+    private Long motoBrandId;
 
     @Column(nullable = false)
     private Long customerId;

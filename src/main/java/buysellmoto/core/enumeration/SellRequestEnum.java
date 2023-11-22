@@ -10,8 +10,9 @@ import java.util.Arrays;
 public enum SellRequestEnum {
 
     // Người bán
-    DRAFT("DRAFT", "Bảng nháp"),
-    CONFIRMED("CONFIRMED", "Xác nhận đã gửi yêu cầu tới showroom"),
+//    DRAFT("DRAFT", "Bảng nháp"),
+//    CONFIRMED("CONFIRMED", "Xác nhận đã gửi yêu cầu tới showroom"),
+    CREATED("CREATED", "Đã gửi yêu cầu tới showroom"),
     CANCELLED("CANCELLED", "Huỷ yêu cầu đã gửi hoặc bản nháp"),
 
     //Showroom

@@ -31,4 +31,6 @@ public class MotorbikeImageDto implements Serializable {
 
     private Boolean isThumbnail;
 
+    private Long motorbikeId;
+
 }

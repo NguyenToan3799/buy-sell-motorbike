@@ -26,6 +26,12 @@ public class MotorbikeDto implements Serializable {
 
     private Long id;
 
+    private String name;
+
+    private String licensePlate;
+
+    private Double engineSize;
+
     private String description;
 
     private String condition;
@@ -38,7 +44,11 @@ public class MotorbikeDto implements Serializable {
 
     private String status;
 
-    private Long motoTypeId;
+//    private Long motoTypeId;
+
+    private String motoType;
+
+    private Long motoBrandId;
 
     private Long customerId;
 

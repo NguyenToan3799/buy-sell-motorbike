@@ -20,7 +20,7 @@ public class UserVo extends UserDto {
     //for customer
     private CustomerDto customerDto;
 
-    //for showroom employeee
+    //for showroom employee
     private EmployeeShowroomDto employeeShowroomDto;
 
 }
