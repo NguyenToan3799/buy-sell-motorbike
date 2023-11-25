@@ -32,7 +32,4 @@ public interface CheckingAppointmentMapper {
     @IterableMapping(qualifiedByName = "toDto")
     List<CheckingAppointmentDto> toDto(List<CheckingAppointmentEntity> entities);
 
-    @Named("filterToDto")
-    CheckingAppointmentDto filterToDto(CheckingAppointmentFilter filter);
-
 }

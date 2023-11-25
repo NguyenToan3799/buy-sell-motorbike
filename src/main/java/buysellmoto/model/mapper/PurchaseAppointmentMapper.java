@@ -32,7 +32,4 @@ public interface PurchaseAppointmentMapper {
     @IterableMapping(qualifiedByName = "toDto")
     List<PurchaseAppointmentDto> toDto(List<PurchaseAppointmentEntity> entities);
 
-    @Named("filterToDto")
-    PurchaseAppointmentDto filterToDto(PurchaseAppointmentFilter filter);
-
 }

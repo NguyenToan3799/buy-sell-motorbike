@@ -32,7 +32,4 @@ public interface CustomerMapper {
     @IterableMapping(qualifiedByName = "toDto")
     List<CustomerDto> toDto(List<CustomerEntity> entities);
 
-    @Named("filterToDto")
-    CustomerDto filterToDto(CustomerFilter filter);
-
 }

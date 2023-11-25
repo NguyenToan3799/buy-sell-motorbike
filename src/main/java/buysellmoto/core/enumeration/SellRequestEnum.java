@@ -18,7 +18,13 @@ public enum SellRequestEnum {
     //Showroom
     APPROVED("APPROVED", "Chấp nhận yêu cầu bán xe"),
     REJECTED("REJECTED", "Từ chối yêu cầu bán xe"),
-    COMPLETED("COMPLETED", "Hoàn tất nhận xe để bán"),
+
+    CHECKED("CHECKED", "Đã kiểm tra và nhận xe"),
+    POSTED("POSTED", "Đã đăng bài"),
+
+    EXPIRED("EXPIRED", "Bài đăng hết hạn"),
+
+    COMPLETED("COMPLETED", "Hoàn tất bán xe"),
 
     INVALID("INVALID","Sai status");
 

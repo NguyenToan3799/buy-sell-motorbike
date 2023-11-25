@@ -46,7 +46,7 @@ public class UserService {
     public UserVo getById(Long id) {
         UserVo userVo = userMapper.dtoToVo(userDao.getById(id));
         RoleDto roleDto = roleDao.getById(userVo.getRoleId());
-        userVo.setRoleDto(roleDto);
+        userVo.setRoleName(roleDto.getName());
 
         if (roleDto.getName().equals(RoleEnum.CUSTOMER.getCode())) {
             userVo.setCustomerDto(customerDao.getByUserId(userVo.getId()));
@@ -86,7 +86,7 @@ public class UserService {
             throw new NotFoundException(ApiMessageCode.DEACTIVATED_USER);
         }
         RoleDto roleDto = roleDao.getById(userVo.getRoleId());
-        userVo.setRoleDto(roleDto);
+        userVo.setRoleName(roleDto.getName());
 
         if (roleDto.getName().equals(RoleEnum.CUSTOMER.getCode())) {
             userVo.setCustomerDto(customerDao.getByUserId(userVo.getId()));
@@ -99,7 +99,7 @@ public class UserService {
 
     @Transactional(rollbackOn = {Exception.class})
     public UserDto createOne(UserFilter filter) {
-        UserDto preparingDto = userMapper.filterToDto(filter);
+        UserDto preparingDto = filter.getCriteria();
         return userDao.createOne(preparingDto);
     }
 

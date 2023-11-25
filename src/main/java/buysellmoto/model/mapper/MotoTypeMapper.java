@@ -32,7 +32,4 @@ public interface MotoTypeMapper {
     @IterableMapping(qualifiedByName = "toDto")
     List<MotoTypeDto> toDto(List<MotoTypeEntity> entities);
 
-    @Named("filterToDto")
-    MotoTypeDto filterToDto(MotoTypeFilter filter);
-
 }

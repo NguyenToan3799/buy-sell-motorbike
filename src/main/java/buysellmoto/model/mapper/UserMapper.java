@@ -33,9 +33,6 @@ public interface UserMapper {
     @IterableMapping(qualifiedByName = "toDto")
     List<UserDto> toDto(List<UserEntity> entities);
 
-    @Named("filterToDto")
-    UserDto filterToDto(final UserFilter filter);
-
     @Named("dtoToVo")
     UserVo dtoToVo(UserDto dto);
 

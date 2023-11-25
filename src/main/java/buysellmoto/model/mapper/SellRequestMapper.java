@@ -32,7 +32,4 @@ public interface SellRequestMapper {
     @IterableMapping(qualifiedByName = "toDto")
     List<SellRequestDto> toDto(List<SellRequestEntity> entities);
 
-    @Named("filterToDto")
-    SellRequestDto filterToDto(SellRequestFilter filter);
-
 }

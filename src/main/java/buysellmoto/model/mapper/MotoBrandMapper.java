@@ -32,7 +32,4 @@ public interface MotoBrandMapper {
     @IterableMapping(qualifiedByName = "toDto")
     List<MotoBrandDto> toDto(List<MotoBrandEntity> entities);
 
-    @Named("filterToDto")
-    MotoBrandDto filterToDto(MotoBrandFilter filter);
-
 }

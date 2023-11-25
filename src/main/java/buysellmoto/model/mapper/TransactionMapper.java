@@ -1,8 +1,7 @@
 package buysellmoto.model.mapper;
 
-import buysellmoto.model.dto.CustomerReviewsDto;
-import buysellmoto.model.entity.CustomerReviewsEntity;
-import buysellmoto.model.filter.CustomerReviewsFilter;
+import buysellmoto.model.dto.TransactionDto;
+import buysellmoto.model.entity.TransactionEntity;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -14,22 +13,22 @@ import java.util.List;
         collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED,
         componentModel = "spring",
         uses = {})
-public interface CustomerReviewsMapper {
+public interface TransactionMapper {
 
-    CustomerReviewsMapper INSTANCE = Mappers.getMapper(CustomerReviewsMapper.class);
+    TransactionMapper INSTANCE = Mappers.getMapper(TransactionMapper.class);
 
     @Named("toEntity")
-    CustomerReviewsEntity toEntity(CustomerReviewsDto dto);
+    TransactionEntity toEntity(TransactionDto dto);
 
     @Named("toDto")
-    CustomerReviewsDto toDto(CustomerReviewsEntity entity);
+    TransactionDto toDto(TransactionEntity entity);
 
     @Named("toEntities")
     @IterableMapping(qualifiedByName = "toEntity")
-    List<CustomerReviewsEntity> toEntity(List<CustomerReviewsDto> dtos);
+    List<TransactionEntity> toEntity(List<TransactionDto> dtos);
 
     @Named("toDtos")
     @IterableMapping(qualifiedByName = "toDto")
-    List<CustomerReviewsDto> toDto(List<CustomerReviewsEntity> entities);
+    List<TransactionDto> toDto(List<TransactionEntity> entities);
 
 }

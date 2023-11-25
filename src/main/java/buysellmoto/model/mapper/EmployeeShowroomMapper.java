@@ -32,7 +32,4 @@ public interface EmployeeShowroomMapper {
     @IterableMapping(qualifiedByName = "toDto")
     List<EmployeeShowroomDto> toDto(List<EmployeeShowroomEntity> entities);
 
-    @Named("filterToDto")
-    EmployeeShowroomDto filterToDto(EmployeeShowroomFilter filter);
-
 }

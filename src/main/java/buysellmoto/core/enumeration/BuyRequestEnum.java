@@ -10,13 +10,12 @@ import java.util.Arrays;
 public enum BuyRequestEnum {
 
     // Người bán
-    DRAFT("DRAFT", "Bảng nháp"),
-    CONFIRMED("CONFIRMED", "Xác nhận đã gửi yêu cầu tới showroom"),
-    CANCELLED("CANCELLED", "Huỷ yêu cầu đã gửi hoặc bản nháp"),
+    CREATE("CREATE", "Đã gửi"),
+    CANCELLED("CANCELLED", "Huỷ yêu cầu đã gửi"),
 
     //Showroom
-    APPROVED("APPROVED", "Chấp nhận yêu cầu bán xe"),
-    REJECTED("REJECTED", "Từ chối yêu cầu bán xe"),
+    CONFIRM("CONFIRM", "Xác nhận xem xe"),
+    DEPOSITED("DEPOSITED", "Xác nhận mua xe và đã cọc"),
     COMPLETED("COMPLETED", "Hoàn tất nhận xe để bán"),
 
     INVALID("INVALID","Sai status");

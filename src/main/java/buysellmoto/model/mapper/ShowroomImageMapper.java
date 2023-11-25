@@ -32,7 +32,4 @@ public interface ShowroomImageMapper {
     @IterableMapping(qualifiedByName = "toDto")
     List<ShowroomImageDto> toDto(List<ShowroomImageEntity> entities);
 
-    @Named("filterToDto")
-    ShowroomImageDto filterToDto(ShowroomImageFilter filter);
-
 }

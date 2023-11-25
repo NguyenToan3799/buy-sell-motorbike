@@ -32,7 +32,4 @@ public interface SellAgreementContractMapper {
     @IterableMapping(qualifiedByName = "toDto")
     List<SellAgreementContractDto> toDto(List<SellAgreementContractEntity> entities);
 
-    @Named("filterToDto")
-    SellAgreementContractDto filterToDto(SellAgreementContractFilter filter);
-
 }

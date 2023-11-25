@@ -32,7 +32,4 @@ public interface RejectRequestMapper {
     @IterableMapping(qualifiedByName = "toDto")
     List<RejectRequestDto> toDto(List<RejectRequestEntity> entities);
 
-    @Named("filterToDto")
-    RejectRequestDto filterToDto(RejectRequestFilter filter);
-
 }

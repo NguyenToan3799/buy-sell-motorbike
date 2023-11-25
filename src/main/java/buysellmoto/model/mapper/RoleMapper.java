@@ -32,7 +32,4 @@ public interface RoleMapper {
     @IterableMapping(qualifiedByName = "toDto")
     List<RoleDto> toDto(List<RoleEntity> entities);
 
-    @Named("filterToDto")
-    RoleDto filterToDto(final RoleFilter filter);
-
 }

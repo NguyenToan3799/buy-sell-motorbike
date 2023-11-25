@@ -15,7 +15,7 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserVo extends UserDto {
 
-    private RoleDto roleDto;
+    private String roleName;
 
     //for customer
     private CustomerDto customerDto;

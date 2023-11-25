@@ -31,8 +31,4 @@ public interface BuyRequestMapper {
     @Named("toDtos")
     @IterableMapping(qualifiedByName = "toDto")
     List<BuyRequestDto> toDto(List<BuyRequestEntity> entities);
-
-    @Named("filterToDto")
-    BuyRequestDto filterToDto(BuyRequestFilter filter);
-
 }

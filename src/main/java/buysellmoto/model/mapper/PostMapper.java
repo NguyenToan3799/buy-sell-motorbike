@@ -32,7 +32,4 @@ public interface PostMapper {
     @IterableMapping(qualifiedByName = "toDto")
     List<PostDto> toDto(List<PostEntity> entities);
 
-    @Named("filterToDto")
-    PostDto filterToDto(PostFilter filter);
-
 }

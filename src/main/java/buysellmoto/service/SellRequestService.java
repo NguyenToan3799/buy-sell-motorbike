@@ -1,19 +1,15 @@
 package buysellmoto.service;
 
-import buysellmoto.core.enumeration.MotorbikeEnum;
 import buysellmoto.core.enumeration.SellRequestEnum;
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
-import buysellmoto.core.exception.UnauthorizedException;
 import buysellmoto.dao.MotorbikeDao;
 import buysellmoto.dao.MotorbikeImageDao;
 import buysellmoto.dao.RejectRequestDao;
 import buysellmoto.dao.SellRequestDao;
 import buysellmoto.model.dto.MotorbikeDto;
 import buysellmoto.model.dto.MotorbikeImageDto;
-import buysellmoto.model.dto.RejectRequestDto;
 import buysellmoto.model.dto.SellRequestDto;
-import buysellmoto.model.filter.RejectRequestFilter;
 import buysellmoto.model.filter.SellRequestFilter;
 import buysellmoto.model.mapper.MotorbikeImageMapper;
 import buysellmoto.model.mapper.MotorbikeMapper;
@@ -147,15 +143,20 @@ public class SellRequestService {
 
     private boolean validateStatusMoving(SellRequestEnum preStatus, SellRequestEnum newStatus) {
         switch (preStatus) {
-//            case DRAFT:
-//                if (newStatus == SellRequestEnum.CONFIRMED || newStatus == SellRequestEnum.CANCELLED) {
-//                    return true;
-//                }
             case CREATED:
                 if (newStatus == SellRequestEnum.APPROVED || newStatus == SellRequestEnum.REJECTED) {
                     return true;
                 }
             case APPROVED:
+                if (newStatus == SellRequestEnum.CHECKED || newStatus == SellRequestEnum.REJECTED) {
+                    return true;
+                }
+
+            case CHECKED:
+                if (newStatus == SellRequestEnum.POSTED) {
+                    return true;
+                }
+            case POSTED:
                 if (newStatus == SellRequestEnum.COMPLETED) {
                     return true;
                 }
