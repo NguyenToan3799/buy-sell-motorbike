@@ -38,9 +38,8 @@ public class PostController {
 
     @Operation(summary = "Update Existing Post")
     @PutMapping("/{id}")
-    public ResponseEntity<PostDto> updateOne(@PathVariable Long id,
-                                                                 @RequestBody PostFilter filter) {
-        return ResponseEntity.ok(postService.updateOne(id, filter));
+    public ResponseEntity<PostDto> updateOne(@RequestBody PostFilter filter) {
+        return ResponseEntity.ok(postService.updateOne(filter));
     }
 
     @Operation(summary = "Delete Existing Post")

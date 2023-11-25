@@ -78,14 +78,23 @@ public class UserService {
     }
 
     public UserDto checkLogin(LoginFilter loginFilter) {
-        UserDto loadingUser = userDao.checkLogin(loginFilter.getLoginIdentity(), loginFilter.getPassword());
-        if (Objects.isNull(loadingUser)) {
+        UserVo userVo = userMapper.dtoToVo(userDao.checkLogin(loginFilter.getLoginIdentity(), loginFilter.getPassword()));
+        if (Objects.isNull(userVo)) {
             throw new NotFoundException(ApiMessageCode.INVALID_LOGIN_IDENTITIES_OR_PASSWORD);
         }
-        if (!loadingUser.getStatus()) {
+        if (!userVo.getStatus()) {
             throw new NotFoundException(ApiMessageCode.DEACTIVATED_USER);
         }
-        return loadingUser;
+        RoleDto roleDto = roleDao.getById(userVo.getRoleId());
+        userVo.setRoleDto(roleDto);
+
+        if (roleDto.getName().equals(RoleEnum.CUSTOMER.getCode())) {
+            userVo.setCustomerDto(customerDao.getByUserId(userVo.getId()));
+        }
+        if (roleDto.getName().equals(RoleEnum.MANAGER.getCode()) || roleDto.getName().equals(RoleEnum.STAFF.getCode())) {
+            userVo.setEmployeeShowroomDto(employeeShowroomDao.getByUserId(userVo.getId()));
+        }
+        return userVo;
     }
 
     @Transactional(rollbackOn = {Exception.class})
@@ -96,7 +105,7 @@ public class UserService {
 
     @Transactional(rollbackOn = {Exception.class})
     public UserVo createCustomer(UserFilter filter) {
-        UserDto preparingDto = userMapper.filterToDto(filter);
+        UserDto preparingDto = filter.getCriteria();
         preparingDto.setId(null);
         preparingDto.setStatus(true);
         preparingDto.setRoleId(roleDao.getByName(RoleEnum.CUSTOMER.getCode()).getId());
@@ -112,9 +121,11 @@ public class UserService {
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public UserDto updateOne(Long id, UserFilter filter) {
-        UserDto preparingDto = userMapper.filterToDto(filter);
-        preparingDto.setId(id);
+    public UserDto updateOne(UserFilter filter) {
+        if (Objects.isNull(filter.getCriteria().getId())) {
+            throw new BusinessException(ApiMessageCode.REQUIRED_ID);
+        }
+        UserDto preparingDto = filter.getCriteria();
         return userDao.updateOne(preparingDto);
     }
 

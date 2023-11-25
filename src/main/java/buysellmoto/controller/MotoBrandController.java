@@ -38,9 +38,8 @@ public class MotoBrandController {
 
     @Operation(summary = "Update Existing Moto Brand")
     @PutMapping("/{id}")
-    public ResponseEntity<MotoBrandDto> updateOne(@PathVariable Long id,
-                                                        @RequestBody MotoBrandFilter filter) {
-        return ResponseEntity.ok(motoBrandService.updateOne(id, filter));
+    public ResponseEntity<MotoBrandDto> updateOne(@RequestBody MotoBrandFilter filter) {
+        return ResponseEntity.ok(motoBrandService.updateOne(filter));
     }
 
     @Operation(summary = "Delete Existing Moto Brand")

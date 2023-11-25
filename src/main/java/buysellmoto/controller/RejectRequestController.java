@@ -38,9 +38,8 @@ public class RejectRequestController {
 
     @Operation(summary = "Update Existing Reject Request")
     @PutMapping("/{id}")
-    public ResponseEntity<RejectRequestDto> updateOne(@PathVariable Long id,
-                                                                 @RequestBody RejectRequestFilter filter) {
-        return ResponseEntity.ok(rejectRequestService.updateOne(id, filter));
+    public ResponseEntity<RejectRequestDto> updateOne(@RequestBody RejectRequestFilter filter) {
+        return ResponseEntity.ok(rejectRequestService.updateOne(filter));
     }
 
     @Operation(summary = "Delete Existing Reject Request")

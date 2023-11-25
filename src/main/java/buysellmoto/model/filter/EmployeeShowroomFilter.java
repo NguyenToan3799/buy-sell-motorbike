@@ -1,33 +1,21 @@
 package buysellmoto.model.filter;
 
+import buysellmoto.core.exception.ApiFilter;
 import buysellmoto.core.ultilities.DateToTimestamp;
 import buysellmoto.core.ultilities.TimestampToDate;
+import buysellmoto.model.dto.EmployeeShowroomDto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.extern.log4j.Log4j2;
 
 import java.time.LocalDateTime;
 
-@Getter
+@Log4j2
 @Setter
+@Getter
 @NoArgsConstructor
-@AllArgsConstructor
-public class EmployeeShowroomFilter {
-
-    //Dto
-    private String fullName;
-
-    @JsonSerialize(using = DateToTimestamp.class)
-    @JsonDeserialize(using = TimestampToDate.class)
-    private LocalDateTime dob;
-
-    private String address;
-
-    private Long userId;
-
-    private Long showroomId;
+@ToString(callSuper = true)
+public class EmployeeShowroomFilter extends ApiFilter<EmployeeShowroomDto> {
 
 }

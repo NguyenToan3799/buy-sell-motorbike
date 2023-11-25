@@ -1,5 +1,7 @@
 package buysellmoto.service;
 
+import buysellmoto.core.exception.ApiMessageCode;
+import buysellmoto.core.exception.BusinessException;
 import buysellmoto.dao.RoleDao;
 import buysellmoto.model.dto.RoleDto;
 import buysellmoto.model.filter.RoleFilter;
@@ -40,14 +42,17 @@ public class RoleService {
 
     @Transactional(rollbackOn = {Exception.class})
     public RoleDto createOne (RoleFilter filter) {
-        RoleDto preparingDto = roleMapper.filterToDto(filter);
+        RoleDto preparingDto = filter.getCriteria();
+        preparingDto.setId(null);
         return roleDao.createOne(preparingDto);
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public RoleDto updateOne(Long id, RoleFilter filter) {
-        RoleDto preparingDto = roleMapper.filterToDto(filter);
-        preparingDto.setId(id);
+    public RoleDto updateOne(RoleFilter filter) {
+        if (Objects.isNull(filter.getCriteria().getId())) {
+            throw new BusinessException(ApiMessageCode.REQUIRED_ID);
+        }
+        RoleDto preparingDto = filter.getCriteria();
         return roleDao.updateOne(preparingDto);
     }
 

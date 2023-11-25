@@ -1,10 +1,13 @@
 package buysellmoto.service;
 
+import buysellmoto.core.exception.ApiMessageCode;
+import buysellmoto.core.exception.BusinessException;
 import buysellmoto.dao.BuyRequestDao;
 import buysellmoto.model.dto.BuyRequestDto;
 import buysellmoto.model.filter.BuyRequestFilter;
 import buysellmoto.model.mapper.BuyRequestMapper;
 import jakarta.transaction.Transactional;
+import org.hibernate.validator.internal.constraintvalidators.bv.time.past.AbstractPastInstantBasedValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,25 +23,28 @@ public class BuyRequestService {
     private BuyRequestMapper buyRequestMapper;
 
     public BuyRequestDto getById(Long id) {
-        if(Objects.isNull(id)){
+        if (Objects.isNull(id)) {
         }
         return buyRequestDao.getById(id);
     }
-    
+
     public List<BuyRequestDto> getAll() {
         return buyRequestDao.getAll();
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public BuyRequestDto createOne (BuyRequestFilter filter) {
-        BuyRequestDto preparingDto = buyRequestMapper.filterToDto(filter);
+    public BuyRequestDto createOne(BuyRequestFilter filter) {
+        BuyRequestDto preparingDto = filter.getCriteria();
+        preparingDto.setId(null);
         return buyRequestDao.createOne(preparingDto);
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public BuyRequestDto updateOne(Long id, BuyRequestFilter filter) {
-        BuyRequestDto preparingDto = buyRequestMapper.filterToDto(filter);
-        preparingDto.setId(id);
+    public BuyRequestDto updateOne(BuyRequestFilter filter) {
+        if (Objects.isNull(filter.getCriteria().getId())) {
+            throw new BusinessException(ApiMessageCode.REQUIRED_ID);
+        }
+        BuyRequestDto preparingDto = filter.getCriteria();
         return buyRequestDao.updateOne(preparingDto);
     }
 

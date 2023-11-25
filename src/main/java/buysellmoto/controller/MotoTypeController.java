@@ -38,9 +38,8 @@ public class MotoTypeController {
 
     @Operation(summary = "Update Existing Moto Type")
     @PutMapping("/{id}")
-    public ResponseEntity<MotoTypeDto> updateOne(@PathVariable Long id,
-                                                        @RequestBody MotoTypeFilter filter) {
-        return ResponseEntity.ok(motoTypeService.updateOne(id, filter));
+    public ResponseEntity<MotoTypeDto> updateOne(@RequestBody MotoTypeFilter filter) {
+        return ResponseEntity.ok(motoTypeService.updateOne(filter));
     }
 
     @Operation(summary = "Delete Existing Moto Type")

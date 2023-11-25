@@ -38,9 +38,8 @@ public class CustomerController {
 
     @Operation(summary = "Update Existing Customer")
     @PutMapping("/{id}")
-    public ResponseEntity<CustomerDto> updateOne(@PathVariable Long id,
-                                                        @RequestBody CustomerFilter filter) {
-        return ResponseEntity.ok(customerService.updateOne(id, filter));
+    public ResponseEntity<CustomerDto> updateOne(@RequestBody CustomerFilter filter) {
+        return ResponseEntity.ok(customerService.updateOne(filter));
     }
 
     @Operation(summary = "Delete Existing Customer")

@@ -1,5 +1,7 @@
 package buysellmoto.service;
 
+import buysellmoto.core.exception.ApiMessageCode;
+import buysellmoto.core.exception.BusinessException;
 import buysellmoto.dao.RejectRequestDao;
 import buysellmoto.model.dto.RejectRequestDto;
 import buysellmoto.model.filter.RejectRequestFilter;
@@ -31,14 +33,17 @@ public class RejectRequestService {
 
     @Transactional(rollbackOn = {Exception.class})
     public RejectRequestDto createOne (RejectRequestFilter filter) {
-        RejectRequestDto preparingDto = rejectRequestMapper.filterToDto(filter);
+        RejectRequestDto preparingDto = filter.getCriteria();
+        preparingDto.setId(null);
         return rejectRequestDao.createOne(preparingDto);
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public RejectRequestDto updateOne(Long id, RejectRequestFilter filter) {
-        RejectRequestDto preparingDto = rejectRequestMapper.filterToDto(filter);
-        preparingDto.setId(id);
+    public RejectRequestDto updateOne(RejectRequestFilter filter) {
+        if (Objects.isNull(filter.getCriteria().getId())) {
+            throw new BusinessException(ApiMessageCode.REQUIRED_ID);
+        }
+        RejectRequestDto preparingDto = filter.getCriteria();
         return rejectRequestDao.updateOne(preparingDto);
     }
 

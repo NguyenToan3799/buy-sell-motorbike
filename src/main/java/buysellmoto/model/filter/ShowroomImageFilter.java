@@ -1,7 +1,9 @@
 package buysellmoto.model.filter;
 
+import buysellmoto.core.exception.ApiFilter;
 import buysellmoto.core.ultilities.DateToTimestamp;
 import buysellmoto.core.ultilities.TimestampToDate;
+import buysellmoto.model.dto.ShowroomImageDto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
@@ -14,14 +16,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class ShowroomImageFilter {
-
-    //Dto
-    private String url;
-
-    private String name;
-
-    private String type;
+public class ShowroomImageFilter extends ApiFilter<ShowroomImageDto> {
 
 }

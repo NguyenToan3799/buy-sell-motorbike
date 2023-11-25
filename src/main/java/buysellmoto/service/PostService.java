@@ -1,5 +1,7 @@
 package buysellmoto.service;
 
+import buysellmoto.core.exception.ApiMessageCode;
+import buysellmoto.core.exception.BusinessException;
 import buysellmoto.dao.PostDao;
 import buysellmoto.model.dto.PostDto;
 import buysellmoto.model.filter.PostFilter;
@@ -31,14 +33,17 @@ public class PostService {
 
     @Transactional(rollbackOn = {Exception.class})
     public PostDto createOne (PostFilter filter) {
-        PostDto preparingDto = postMapper.filterToDto(filter);
+        PostDto preparingDto = filter.getCriteria();
+        preparingDto.setId(null);
         return postDao.createOne(preparingDto);
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public PostDto updateOne(Long id, PostFilter filter) {
-        PostDto preparingDto = postMapper.filterToDto(filter);
-        preparingDto.setId(id);
+    public PostDto updateOne(PostFilter filter) {
+        if (Objects.isNull(filter.getCriteria().getId())) {
+            throw new BusinessException(ApiMessageCode.REQUIRED_ID);
+        }
+        PostDto preparingDto = filter.getCriteria();
         return postDao.updateOne(preparingDto);
     }
 

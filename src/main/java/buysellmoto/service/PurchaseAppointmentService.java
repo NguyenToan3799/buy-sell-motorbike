@@ -1,5 +1,7 @@
 package buysellmoto.service;
 
+import buysellmoto.core.exception.ApiMessageCode;
+import buysellmoto.core.exception.BusinessException;
 import buysellmoto.dao.PurchaseAppointmentDao;
 import buysellmoto.model.dto.PurchaseAppointmentDto;
 import buysellmoto.model.filter.PurchaseAppointmentFilter;
@@ -31,14 +33,17 @@ public class PurchaseAppointmentService {
 
     @Transactional(rollbackOn = {Exception.class})
     public PurchaseAppointmentDto createOne (PurchaseAppointmentFilter filter) {
-        PurchaseAppointmentDto preparingDto = purchaseAppointmentMapper.filterToDto(filter);
+        PurchaseAppointmentDto preparingDto = filter.getCriteria();
+        preparingDto.setId(null);
         return purchaseAppointmentDao.createOne(preparingDto);
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public PurchaseAppointmentDto updateOne(Long id, PurchaseAppointmentFilter filter) {
-        PurchaseAppointmentDto preparingDto = purchaseAppointmentMapper.filterToDto(filter);
-        preparingDto.setId(id);
+    public PurchaseAppointmentDto updateOne(PurchaseAppointmentFilter filter) {
+        if (Objects.isNull(filter.getCriteria().getId())) {
+            throw new BusinessException(ApiMessageCode.REQUIRED_ID);
+        }
+        PurchaseAppointmentDto preparingDto = filter.getCriteria();
         return purchaseAppointmentDao.updateOne(preparingDto);
     }
 

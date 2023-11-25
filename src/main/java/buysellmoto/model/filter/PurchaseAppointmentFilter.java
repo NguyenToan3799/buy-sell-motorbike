@@ -1,7 +1,10 @@
 package buysellmoto.model.filter;
 
+import buysellmoto.core.exception.ApiFilter;
 import buysellmoto.core.ultilities.DateToTimestamp;
 import buysellmoto.core.ultilities.TimestampToDate;
+import buysellmoto.dao.PurchaseAppointmentDao;
+import buysellmoto.model.dto.PurchaseAppointmentDto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.Column;
@@ -15,20 +18,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class PurchaseAppointmentFilter {
-
-    //Dto
-    private String status;
-
-    @JsonSerialize(using = DateToTimestamp.class)
-    @JsonDeserialize(using = TimestampToDate.class)
-    private LocalDateTime appointmentDate;
-
-    private Long customerId;
-
-    private Long motorbikeId;
-
-    private Long showroomId;
+public class PurchaseAppointmentFilter extends ApiFilter<PurchaseAppointmentDto> {
 
 }

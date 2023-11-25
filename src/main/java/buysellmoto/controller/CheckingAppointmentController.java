@@ -38,9 +38,8 @@ public class CheckingAppointmentController {
 
     @Operation(summary = "Update Existing Checking Appointment")
     @PutMapping("/{id}")
-    public ResponseEntity<CheckingAppointmentDto> updateOne(@PathVariable Long id,
-                                                                 @RequestBody CheckingAppointmentFilter filter) {
-        return ResponseEntity.ok(checkingAppointmentService.updateOne(id, filter));
+    public ResponseEntity<CheckingAppointmentDto> updateOne(@RequestBody CheckingAppointmentFilter filter) {
+        return ResponseEntity.ok(checkingAppointmentService.updateOne(filter));
     }
 
     @Operation(summary = "Delete Existing Checking Appointment")

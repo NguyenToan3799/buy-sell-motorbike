@@ -38,9 +38,8 @@ public class MotorbikeImageController {
 
     @Operation(summary = "Update Existing Motorbike Image")
     @PutMapping("/{id}")
-    public ResponseEntity<MotorbikeImageDto> updateOne(@PathVariable Long id,
-                                                                  @RequestBody MotorbikeImageFilter filter) {
-        return ResponseEntity.ok(motorbikeImageService.updateOne(id, filter));
+    public ResponseEntity<MotorbikeImageDto> updateOne(@RequestBody MotorbikeImageFilter filter) {
+        return ResponseEntity.ok(motorbikeImageService.updateOne(filter));
     }
 
     @Operation(summary = "Delete Existing Motorbike Image")

@@ -1,7 +1,9 @@
 package buysellmoto.model.filter;
 
+import buysellmoto.core.exception.ApiFilter;
 import buysellmoto.core.ultilities.DateToTimestamp;
 import buysellmoto.core.ultilities.TimestampToDate;
+import buysellmoto.model.dto.RejectRequestDto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
@@ -14,18 +16,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class RejectRequestFilter {
-
-    //Dto
-    @JsonSerialize(using = DateToTimestamp.class)
-    @JsonDeserialize(using = TimestampToDate.class)
-    private LocalDateTime rejectedDate;
-
-    private String rejectedBy;
-
-    private String rejectedReason;
-
-    private Long sellRequestId;
+public class RejectRequestFilter extends ApiFilter<RejectRequestDto> {
 
 }

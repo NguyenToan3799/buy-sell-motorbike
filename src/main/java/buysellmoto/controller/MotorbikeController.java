@@ -38,9 +38,8 @@ public class MotorbikeController {
 
     @Operation(summary = "Update Existing Motorbike")
     @PutMapping("/{id}")
-    public ResponseEntity<MotorbikeDto> updateOne(@PathVariable Long id,
-                                                        @RequestBody MotorbikeFilter filter) {
-        return ResponseEntity.ok(motorbikeService.updateOne(id, filter));
+    public ResponseEntity<MotorbikeDto> updateOne(@RequestBody MotorbikeFilter filter) {
+        return ResponseEntity.ok(motorbikeService.updateOne(filter));
     }
 
     @Operation(summary = "Delete Existing Motorbike")

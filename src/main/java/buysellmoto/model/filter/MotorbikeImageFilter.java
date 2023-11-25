@@ -1,7 +1,9 @@
 package buysellmoto.model.filter;
 
+import buysellmoto.core.exception.ApiFilter;
 import buysellmoto.core.ultilities.DateToTimestamp;
 import buysellmoto.core.ultilities.TimestampToDate;
+import buysellmoto.model.dto.MotorbikeImageDto;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
@@ -14,16 +16,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class MotorbikeImageFilter {
-
-    //Dto
-    private String url;
-
-    private String name;
-
-    private Boolean isThumbnail;
-
-    private Long motorbikeId;
+public class MotorbikeImageFilter extends ApiFilter<MotorbikeImageDto> {
 
 }

@@ -1,5 +1,7 @@
 package buysellmoto.service;
 
+import buysellmoto.core.exception.ApiMessageCode;
+import buysellmoto.core.exception.BusinessException;
 import buysellmoto.dao.SellAgreementContractDao;
 import buysellmoto.model.dto.SellAgreementContractDto;
 import buysellmoto.model.filter.SellAgreementContractFilter;
@@ -31,14 +33,17 @@ public class SellAgreementContractService {
 
     @Transactional(rollbackOn = {Exception.class})
     public SellAgreementContractDto createOne (SellAgreementContractFilter filter) {
-        SellAgreementContractDto preparingDto = sellAgreementContractMapper.filterToDto(filter);
+        SellAgreementContractDto preparingDto = filter.getCriteria();
+        preparingDto.setId(null);
         return sellAgreementContractDao.createOne(preparingDto);
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public SellAgreementContractDto updateOne(Long id, SellAgreementContractFilter filter) {
-        SellAgreementContractDto preparingDto = sellAgreementContractMapper.filterToDto(filter);
-        preparingDto.setId(id);
+    public SellAgreementContractDto updateOne(SellAgreementContractFilter filter) {
+        if (Objects.isNull(filter.getCriteria().getId())) {
+            throw new BusinessException(ApiMessageCode.REQUIRED_ID);
+        }
+        SellAgreementContractDto preparingDto = filter.getCriteria();
         return sellAgreementContractDao.updateOne(preparingDto);
     }
 

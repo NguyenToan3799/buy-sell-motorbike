@@ -1,6 +1,8 @@
 package buysellmoto.model.filter;
 
+import buysellmoto.core.exception.ApiFilter;
 import buysellmoto.model.dto.CustomerDto;
+import buysellmoto.model.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,21 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class UserFilter {
-
-    //Dto
-    private String userName;
-
-    private String phone;
-
-    private String email;
-
-    private String password;
-
-    private Boolean status;
-
-    private Long roleId;
+public class UserFilter extends ApiFilter<UserDto> {
 
     //Other
     private CustomerDto customerDto;

@@ -38,9 +38,8 @@ public class SellAgreementContractController {
 
     @Operation(summary = "Update Existing Sell Agreement Contract")
     @PutMapping("/{id}")
-    public ResponseEntity<SellAgreementContractDto> updateOne(@PathVariable Long id,
-                                                                 @RequestBody SellAgreementContractFilter filter) {
-        return ResponseEntity.ok(sellAgreementContractService.updateOne(id, filter));
+    public ResponseEntity<SellAgreementContractDto> updateOne(@RequestBody SellAgreementContractFilter filter) {
+        return ResponseEntity.ok(sellAgreementContractService.updateOne(filter));
     }
 
     @Operation(summary = "Delete Existing Sell Agreement Contract")

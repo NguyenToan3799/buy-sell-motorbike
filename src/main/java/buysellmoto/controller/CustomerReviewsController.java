@@ -38,9 +38,8 @@ public class CustomerReviewsController {
 
     @Operation(summary = "Update Existing Customer Reviews")
     @PutMapping("/{id}")
-    public ResponseEntity<CustomerReviewsDto> updateOne(@PathVariable Long id,
-                                                        @RequestBody CustomerReviewsFilter filter) {
-        return ResponseEntity.ok(customerReviewsService.updateOne(id, filter));
+    public ResponseEntity<CustomerReviewsDto> updateOne(@RequestBody CustomerReviewsFilter filter) {
+        return ResponseEntity.ok(customerReviewsService.updateOne(filter));
     }
 
     @Operation(summary = "Delete Existing Customer Reviews")

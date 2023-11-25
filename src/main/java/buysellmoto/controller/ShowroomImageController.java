@@ -38,9 +38,8 @@ public class ShowroomImageController {
 
     @Operation(summary = "Update Existing Showroom Image")
     @PutMapping("/{id}")
-    public ResponseEntity<ShowroomImageDto> updateOne(@PathVariable Long id,
-                                                        @RequestBody ShowroomImageFilter filter) {
-        return ResponseEntity.ok(showroomImageService.updateOne(id, filter));
+    public ResponseEntity<ShowroomImageDto> updateOne(@RequestBody ShowroomImageFilter filter) {
+        return ResponseEntity.ok(showroomImageService.updateOne(filter));
     }
 
     @Operation(summary = "Delete Existing Showroom Image")

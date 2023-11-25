@@ -38,9 +38,8 @@ public class PurchaseAppointmentController {
 
     @Operation(summary = "Update Existing Purchase Appointment")
     @PutMapping("/{id}")
-    public ResponseEntity<PurchaseAppointmentDto> updateOne(@PathVariable Long id,
-                                                                 @RequestBody PurchaseAppointmentFilter filter) {
-        return ResponseEntity.ok(purchaseAppointmentService.updateOne(id, filter));
+    public ResponseEntity<PurchaseAppointmentDto> updateOne(@RequestBody PurchaseAppointmentFilter filter) {
+        return ResponseEntity.ok(purchaseAppointmentService.updateOne(filter));
     }
 
     @Operation(summary = "Delete Existing Purchase Appointment")

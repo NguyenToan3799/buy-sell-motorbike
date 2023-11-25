@@ -1,6 +1,8 @@
 package buysellmoto.service;
 
 
+import buysellmoto.core.exception.ApiMessageCode;
+import buysellmoto.core.exception.BusinessException;
 import buysellmoto.dao.MotoTypeDao;
 import buysellmoto.model.dto.MotoTypeDto;
 import buysellmoto.model.filter.MotoTypeFilter;
@@ -32,14 +34,17 @@ public class MotoTypeService {
 
     @Transactional(rollbackOn = {Exception.class})
     public MotoTypeDto createOne (MotoTypeFilter filter) {
-        MotoTypeDto preparingDto = motoTypeMapper.filterToDto(filter);
+        MotoTypeDto preparingDto = filter.getCriteria();
+        preparingDto.setId(null);
         return motoTypeDao.createOne(preparingDto);
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public MotoTypeDto updateOne(Long id, MotoTypeFilter filter) {
-        MotoTypeDto preparingDto = motoTypeMapper.filterToDto(filter);
-        preparingDto.setId(id);
+    public MotoTypeDto updateOne(MotoTypeFilter filter) {
+        if (Objects.isNull(filter.getCriteria().getId())) {
+            throw new BusinessException(ApiMessageCode.REQUIRED_ID);
+        }
+        MotoTypeDto preparingDto = filter.getCriteria();
         return motoTypeDao.updateOne(preparingDto);
     }
 

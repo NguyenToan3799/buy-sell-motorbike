@@ -58,9 +58,8 @@ public class UserController {
 
     @Operation(summary = "Update Existing User")
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateOne(@PathVariable Long id,
-                                             @RequestBody UserFilter filter) {
-        return ResponseEntity.ok(userService.updateOne(id, filter));
+    public ResponseEntity<UserDto> updateOne(@RequestBody UserFilter filter) {
+        return ResponseEntity.ok(userService.updateOne(filter));
     }
 
     @Operation(summary = "Delete Existing User")

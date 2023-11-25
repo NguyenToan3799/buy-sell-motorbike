@@ -1,6 +1,8 @@
 package buysellmoto.service;
 
 
+import buysellmoto.core.exception.ApiMessageCode;
+import buysellmoto.core.exception.BusinessException;
 import buysellmoto.dao.CustomerDao;
 import buysellmoto.model.dto.CustomerDto;
 import buysellmoto.model.filter.CustomerFilter;
@@ -32,14 +34,17 @@ public class CustomerService {
 
     @Transactional(rollbackOn = {Exception.class})
     public CustomerDto createOne (CustomerFilter filter) {
-        CustomerDto preparingDto = customerMapper.filterToDto(filter);
+        CustomerDto preparingDto = filter.getCriteria();
+        preparingDto.setId(null);
         return customerDao.createOne(preparingDto);
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public CustomerDto updateOne(Long id, CustomerFilter filter) {
-        CustomerDto preparingDto = customerMapper.filterToDto(filter);
-        preparingDto.setId(id);
+    public CustomerDto updateOne(CustomerFilter filter) {
+        if (Objects.isNull(filter.getCriteria().getId())) {
+            throw new BusinessException(ApiMessageCode.REQUIRED_ID);
+        }
+        CustomerDto preparingDto = filter.getCriteria();
         return customerDao.updateOne(preparingDto);
     }
 

@@ -1,6 +1,8 @@
 package buysellmoto.service;
 
 
+import buysellmoto.core.exception.ApiMessageCode;
+import buysellmoto.core.exception.BusinessException;
 import buysellmoto.dao.ShowroomImageDao;
 import buysellmoto.model.dto.ShowroomImageDto;
 import buysellmoto.model.filter.ShowroomImageFilter;
@@ -32,14 +34,17 @@ public class ShowroomImageService {
 
     @Transactional(rollbackOn = {Exception.class})
     public ShowroomImageDto createOne (ShowroomImageFilter filter) {
-        ShowroomImageDto preparingDto = showroomImageMapper.filterToDto(filter);
+        ShowroomImageDto preparingDto = filter.getCriteria();
+        preparingDto.setId(null);
         return showroomImageDao.createOne(preparingDto);
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public ShowroomImageDto updateOne(Long id, ShowroomImageFilter filter) {
-        ShowroomImageDto preparingDto = showroomImageMapper.filterToDto(filter);
-        preparingDto.setId(id);
+    public ShowroomImageDto updateOne(ShowroomImageFilter filter) {
+        if (Objects.isNull(filter.getCriteria().getId())) {
+            throw new BusinessException(ApiMessageCode.REQUIRED_ID);
+        }
+        ShowroomImageDto preparingDto = filter.getCriteria();
         return showroomImageDao.updateOne(preparingDto);
     }
 

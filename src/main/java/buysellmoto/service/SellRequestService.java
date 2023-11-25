@@ -81,7 +81,7 @@ public class SellRequestService {
         }
 
         // Create
-        SellRequestDto sellRequestDto = sellRequestMapper.filterToDto(filter);
+        SellRequestDto sellRequestDto = filter.getCriteria();
         sellRequestDto.setId(null);
         sellRequestDto.setCode(generateCode());
         sellRequestDto.setStatus(SellRequestEnum.CREATED.getCode());
@@ -92,9 +92,11 @@ public class SellRequestService {
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public SellRequestDto updateOne(Long id, SellRequestFilter filter) {
-        SellRequestDto preparingDto = sellRequestMapper.filterToDto(filter);
-        preparingDto.setId(id);
+    public SellRequestDto updateOne(SellRequestFilter filter) {
+        if (Objects.isNull(filter.getCriteria().getId())) {
+            throw new BusinessException(ApiMessageCode.REQUIRED_ID);
+        }
+        SellRequestDto preparingDto = filter.getCriteria();
         return sellRequestDao.updateOne(preparingDto);
     }
 
@@ -113,19 +115,19 @@ public class SellRequestService {
         return true;
     }
 
-    @Transactional(rollbackOn = {Exception.class})
-    public Boolean rejectedSellRequest(Long id, RejectRequestFilter rejectRequestFilter){
-        if(Objects.isNull(sellRequestDao.getById(id))){
-            throw new BusinessException(ApiMessageCode.SELL_REQUEST_NOT_EXIST);
-        }
-        this.updateStatus(id, SellRequestEnum.REJECTED.getCode());
-
-        rejectRequestFilter.setRejectedDate(LocalDateTime.now());
-        rejectRequestFilter.setSellRequestId(id);
-        rejectRequestDao.createOne(rejectRequestMapper.filterToDto(rejectRequestFilter));
-
-        return true;
-    }
+//    @Transactional(rollbackOn = {Exception.class})
+//    public Boolean rejectedSellRequest(Long id, RejectRequestFilter rejectRequestFilter){
+//        if(Objects.isNull(sellRequestDao.getById(id))){
+//            throw new BusinessException(ApiMessageCode.SELL_REQUEST_NOT_EXIST);
+//        }
+//        this.updateStatus(id, SellRequestEnum.REJECTED.getCode());
+//
+//        rejectRequestFilter.setRejectedDate(LocalDateTime.now());
+//        rejectRequestFilter.setSellRequestId(id);
+//        rejectRequestDao.createOne(rejectRequestMapper.filterToDto(rejectRequestFilter));
+//
+//        return true;
+//    }
 
     private Boolean updateStatus(Long id, String newStatus) {
         SellRequestDto loadingDto = sellRequestDao.getById(id);

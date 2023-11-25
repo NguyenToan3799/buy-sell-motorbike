@@ -45,9 +45,8 @@ public class RoleController {
 
     @Operation(summary = "Update Existing Role")
     @PutMapping("/{id}")
-    public ResponseEntity<RoleDto> updateOne(@PathVariable Long id,
-                                                        @RequestBody RoleFilter filter) {
-        return ResponseEntity.ok(roleService.updateOne(id, filter));
+    public ResponseEntity<RoleDto> updateOne(@RequestBody RoleFilter filter) {
+        return ResponseEntity.ok(roleService.updateOne(filter));
     }
 
     @Operation(summary = "Delete Existing Role")

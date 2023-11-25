@@ -38,9 +38,8 @@ public class EmployeeShowroomController {
 
     @Operation(summary = "Update Existing EmployeeShowroom")
     @PutMapping("/{id}")
-    public ResponseEntity<EmployeeShowroomDto> updateOne(@PathVariable Long id,
-                                                        @RequestBody EmployeeShowroomFilter filter) {
-        return ResponseEntity.ok(employeeShowroomService.updateOne(id, filter));
+    public ResponseEntity<EmployeeShowroomDto> updateOne(@RequestBody EmployeeShowroomFilter filter) {
+        return ResponseEntity.ok(employeeShowroomService.updateOne(filter));
     }
 
     @Operation(summary = "Delete Existing EmployeeShowroom")

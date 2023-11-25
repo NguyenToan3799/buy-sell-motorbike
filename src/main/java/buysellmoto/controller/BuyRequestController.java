@@ -38,9 +38,8 @@ public class BuyRequestController {
 
     @Operation(summary = "Update Existing Buy Request")
     @PutMapping("/{id}")
-    public ResponseEntity<BuyRequestDto> updateOne(@PathVariable Long id,
-                                                                 @RequestBody BuyRequestFilter filter) {
-        return ResponseEntity.ok(buyRequestService.updateOne(id, filter));
+    public ResponseEntity<BuyRequestDto> updateOne(@RequestBody BuyRequestFilter filter) {
+        return ResponseEntity.ok(buyRequestService.updateOne(filter));
     }
 
     @Operation(summary = "Delete Existing Buy Request")

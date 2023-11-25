@@ -38,9 +38,8 @@ public class SellRequestController {
 
     @Operation(summary = "Update Existing Sell Request")
     @PutMapping("/{id}")
-    public ResponseEntity<SellRequestDto> updateOne(@PathVariable Long id,
-                                                        @RequestBody SellRequestFilter filter) {
-        return ResponseEntity.ok(sellRequestService.updateOne(id, filter));
+    public ResponseEntity<SellRequestDto> updateOne(@RequestBody SellRequestFilter filter) {
+        return ResponseEntity.ok(sellRequestService.updateOne(filter));
     }
 
     @Operation(summary = "Delete Existing Sell Request")

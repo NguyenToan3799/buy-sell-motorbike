@@ -1,5 +1,7 @@
 package buysellmoto.model.filter;
 
+import buysellmoto.core.exception.ApiFilter;
+import buysellmoto.model.dto.ShowroomDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,18 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class ShowroomFilter {
+public class ShowroomFilter extends ApiFilter<ShowroomDto> {
 
-    //Dto
-    private String name;
-
-    private String address;
-
-    private String province;
-
-    private String email;
-
-    private String phone;
 
 }
