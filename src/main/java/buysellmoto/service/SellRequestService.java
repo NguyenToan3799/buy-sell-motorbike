@@ -63,7 +63,6 @@ public class SellRequestService {
         // Create Motorbike
         MotorbikeVo motorbikeVo = filter.getMotorbikeVo();
         motorbikeVo.setId(null);
-        motorbikeVo.setStatus(MotorbikeEnum.IN_SELL_REQUEST.getCode());
         MotorbikeDto motorbikeDto = motorbikeDao.createOne(motorbikeMapper.voToDto(motorbikeVo));
 
         //Crate List Image
