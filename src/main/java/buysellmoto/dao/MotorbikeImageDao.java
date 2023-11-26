@@ -26,6 +26,11 @@ public class MotorbikeImageDao {
         return mapper.toDto(motorbikeImageRepository.findAll());
     }
 
+    public List<MotorbikeImageDto> getByMotorbikeId(Long motorbikeId) {
+        return mapper.toDto(motorbikeImageRepository.findByMotorbikeId(motorbikeId));
+    }
+
+
     @Transactional(rollbackOn = {Exception.class})
     public MotorbikeImageDto createOne(MotorbikeImageDto dto) {
         return mapper.toDto(motorbikeImageRepository.save(mapper.toEntity(dto)));

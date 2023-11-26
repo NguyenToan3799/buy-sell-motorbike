@@ -30,6 +30,10 @@ public class CustomerDao {
         return mapper.toDto(customerRepository.findAll());
     }
 
+    public List<CustomerDto> getByIds(List<Long> ids){
+        return mapper.toDto(customerRepository.getByIdIn(ids));
+    }
+
     @Transactional(rollbackOn = {Exception.class})
     public CustomerDto createOne(CustomerDto dto) {
         return mapper.toDto(customerRepository.save(mapper.toEntity(dto)));

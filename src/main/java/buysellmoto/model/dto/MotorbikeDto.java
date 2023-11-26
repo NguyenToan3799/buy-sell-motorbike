@@ -38,11 +38,9 @@ public class MotorbikeDto implements Serializable {
 
     private Double odo;
 
-    @JsonSerialize(using = DateToTimestamp.class)
-    @JsonDeserialize(using = TimestampToDate.class)
-    private LocalDateTime yearOfRegistration;
+    private String yearOfRegistration;
 
-    private String status;
+//    private String status;
 
 //    private Long motoTypeId;
 

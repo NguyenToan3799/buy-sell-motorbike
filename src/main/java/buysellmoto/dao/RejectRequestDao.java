@@ -22,6 +22,10 @@ public class RejectRequestDao {
         return mapper.toDto(rejectRequestRepository.findById(id).orElseThrow());
     }
 
+    public RejectRequestDto getBySellRequestId(Long sellRequestId) {
+        return mapper.toDto(rejectRequestRepository.findBySellRequestId(sellRequestId));
+    }
+
     public List<RejectRequestDto> getAll() {
         return mapper.toDto(rejectRequestRepository.findAll());
     }

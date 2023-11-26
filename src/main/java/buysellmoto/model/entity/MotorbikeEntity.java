@@ -34,12 +34,10 @@ public class MotorbikeEntity implements Serializable {
     @Column(nullable = false)
     private Double odo;
 
-    @Column(columnDefinition = "TIMESTAMP")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime yearOfRegistration;
+    private String yearOfRegistration;
 
-    @Column(nullable = false)
-    private String status;
+//    @Column(nullable = false)
+//    private String status;
 
 //    @Column(nullable = false)
 //    private Long motoTypeId;
