@@ -26,4 +26,5 @@ public class ShowroomImageDto implements Serializable {
 
     private String type;
 
+    private Long showroomId;
 }

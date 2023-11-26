@@ -48,17 +48,17 @@ public class SellRequestService {
     private MotorbikeImageMapper motorbikeImageMapper;
 
     public SellRequestDto getById(Long id) {
-        if(Objects.isNull(id)){
+        if (Objects.isNull(id)) {
         }
         return sellRequestDao.getById(id);
     }
-    
+
     public List<SellRequestDto> getAll() {
         return sellRequestDao.getAll();
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public SellRequestDto createOne (SellRequestFilter filter) {
+    public SellRequestDto createOne(SellRequestFilter filter) {
 
         // Create Motorbike
         MotorbikeVo motorbikeVo = filter.getMotorbikeVo();
@@ -66,7 +66,7 @@ public class SellRequestService {
         MotorbikeDto motorbikeDto = motorbikeDao.createOne(motorbikeMapper.voToDto(motorbikeVo));
 
         //Crate List Image
-        if(ObjectUtils.isEmpty(motorbikeVo.getMotorbikeImageDtos())){
+        if (ObjectUtils.isEmpty(motorbikeVo.getMotorbikeImageDtos())) {
             List<MotorbikeImageDto> motorbikeImageDtos = motorbikeVo.getMotorbikeImageDtos();
             motorbikeImageDtos.forEach(motorbikeImageDto -> {
                 motorbikeImageDto.setId(null);
@@ -102,8 +102,8 @@ public class SellRequestService {
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public Boolean approvedSellRequest(Long id){
-        if(Objects.isNull(sellRequestDao.getById(id))){
+    public Boolean approvedSellRequest(Long id) {
+        if (Objects.isNull(sellRequestDao.getById(id))) {
             throw new BusinessException(ApiMessageCode.SELL_REQUEST_NOT_EXIST);
         }
         this.updateStatus(id, SellRequestEnum.APPROVED.getCode());
@@ -126,7 +126,7 @@ public class SellRequestService {
 
     private Boolean updateStatus(Long id, String newStatus) {
         SellRequestDto loadingDto = sellRequestDao.getById(id);
-        if(!validateStatusMoving(SellRequestEnum.of(loadingDto.getStatus()), SellRequestEnum.of(newStatus))){
+        if (!validateStatusMoving(SellRequestEnum.of(loadingDto.getStatus()), SellRequestEnum.of(newStatus))) {
             throw new BusinessException(ApiMessageCode.INVALID_STATUS_MOVING);
         }
         loadingDto.setStatus(newStatus);
@@ -150,13 +150,16 @@ public class SellRequestService {
                 if (newStatus == SellRequestEnum.CHECKED || newStatus == SellRequestEnum.REJECTED) {
                     return true;
                 }
-
             case CHECKED:
                 if (newStatus == SellRequestEnum.POSTED) {
                     return true;
                 }
             case POSTED:
-                if (newStatus == SellRequestEnum.COMPLETED) {
+                if (newStatus == SellRequestEnum.COMPLETED || newStatus == SellRequestEnum.EXPIRED) {
+                    return true;
+                }
+            case EXPIRED:
+                if (newStatus == SellRequestEnum.POSTED || newStatus == SellRequestEnum.REJECTED) {
                     return true;
                 }
             default:

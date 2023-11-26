@@ -21,10 +21,11 @@ public class ShowroomImageEntity implements Serializable {
     @Column(nullable = false)
     private String url;
 
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     private String type;
+
+    @Column(nullable = false)
+    private Long showroomId;
 
 }
