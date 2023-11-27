@@ -56,7 +56,7 @@ public class SellRequestService {
         sellRequestVo.setCustomerDto(customerDao.getById(sellRequestVo.getCustomerId()));
         sellRequestVo.setMotorbikeImageDto(motorbikeImageDao.getByMotorbikeId(sellRequestVo.getMotorbikeId()));
 
-        if(sellRequestVo.getStatus() == SellRequestEnum.REJECTED.getCode()) {
+        if(sellRequestVo.getStatus().equals(SellRequestEnum.REJECTED.getCode())) {
             sellRequestVo.setRejectRequestDto(rejectRequestDao.getBySellRequestId(sellRequestVo.getId()));
         }
 

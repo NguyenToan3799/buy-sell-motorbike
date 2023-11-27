@@ -31,10 +31,17 @@ public class PostEntity implements Serializable {
     @Column(nullable = false)
     private Double price;
 
-    @Column(nullable = false)
-    private String status;
+    private String title;
+
+    private String content;
+
+//    @Column(nullable = false)
+//    private String status;
 
     @Column(nullable = false, columnDefinition = "BIGINT")
     private Long motorbikeId;
+
+    @Column(nullable = false, columnDefinition = "BIGINT")
+    private Long sellRequestId;
 
 }
