@@ -53,8 +53,14 @@ public class TransactionEntity implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime recordedDate;
 
+    @Column(nullable = false)
+    private String type;
+
     private Long buyRequestId;
 
     private Long sellRequestId;
+
+    private Long showroomId;
+
 
 }

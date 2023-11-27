@@ -58,8 +58,12 @@ public class TransactionDto implements Serializable {
     @JsonDeserialize(using = TimestampToDate.class)
     private LocalDateTime recordedDate;
 
+    private String type;
+
     private Long buyRequestId;
 
     private Long sellRequestId;
+
+    private Long showroomId;
 
 }

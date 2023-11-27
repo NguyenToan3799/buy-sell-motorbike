@@ -26,6 +26,14 @@ public class TransactionDao {
         return transactionMapper.toDto(transactionRepository.findAll());
     }
 
+    public List<TransactionDto> getByShowroomId(Long showroomId) {
+        return transactionMapper.toDto(transactionRepository.findAllByShowroomId(showroomId));
+    }
+
+    public List<TransactionDto> getByShowroomIdAndType(Long showroomId, String type) {
+        return transactionMapper.toDto(transactionRepository.findAllByShowroomIdAndType(showroomId, type));
+    }
+
     @Transactional(rollbackOn = {Exception.class})
     public TransactionDto createOne(TransactionDto dto) {
         return transactionMapper.toDto(transactionRepository.save(transactionMapper.toEntity(dto)));

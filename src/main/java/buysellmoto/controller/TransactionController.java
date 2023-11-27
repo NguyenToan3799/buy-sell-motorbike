@@ -30,7 +30,20 @@ public class TransactionController {
     public ResponseEntity<List<TransactionDto>> getAll() {
         return ResponseEntity.ok(transactionService.getAll());
     }
-    
+
+    @Operation(summary = "Get Transaction By ShowroomId")
+    @GetMapping("/showroom/{showroomId}")
+    public ResponseEntity<List<TransactionDto>> getByShowroomId(@PathVariable Long showroomId) {
+        return ResponseEntity.ok(transactionService.getByShowroomId(showroomId));
+    }
+
+    @Operation(summary = "Get Transaction By ShowroomID and Type")
+    @GetMapping("/showroom-and-type/{showroomId}")
+    public ResponseEntity<List<TransactionDto>> getByShowroomIdAndType(@PathVariable Long showroomId,
+                                                                @RequestParam String type) {
+        return ResponseEntity.ok(transactionService.getByShowroomIdAndType(showroomId, type));
+    }
+
     @Operation(summary = "Create New Transaction")
     @PostMapping()
     public ResponseEntity<TransactionDto> createOne(@RequestBody TransactionFilter filter) {

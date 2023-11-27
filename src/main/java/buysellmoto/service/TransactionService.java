@@ -32,6 +32,14 @@ public class TransactionService {
         return transactionDao.getAll();
     }
 
+    public List<TransactionDto> getByShowroomId(Long showroomId) {
+        return transactionDao.getByShowroomId(showroomId);
+    }
+
+    public List<TransactionDto> getByShowroomIdAndType(Long showroomId, String type) {
+        return transactionDao.getByShowroomIdAndType(showroomId, type);
+    }
+
     @Transactional(rollbackOn = {Exception.class})
     public TransactionDto createOne (TransactionFilter filter) {
         TransactionDto preparingDto = filter.getCriteria();
