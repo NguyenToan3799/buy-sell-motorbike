@@ -50,15 +50,15 @@ public class SellRequestController {
     @Operation(summary = "Reject Sell Request")
     @PostMapping("/{id}/reject")
     public ResponseEntity<Boolean> rejectedSellRequest(@PathVariable Long id,
-                                                      @RequestBody RejectRequestFilter rejectRequestFilter) {
-        return ResponseEntity.ok(sellRequestService.rejectedSellRequest(id, rejectRequestFilter));
+                                                       @RequestBody SellRequestFilter sellRequestFilter) {
+        return ResponseEntity.ok(sellRequestService.rejectedSellRequest(id, sellRequestFilter));
     }
 
     @Operation(summary = "Checked Sell Request")
     @PostMapping("/{id}/checked")
     public ResponseEntity<Boolean> checkedSellRequest(@PathVariable Long id,
-                                                      @RequestBody MotorbikeFilter motorbikeFilter) {
-        return ResponseEntity.ok(sellRequestService.checkedSellRequest(id, motorbikeFilter));
+                                                      @RequestBody SellRequestFilter sellRequestFilter) {
+        return ResponseEntity.ok(sellRequestService.checkedSellRequest(id, sellRequestFilter));
     }
 
     @Operation(summary = "Create New Sell Request")

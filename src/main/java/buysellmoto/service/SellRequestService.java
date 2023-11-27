@@ -4,10 +4,7 @@ import buysellmoto.core.enumeration.SellRequestEnum;
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
 import buysellmoto.dao.*;
-import buysellmoto.model.dto.CustomerDto;
-import buysellmoto.model.dto.MotorbikeDto;
-import buysellmoto.model.dto.MotorbikeImageDto;
-import buysellmoto.model.dto.SellRequestDto;
+import buysellmoto.model.dto.*;
 import buysellmoto.model.filter.MotorbikeFilter;
 import buysellmoto.model.filter.RejectRequestFilter;
 import buysellmoto.model.filter.SellRequestFilter;
@@ -47,6 +44,8 @@ public class SellRequestService {
     @Autowired
     private ShowroomDao showroomDao;
     @Autowired
+    private CheckedSellRequestDao checkedSellRequestDao;
+    @Autowired
     private MotorbikeMapper motorbikeMapper;
 
     public SellRequestVo getById(Long id) {
@@ -56,8 +55,11 @@ public class SellRequestService {
         sellRequestVo.setCustomerDto(customerDao.getById(sellRequestVo.getCustomerId()));
         sellRequestVo.setMotorbikeImageDto(motorbikeImageDao.getByMotorbikeId(sellRequestVo.getMotorbikeId()));
 
-        if(sellRequestVo.getStatus().equals(SellRequestEnum.REJECTED.getCode())) {
+        if (sellRequestVo.getStatus().equals(SellRequestEnum.REJECTED.getCode())) {
             sellRequestVo.setRejectRequestDto(rejectRequestDao.getBySellRequestId(sellRequestVo.getId()));
+        }
+        if (sellRequestVo.getStatus().equals(SellRequestEnum.CHECKED.getCode())) {
+            sellRequestVo.setCheckedSellRequestDto(checkedSellRequestDao.getBySellRequestId(sellRequestVo.getId()));
         }
 
         return sellRequestVo;
@@ -107,7 +109,7 @@ public class SellRequestService {
     }
 
     public List<SellRequestVo> getListSellRequest(Long showroomId, String status) {
-        if(SellRequestEnum.of(status) == SellRequestEnum.INVALID){
+        if (SellRequestEnum.of(status) == SellRequestEnum.INVALID) {
             throw new BusinessException(ApiMessageCode.INVALID_STATUS);
         }
         List<SellRequestVo> sellRequestVos = sellRequestDao.getByShowroomIdAndStatus(showroomId, status);
@@ -146,26 +148,33 @@ public class SellRequestService {
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public Boolean rejectedSellRequest(Long id, RejectRequestFilter rejectRequestFilter){
-        if(Objects.isNull(sellRequestDao.getById(id))){
+    public Boolean rejectedSellRequest(Long id, SellRequestFilter sellRequestFilter) {
+        if (Objects.isNull(sellRequestDao.getById(id))) {
             throw new BusinessException(ApiMessageCode.SELL_REQUEST_NOT_EXIST);
         }
         this.updateStatus(id, SellRequestEnum.REJECTED.getCode());
 
-        rejectRequestFilter.getCriteria().setRejectedDate(LocalDateTime.now());
-        rejectRequestFilter.getCriteria().setSellRequestId(id);
-        rejectRequestDao.createOne(rejectRequestFilter.getCriteria());
+        sellRequestFilter.getRejectRequestDto().setRejectedDate(LocalDateTime.now());
+        sellRequestFilter.getRejectRequestDto().setSellRequestId(id);
+        rejectRequestDao.createOne(sellRequestFilter.getRejectRequestDto());
         return true;
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public Boolean checkedSellRequest(Long id, MotorbikeFilter motorbikeFilter){
-        if(Objects.isNull(sellRequestDao.getById(id))){
+    public Boolean checkedSellRequest(Long id, SellRequestFilter sellRequestFilter) {
+        if (Objects.isNull(sellRequestDao.getById(id))) {
             throw new BusinessException(ApiMessageCode.SELL_REQUEST_NOT_EXIST);
         }
         this.updateStatus(id, SellRequestEnum.CHECKED.getCode());
 
-        motorbikeDao.updateOne(motorbikeFilter.getCriteria());
+        if (!Objects.isNull(sellRequestFilter.getMotorbikeDto())) {
+            motorbikeDao.updateOne(sellRequestFilter.getMotorbikeDto());
+        }
+        CheckedSellRequestDto checkedSellRequestDto = sellRequestFilter.getCheckedSellRequestDto();
+        checkedSellRequestDto.setCheckedDate(LocalDateTime.now());
+        checkedSellRequestDto.setSellRequestId(id);
+        checkedSellRequestDao.createOne(checkedSellRequestDto);
+
         return true;
     }
 
