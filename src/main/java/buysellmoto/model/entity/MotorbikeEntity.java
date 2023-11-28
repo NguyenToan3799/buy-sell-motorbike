@@ -36,12 +36,6 @@ public class MotorbikeEntity implements Serializable {
 
     private String yearOfRegistration;
 
-//    @Column(nullable = false)
-//    private String status;
-
-//    @Column(nullable = false)
-//    private Long motoTypeId;
-
     @Column(nullable = false)
     private String motoType;
 

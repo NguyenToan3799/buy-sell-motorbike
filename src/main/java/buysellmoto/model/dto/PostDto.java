@@ -1,8 +1,12 @@
 package buysellmoto.model.dto;
 
+import buysellmoto.core.ultilities.DateToTimestamp;
+import buysellmoto.core.ultilities.TimestampToDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,8 +26,12 @@ public class PostDto implements Serializable {
 
     private Long id;
 
+    @JsonSerialize(using = DateToTimestamp.class)
+    @JsonDeserialize(using = TimestampToDate.class)
     private LocalDateTime createdDate;
 
+    @JsonSerialize(using = DateToTimestamp.class)
+    @JsonDeserialize(using = TimestampToDate.class)
     private LocalDateTime expiredDate;
 
     private Double price;
@@ -35,6 +43,8 @@ public class PostDto implements Serializable {
 //    private String status;
 
     private Long motorbikeId;
+
+    private Long showroomId;
 
     private Long sellRequestId;
 

@@ -6,8 +6,10 @@ import buysellmoto.dao.PostDao;
 import buysellmoto.model.dto.PostDto;
 import buysellmoto.model.filter.PostFilter;
 import buysellmoto.model.mapper.PostMapper;
+import buysellmoto.model.vo.PostProjection;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,6 +53,10 @@ public class PostService {
     public Boolean deleteById(Long id) {
         postDao.deleteById(id);
         return true;
+    }
+
+    public Page<PostProjection> getPaging(PostFilter postFilter) {
+        return postDao.getPaging(postFilter);
     }
 
 }

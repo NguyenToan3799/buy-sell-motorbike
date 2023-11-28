@@ -35,8 +35,8 @@ public class PostEntity implements Serializable {
 
     private String content;
 
-//    @Column(nullable = false)
-//    private String status;
+    @Column(nullable = false, columnDefinition = "BIGINT")
+    private Long showroomId;
 
     @Column(nullable = false, columnDefinition = "BIGINT")
     private Long motorbikeId;

@@ -1,10 +1,13 @@
 package buysellmoto.dao;
 
 import buysellmoto.model.dto.PostDto;
+import buysellmoto.model.filter.PostFilter;
 import buysellmoto.model.mapper.PostMapper;
+import buysellmoto.model.vo.PostProjection;
 import buysellmoto.repository.PostRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,6 +43,13 @@ public class PostDao {
     public boolean deleteById(Long id) {
         postRepository.delete(postRepository.findById(id).orElseThrow());
         return true;
+    }
+
+    public Page<PostProjection> getPaging(PostFilter postFilter) {
+        postFilter.beautify();
+        return postRepository.getPaging(postFilter.getPageable(),
+                postFilter.getSearchValue(),
+                postFilter.getBrandName());
     }
 
 }

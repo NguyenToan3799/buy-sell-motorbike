@@ -2,9 +2,11 @@ package buysellmoto.controller;
 
 import buysellmoto.model.dto.PostDto;
 import buysellmoto.model.filter.PostFilter;
+import buysellmoto.model.vo.PostProjection;
 import buysellmoto.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +48,12 @@ public class PostController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {
         return ResponseEntity.ok(postService.deleteById(id));
+    }
+
+    @Operation(summary = "Paging Post")
+    @PostMapping("/paging")
+    public ResponseEntity<Page<PostProjection>> deleteById(@RequestBody PostFilter filter) {
+        return ResponseEntity.ok(postService.getPaging(filter));
     }
 
 }
