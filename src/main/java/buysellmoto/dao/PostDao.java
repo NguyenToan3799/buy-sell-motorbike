@@ -25,6 +25,11 @@ public class PostDao {
         return mapper.toDto(postRepository.findById(id).orElseThrow());
     }
 
+    public List<PostDto> getByIds(List<Long> ids) {
+        return mapper.toDto(postRepository.findAllByIdIn(ids));
+    }
+
+
     public List<PostDto> getAll() {
         return mapper.toDto(postRepository.findAll());
     }

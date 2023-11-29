@@ -142,6 +142,24 @@ public class SellRequestService {
     }
 
     @Transactional(rollbackOn = {Exception.class})
+    public Boolean cancelSellRequest(Long id) {
+        if (Objects.isNull(sellRequestDao.getById(id))) {
+            throw new BusinessException(ApiMessageCode.SELL_REQUEST_NOT_EXIST);
+        }
+        this.updateStatus(id, SellRequestEnum.CANCELLED.getCode());
+        return true;
+    }
+
+    @Transactional(rollbackOn = {Exception.class})
+    public Boolean completeSellRequest(Long id) {
+        if (Objects.isNull(sellRequestDao.getById(id))) {
+            throw new BusinessException(ApiMessageCode.SELL_REQUEST_NOT_EXIST);
+        }
+        this.updateStatus(id, SellRequestEnum.COMPLETED.getCode());
+        return true;
+    }
+
+    @Transactional(rollbackOn = {Exception.class})
     public Boolean approvedSellRequest(Long id) {
         if (Objects.isNull(sellRequestDao.getById(id))) {
             throw new BusinessException(ApiMessageCode.SELL_REQUEST_NOT_EXIST);

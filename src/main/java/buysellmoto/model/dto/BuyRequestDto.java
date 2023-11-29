@@ -29,10 +29,14 @@ public class BuyRequestDto implements Serializable {
     @JsonDeserialize(using = TimestampToDate.class)
     private LocalDateTime createdDate;
 
+    private String status;
+
     private Long customerId;
 
     private Long showroomId;
 
     private Long motorbikeId;
+
+    private Long postId;
 
 }

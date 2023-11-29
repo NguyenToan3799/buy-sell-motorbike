@@ -2,6 +2,7 @@ package buysellmoto.dao;
 
 import buysellmoto.model.dto.BuyRequestDto;
 import buysellmoto.model.mapper.BuyRequestMapper;
+import buysellmoto.model.vo.BuyRequestVo;
 import buysellmoto.repository.BuyRequestRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,11 @@ public class BuyRequestDao {
     public List<BuyRequestDto> getAll() {
         return mapper.toDto(buyRequestRepository.findAll());
     }
+
+    public List<BuyRequestVo> getByShowroomIdAndStatus(Long showroomId, String status) {
+        return mapper.entityToVo(buyRequestRepository.findAllByShowroomIdAndStatus(showroomId, status));
+    }
+
 
     @Transactional(rollbackOn = {Exception.class})
     public BuyRequestDto createOne(BuyRequestDto dto) {

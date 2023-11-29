@@ -61,6 +61,12 @@ public class SellRequestController {
         return ResponseEntity.ok(sellRequestService.checkedSellRequest(id, sellRequestFilter));
     }
 
+    @Operation(summary = "Cancel Sell Request")
+    @PostMapping("/{id}/cancel")
+    public ResponseEntity<Boolean> cancelSellRequest(@PathVariable Long id) {
+        return ResponseEntity.ok(sellRequestService.cancelSellRequest(id));
+    }
+
     @Operation(summary = "Create New Sell Request")
     @PostMapping()
     public ResponseEntity<SellRequestDto> createOne(@RequestBody SellRequestFilter filter) {

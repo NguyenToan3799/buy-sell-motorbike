@@ -9,10 +9,11 @@ public final class ApiMessageCode {
     public static final String INVALID_STATUS = "invalid_status";
     public static final String SELL_REQUEST_NOT_EXIST = "sell_request_not_exist";
     public static final String REQUIRED_ID = "required_id";
+    public static final String SELL_REQUEST_ID_REQUIRED = "sell_request_id_required";
+    public static final String BUY_REQUEST_ID_REQUIRED = "buy_request_id_required";
 
     // User error
     public static final String INVALID_LOGIN_IDENTITIES_OR_PASSWORD = "Sai thông tin tài khoản hoặc mật khẩu";
-
 
     //Format Error
     public static final String INVALID_DATE_FORMAT = "invalid_date_format";

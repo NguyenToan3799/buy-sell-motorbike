@@ -25,6 +25,10 @@ public class UserDao {
                 () -> new BusinessException(ApiMessageCode.USER_NOT_EXIST)));
     }
 
+    public List<UserDto> getByIds(List<Long> ids) {
+        return mapper.toDto(userRepository.findAllByIdIn(ids));
+    }
+
     public List<UserDto> getAll() {
         return mapper.toDto(userRepository.findAll());
     }

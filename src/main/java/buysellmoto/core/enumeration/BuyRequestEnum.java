@@ -10,11 +10,11 @@ import java.util.Arrays;
 public enum BuyRequestEnum {
 
     // Người bán
-    CREATE("CREATE", "Đã gửi"),
+    CREATED("CREATED", "Đã gửi"),
     CANCELLED("CANCELLED", "Huỷ yêu cầu đã gửi"),
 
     //Showroom
-    CONFIRM("CONFIRM", "Xác nhận xem xe"),
+    CONFIRMED("CONFIRMED", "Xác nhận xem xe"),
     DEPOSITED("DEPOSITED", "Xác nhận mua xe và đã cọc"),
     COMPLETED("COMPLETED", "Hoàn tất nhận xe để bán"),
 

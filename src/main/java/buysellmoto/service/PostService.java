@@ -1,10 +1,12 @@
 package buysellmoto.service;
 
+import buysellmoto.core.enumeration.SellRequestEnum;
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
 import buysellmoto.dao.*;
 import buysellmoto.model.dto.MotorbikeDto;
 import buysellmoto.model.dto.PostDto;
+import buysellmoto.model.dto.SellRequestDto;
 import buysellmoto.model.filter.PostFilter;
 import buysellmoto.model.mapper.PostMapper;
 import buysellmoto.model.vo.PostProjection;
@@ -46,6 +48,13 @@ public class PostService {
 
     @Transactional(rollbackOn = {Exception.class})
     public PostDto createOne (PostFilter filter) {
+        if (Objects.isNull(filter.getCriteria().getSellRequestId())) {
+            throw new BusinessException(ApiMessageCode.SELL_REQUEST_ID_REQUIRED);
+        }
+        SellRequestDto sellRequestDto = sellRequestDao.getById(filter.getCriteria().getSellRequestId());
+        sellRequestDto.setStatus(SellRequestEnum.POSTED.getCode());
+        sellRequestDao.updateOne(sellRequestDto);
+
         PostDto preparingDto = filter.getCriteria();
         preparingDto.setId(null);
         return postDao.createOne(preparingDto);

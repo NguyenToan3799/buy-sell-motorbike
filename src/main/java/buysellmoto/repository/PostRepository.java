@@ -45,4 +45,6 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
             + "AND mi.is_thumbnail = true", nativeQuery = true)
     List<PostProjection> getPostByShowroomId(Long showroomId);
 
+    List<PostEntity> findAllByIdIn(List<Long> ids);
+
 }

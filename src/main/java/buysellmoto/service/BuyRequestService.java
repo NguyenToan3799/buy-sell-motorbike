@@ -1,18 +1,29 @@
 package buysellmoto.service;
 
+import buysellmoto.core.enumeration.BuyRequestEnum;
+import buysellmoto.core.enumeration.SellRequestEnum;
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
-import buysellmoto.dao.BuyRequestDao;
-import buysellmoto.model.dto.BuyRequestDto;
+import buysellmoto.dao.*;
+import buysellmoto.model.dto.*;
 import buysellmoto.model.filter.BuyRequestFilter;
 import buysellmoto.model.mapper.BuyRequestMapper;
+import buysellmoto.model.mapper.CustomerMapper;
+import buysellmoto.model.vo.BuyRequestVo;
+import buysellmoto.model.vo.CustomerVo;
+import buysellmoto.model.vo.SellRequestVo;
 import jakarta.transaction.Transactional;
-import org.hibernate.validator.internal.constraintvalidators.bv.time.past.AbstractPastInstantBasedValidator;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class BuyRequestService {
@@ -20,12 +31,32 @@ public class BuyRequestService {
     @Autowired
     private BuyRequestDao buyRequestDao;
     @Autowired
+    private ShowroomDao showroomDao;
+    @Autowired
+    private CustomerDao customerDao;
+    @Autowired
+    private UserDao userDao;
+    @Autowired
+    private MotorbikeImageDao motorbikeImageDao;
+    @Autowired
+    private MotorbikeDao motorbikeDao;
+    @Autowired
+    private PostDao postDao;
+    @Autowired
+    private CustomerMapper customerMapper;
+    @Autowired
     private BuyRequestMapper buyRequestMapper;
 
-    public BuyRequestDto getById(Long id) {
-        if (Objects.isNull(id)) {
-        }
-        return buyRequestDao.getById(id);
+    public BuyRequestVo getById(Long id) {
+        BuyRequestVo buyRequestVo = buyRequestMapper.dtoToVo(buyRequestDao.getById(id));
+
+        buyRequestVo.setShowroomDto(showroomDao.getById(buyRequestVo.getShowroomId()));
+        buyRequestVo.setCustomerVo(customerMapper.dtoToVo(customerDao.getById(buyRequestVo.getCustomerId())));
+        buyRequestVo.getCustomerVo().setPhone(userDao.getById(buyRequestVo.getCustomerVo().getUserId()).getPhone());
+        buyRequestVo.setMotorbikeImageDto(motorbikeImageDao.getByMotorbikeId(buyRequestVo.getMotorbikeId()));
+        buyRequestVo.setPostDto(postDao.getById(buyRequestVo.getPostId()));
+        buyRequestVo.setMotorbikeDto(motorbikeDao.getById(buyRequestVo.getMotorbikeId()));
+        return buyRequestVo;
     }
 
     public List<BuyRequestDto> getAll() {
@@ -33,10 +64,12 @@ public class BuyRequestService {
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public BuyRequestDto createOne(BuyRequestFilter filter) {
+    public Boolean createOne(BuyRequestFilter filter) {
         BuyRequestDto preparingDto = filter.getCriteria();
+        preparingDto.setStatus(BuyRequestEnum.CREATED.getCode());
         preparingDto.setId(null);
-        return buyRequestDao.createOne(preparingDto);
+        buyRequestDao.createOne(preparingDto);
+        return true;
     }
 
     @Transactional(rollbackOn = {Exception.class})
@@ -52,6 +85,116 @@ public class BuyRequestService {
     public Boolean deleteById(Long id) {
         buyRequestDao.deleteById(id);
         return true;
+    }
+
+    @Transactional(rollbackOn = {Exception.class})
+    public Boolean cancelBuyRequest(Long id) {
+        if (Objects.isNull(buyRequestDao.getById(id))) {
+            throw new BusinessException(ApiMessageCode.BUY_REQUEST_ID_REQUIRED);
+        }
+        this.updateStatus(id, BuyRequestEnum.CANCELLED.getCode());
+        return true;
+    }
+
+    @Transactional(rollbackOn = {Exception.class})
+    public Boolean confirmBuyRequest(Long id) {
+        if (Objects.isNull(buyRequestDao.getById(id))) {
+            throw new BusinessException(ApiMessageCode.BUY_REQUEST_ID_REQUIRED);
+        }
+        this.updateStatus(id, BuyRequestEnum.CONFIRMED.getCode());
+        return true;
+    }
+
+    @Transactional(rollbackOn = {Exception.class})
+    public Boolean depositBuyRequest(Long id) {
+        if (Objects.isNull(buyRequestDao.getById(id))) {
+            throw new BusinessException(ApiMessageCode.BUY_REQUEST_ID_REQUIRED);
+        }
+        this.updateStatus(id, BuyRequestEnum.DEPOSITED.getCode());
+        return true;
+    }
+
+    @Transactional(rollbackOn = {Exception.class})
+    public Boolean completeBuyRequest(Long id) {
+        if (Objects.isNull(buyRequestDao.getById(id))) {
+            throw new BusinessException(ApiMessageCode.BUY_REQUEST_ID_REQUIRED);
+        }
+        this.updateStatus(id, BuyRequestEnum.COMPLETED.getCode());
+        return true;
+    }
+
+    public List<BuyRequestVo> getListBuyRequest(Long showroomId, String status) {
+        if (BuyRequestEnum.of(status) == BuyRequestEnum.INVALID) {
+            throw new BusinessException(ApiMessageCode.INVALID_STATUS);
+        }
+        List<BuyRequestVo> buyRequestVos = buyRequestDao.getByShowroomIdAndStatus(showroomId, status);
+
+        // Lấy Customer
+        List<Long> customerIds = buyRequestVos.stream().map(BuyRequestVo::getCustomerId).toList();
+        List<CustomerVo> customerVos = customerMapper.dtoToVo(customerDao.getByIds(customerIds));
+
+        // Lấy Phone
+        List<Long> userIds = customerVos.stream().map(CustomerVo::getUserId).toList();
+        Map<Long, UserDto> mapUserDtos = userDao.getByIds(userIds).stream()
+                .collect(Collectors.toMap(UserDto::getId, Function.identity()));
+
+        customerVos.forEach(customerVo -> customerVo.setPhone(mapUserDtos.get(customerVo.getUserId()).getPhone()));
+
+        Map<Long, CustomerVo> mapCustomerVos = customerVos.stream()
+                .collect(Collectors.toMap(CustomerVo::getId, Function.identity()));
+
+        // Lấy Motorbike
+        List<Long> motorbikeIds = buyRequestVos.stream().map(BuyRequestVo::getMotorbikeId).toList();
+        Map<Long, MotorbikeDto> mapMotorbikeDto = motorbikeDao.getByIds(motorbikeIds).stream()
+                .collect(Collectors.toMap(MotorbikeDto::getId, Function.identity()));
+
+        // Lấy Post
+        List<Long> postIds = buyRequestVos.stream().map(BuyRequestVo::getPostId).toList();
+        Map<Long, PostDto> mapPostDto = postDao.getByIds(postIds).stream()
+                .collect(Collectors.toMap(PostDto::getId, Function.identity()));
+
+        buyRequestVos.forEach(buyRequestVo -> {
+            buyRequestVo.setCustomerVo(mapCustomerVos.get(buyRequestVo.getCustomerId()));
+            buyRequestVo.setMotorbikeDto(mapMotorbikeDto.get(buyRequestVo.getMotorbikeId()));
+            buyRequestVo.setPostDto(mapPostDto.get(buyRequestVo.getPostId()));
+        });
+
+        return buyRequestVos;
+    }
+
+    private Boolean updateStatus(Long id, String newStatus) {
+        BuyRequestDto loadingDto = buyRequestDao.getById(id);
+        if (!validateStatusMoving(BuyRequestEnum.of(loadingDto.getStatus()), BuyRequestEnum.of(newStatus))) {
+            throw new BusinessException(ApiMessageCode.INVALID_STATUS_MOVING);
+        }
+        loadingDto.setStatus(newStatus);
+        buyRequestDao.updateOne(loadingDto);
+        return true;
+    }
+
+    private String generateCode() {
+        Long timestamp = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli();
+        String serial = "SR" + RandomStringUtils.random(13, timestamp.toString());
+        return serial;
+    }
+
+    private boolean validateStatusMoving(BuyRequestEnum preStatus, BuyRequestEnum newStatus) {
+        switch (preStatus) {
+            case CREATED:
+                if (newStatus == BuyRequestEnum.CONFIRMED || newStatus == BuyRequestEnum.CANCELLED) {
+                    return true;
+                }
+            case CONFIRMED:
+                if (newStatus == BuyRequestEnum.DEPOSITED) {
+                    return true;
+                }
+            case DEPOSITED:
+                if (newStatus == BuyRequestEnum.COMPLETED) {
+                    return true;
+                }
+            default:
+                return false;
+        }
     }
 
 }

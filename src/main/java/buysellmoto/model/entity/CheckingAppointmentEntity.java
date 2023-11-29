@@ -24,8 +24,9 @@ public class CheckingAppointmentEntity implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime appointmentDate;
 
-    @Column(nullable = false)
     private String status;
+
+    private String scheduledBy;
 
     @Column(nullable = false, columnDefinition = "BIGINT")
     private Long customerId;
@@ -34,6 +35,6 @@ public class CheckingAppointmentEntity implements Serializable {
     private Long showroomId;
 
     @Column(nullable = false, columnDefinition = "BIGINT")
-    private Long motorbikeId;
+    private Long buyRequestId;
 
 }

@@ -31,10 +31,12 @@ public class CheckingAppointmentDto implements Serializable {
 
     private String status;
 
+    private String scheduledBy;
+
     private Long customerId;
 
     private Long showroomId;
 
-    private Long motorbikeId;
+    private Long buyRequestId;
 
 }

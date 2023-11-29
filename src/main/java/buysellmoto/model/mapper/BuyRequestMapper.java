@@ -3,6 +3,7 @@ package buysellmoto.model.mapper;
 import buysellmoto.model.dto.BuyRequestDto;
 import buysellmoto.model.entity.BuyRequestEntity;
 import buysellmoto.model.filter.BuyRequestFilter;
+import buysellmoto.model.vo.BuyRequestVo;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -31,4 +32,18 @@ public interface BuyRequestMapper {
     @Named("toDtos")
     @IterableMapping(qualifiedByName = "toDto")
     List<BuyRequestDto> toDto(List<BuyRequestEntity> entities);
+
+    @Named("dtoToVo")
+    BuyRequestVo dtoToVo(BuyRequestDto dto);
+
+    @Named("entityToVo")
+    BuyRequestVo entityToVo(BuyRequestEntity entity);
+
+    @Named("dtosToVos")
+    @IterableMapping(qualifiedByName = "dtoToVo")
+    List<BuyRequestVo> dtoToVo(List<BuyRequestDto> dtos);
+
+    @Named("entitiesToVos")
+    @IterableMapping(qualifiedByName = "entityToVo")
+    List<BuyRequestVo> entityToVo(List<BuyRequestEntity> entities);
 }
