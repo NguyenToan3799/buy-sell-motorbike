@@ -118,12 +118,12 @@ public class SellRequestService {
         List<SellRequestVo> sellRequestVos = sellRequestDao.getByShowroomIdAndStatus(showroomId, status);
 
         // Lấy Customer
-        List<Long> customerIds = sellRequestVos.stream().map(SellRequestVo::getCustomerId).toList();
+        List<Long> customerIds = sellRequestVos.stream().map(SellRequestVo::getCustomerId).distinct().toList();
         Map<Long, CustomerDto> mapCustomerDtos = customerDao.getByIds(customerIds).stream()
                 .collect(Collectors.toMap(CustomerDto::getId, Function.identity()));
 
         // Lấy Motorbike
-        List<Long> motorbikeIds = sellRequestVos.stream().map(SellRequestVo::getMotorbikeId).toList();
+        List<Long> motorbikeIds = sellRequestVos.stream().map(SellRequestVo::getMotorbikeId).distinct().toList();
         Map<Long, MotorbikeDto> mapMotorbikeDto = motorbikeDao.getByIds(motorbikeIds).stream()
                 .collect(Collectors.toMap(MotorbikeDto::getId, Function.identity()));
 

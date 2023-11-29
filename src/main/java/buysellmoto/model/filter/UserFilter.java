@@ -1,7 +1,9 @@
 package buysellmoto.model.filter;
 
 import buysellmoto.core.exception.ApiFilter;
+import buysellmoto.dao.EmployeeShowroomDao;
 import buysellmoto.model.dto.CustomerDto;
+import buysellmoto.model.dto.EmployeeShowroomDto;
 import buysellmoto.model.dto.UserDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -19,5 +21,7 @@ public class UserFilter extends ApiFilter<UserDto> {
 
     //Other
     private CustomerDto customerDto;
+
+    private EmployeeShowroomDto employeeShowroomDto;
 
 }

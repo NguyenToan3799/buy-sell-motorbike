@@ -56,6 +56,12 @@ public class UserController {
         return ResponseEntity.ok(userService.createCustomer(filter));
     }
 
+    @Operation(summary = "Create New Staff")
+    @PostMapping("/staff")
+    public ResponseEntity<UserVo> createStaff(@RequestBody UserFilter filter) {
+        return ResponseEntity.ok(userService.createStaff(filter));
+    }
+
     @Operation(summary = "Update Existing User")
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> updateOne(@RequestBody UserFilter filter) {

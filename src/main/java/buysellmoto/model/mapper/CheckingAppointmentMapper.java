@@ -3,6 +3,7 @@ package buysellmoto.model.mapper;
 import buysellmoto.model.dto.CheckingAppointmentDto;
 import buysellmoto.model.entity.CheckingAppointmentEntity;
 import buysellmoto.model.filter.CheckingAppointmentFilter;
+import buysellmoto.model.vo.CheckingAppointmentVo;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -31,5 +32,12 @@ public interface CheckingAppointmentMapper {
     @Named("toDtos")
     @IterableMapping(qualifiedByName = "toDto")
     List<CheckingAppointmentDto> toDto(List<CheckingAppointmentEntity> entities);
+
+
+    @Named("toDto")
+    CheckingAppointmentVo entityToVo(CheckingAppointmentEntity entity);
+    @Named("toDtos")
+    @IterableMapping(qualifiedByName = "toDto")
+    List<CheckingAppointmentVo> entityToVo(List<CheckingAppointmentEntity> entities);
 
 }

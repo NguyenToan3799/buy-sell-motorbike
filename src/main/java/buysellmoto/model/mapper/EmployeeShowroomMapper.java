@@ -3,6 +3,7 @@ package buysellmoto.model.mapper;
 import buysellmoto.model.dto.EmployeeShowroomDto;
 import buysellmoto.model.entity.EmployeeShowroomEntity;
 import buysellmoto.model.filter.EmployeeShowroomFilter;
+import buysellmoto.model.vo.EmployeeShowroomVo;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -31,5 +32,19 @@ public interface EmployeeShowroomMapper {
     @Named("toDtos")
     @IterableMapping(qualifiedByName = "toDto")
     List<EmployeeShowroomDto> toDto(List<EmployeeShowroomEntity> entities);
+
+    @Named("dtoToVo")
+    EmployeeShowroomVo dtoToVo(EmployeeShowroomDto dto);
+
+    @Named("entityToVo")
+    EmployeeShowroomVo entityToVo(EmployeeShowroomEntity entity);
+
+    @Named("dtosToVos")
+    @IterableMapping(qualifiedByName = "dtoToVo")
+    List<EmployeeShowroomVo> dtoToVo(List<EmployeeShowroomDto> dtos);
+
+    @Named("entitiesToVos")
+    @IterableMapping(qualifiedByName = "entityToVo")
+    List<EmployeeShowroomVo> entityToVo(List<EmployeeShowroomEntity> entities);
 
 }

@@ -23,6 +23,10 @@ public class BuyRequestDao {
         return mapper.toDto(buyRequestRepository.findById(id).orElseThrow());
     }
 
+    public List<BuyRequestDto> getByIds(List<Long> ids) {
+        return mapper.toDto(buyRequestRepository.findAllByIdIn(ids));
+    }
+
     public List<BuyRequestDto> getAll() {
         return mapper.toDto(buyRequestRepository.findAll());
     }

@@ -2,6 +2,7 @@ package buysellmoto.dao;
 
 import buysellmoto.model.dto.EmployeeShowroomDto;
 import buysellmoto.model.mapper.EmployeeShowroomMapper;
+import buysellmoto.model.vo.EmployeeShowroomVo;
 import buysellmoto.repository.EmployeeShowroomRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,16 @@ public class EmployeeShowroomDao {
     @Autowired
     private EmployeeShowroomMapper mapper;
 
-    public EmployeeShowroomDto getById(Long id) {
-        return mapper.toDto(employeeShowroomRepository.findById(id).orElseThrow());
+    public EmployeeShowroomVo getById(Long id) {
+        return mapper.entityToVo(employeeShowroomRepository.findById(id).orElseThrow());
     }
 
     public EmployeeShowroomDto getByUserId(Long userId) {
         return mapper.toDto(employeeShowroomRepository.getByUserId(userId));
+    }
+
+    public List<EmployeeShowroomVo> getByShowroomId(Long showroomId) {
+        return mapper.entityToVo(employeeShowroomRepository.findAllByShowroomId(showroomId));
     }
 
     public List<EmployeeShowroomDto> getAll() {

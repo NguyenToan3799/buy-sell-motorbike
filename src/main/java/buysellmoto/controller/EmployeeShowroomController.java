@@ -2,10 +2,12 @@ package buysellmoto.controller;
 
 import buysellmoto.model.dto.EmployeeShowroomDto;
 import buysellmoto.model.filter.EmployeeShowroomFilter;
+import buysellmoto.model.vo.EmployeeShowroomVo;
 import buysellmoto.service.EmployeeShowroomService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +30,12 @@ public class EmployeeShowroomController {
     @GetMapping()
     public ResponseEntity<List<EmployeeShowroomDto>> getAll() {
         return ResponseEntity.ok(employeeShowroomService.getAll());
+    }
+
+    @Operation(summary = "Get Employee By ShowroomId")
+    @GetMapping("/showroom/{showroomId}")
+    public ResponseEntity<List<EmployeeShowroomVo>> getByShowroomId(@PathVariable Long showroomId) {
+        return ResponseEntity.ok(employeeShowroomService.getByShowroomId(showroomId));
     }
 
     @Operation(summary = "Create New EmployeeShowroom")

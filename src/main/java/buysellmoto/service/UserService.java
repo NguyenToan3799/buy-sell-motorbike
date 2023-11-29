@@ -11,6 +11,7 @@ import buysellmoto.dao.EmployeeShowroomDao;
 import buysellmoto.dao.RoleDao;
 import buysellmoto.dao.UserDao;
 import buysellmoto.model.dto.CustomerDto;
+import buysellmoto.model.dto.EmployeeShowroomDto;
 import buysellmoto.model.dto.RoleDto;
 import buysellmoto.model.dto.UserDto;
 import buysellmoto.model.filter.UserFilter;
@@ -116,6 +117,21 @@ public class UserService {
         preparingCustomer.setUserId(userVo.getId());
         preparingCustomer.setId(null);
         userVo.setCustomerDto(customerDao.createOne(preparingCustomer));
+
+        return userVo;
+    }
+
+    @Transactional(rollbackOn = {Exception.class})
+    public UserVo createStaff(UserFilter filter) {
+        UserDto preparingDto = filter.getCriteria();
+        preparingDto.setId(null);
+        preparingDto.setStatus(true);
+        UserVo userVo = userMapper.dtoToVo(userDao.createOne(preparingDto));
+
+        EmployeeShowroomDto employeeShowroomDto = filter.getEmployeeShowroomDto();
+        employeeShowroomDto.setUserId(userVo.getId());
+        employeeShowroomDto.setId(null);
+        userVo.setEmployeeShowroomDto(employeeShowroomDao.createOne(employeeShowroomDto));
 
         return userVo;
     }

@@ -22,6 +22,10 @@ public class ShowroomDao {
         return mapper.toDto(showroomRepository.findById(id).orElseThrow());
     }
 
+    public List<ShowroomDto> getByIds(List<Long> ids) {
+        return mapper.toDto(showroomRepository.findAllByIdIn(ids));
+    }
+
     public List<ShowroomDto> getAll() {
         return mapper.toDto(showroomRepository.findAll());
     }

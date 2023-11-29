@@ -2,6 +2,7 @@ package buysellmoto.dao;
 
 import buysellmoto.model.dto.CheckingAppointmentDto;
 import buysellmoto.model.mapper.CheckingAppointmentMapper;
+import buysellmoto.model.vo.CheckingAppointmentVo;
 import buysellmoto.repository.CheckingAppointmentRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,16 @@ public class CheckingAppointmentDao {
     @Autowired
     private CheckingAppointmentMapper mapper;
 
-    public CheckingAppointmentDto getById(Long id) {
-        return mapper.toDto(checkingAppointmentRepository.findById(id).orElseThrow());
+    public CheckingAppointmentVo getById(Long id) {
+        return mapper.entityToVo(checkingAppointmentRepository.findById(id).orElseThrow());
     }
 
     public List<CheckingAppointmentDto> getAll() {
         return mapper.toDto(checkingAppointmentRepository.findAll());
+    }
+
+    public List<CheckingAppointmentVo> getByShowroomId(Long showroomId) {
+        return mapper.entityToVo(checkingAppointmentRepository.findAllByShowroomId(showroomId));
     }
 
     @Transactional(rollbackOn = {Exception.class})

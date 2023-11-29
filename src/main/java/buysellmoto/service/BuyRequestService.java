@@ -130,11 +130,11 @@ public class BuyRequestService {
         List<BuyRequestVo> buyRequestVos = buyRequestDao.getByShowroomIdAndStatus(showroomId, status);
 
         // Lấy Customer
-        List<Long> customerIds = buyRequestVos.stream().map(BuyRequestVo::getCustomerId).toList();
+        List<Long> customerIds = buyRequestVos.stream().map(BuyRequestVo::getCustomerId).distinct().toList();
         List<CustomerVo> customerVos = customerMapper.dtoToVo(customerDao.getByIds(customerIds));
 
         // Lấy Phone
-        List<Long> userIds = customerVos.stream().map(CustomerVo::getUserId).toList();
+        List<Long> userIds = customerVos.stream().map(CustomerVo::getUserId).distinct().toList();
         Map<Long, UserDto> mapUserDtos = userDao.getByIds(userIds).stream()
                 .collect(Collectors.toMap(UserDto::getId, Function.identity()));
 
@@ -144,12 +144,12 @@ public class BuyRequestService {
                 .collect(Collectors.toMap(CustomerVo::getId, Function.identity()));
 
         // Lấy Motorbike
-        List<Long> motorbikeIds = buyRequestVos.stream().map(BuyRequestVo::getMotorbikeId).toList();
+        List<Long> motorbikeIds = buyRequestVos.stream().map(BuyRequestVo::getMotorbikeId).distinct().toList();
         Map<Long, MotorbikeDto> mapMotorbikeDto = motorbikeDao.getByIds(motorbikeIds).stream()
                 .collect(Collectors.toMap(MotorbikeDto::getId, Function.identity()));
 
         // Lấy Post
-        List<Long> postIds = buyRequestVos.stream().map(BuyRequestVo::getPostId).toList();
+        List<Long> postIds = buyRequestVos.stream().map(BuyRequestVo::getPostId).distinct().toList();
         Map<Long, PostDto> mapPostDto = postDao.getByIds(postIds).stream()
                 .collect(Collectors.toMap(PostDto::getId, Function.identity()));
 
