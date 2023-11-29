@@ -33,11 +33,10 @@ public interface CheckingAppointmentMapper {
     @IterableMapping(qualifiedByName = "toDto")
     List<CheckingAppointmentDto> toDto(List<CheckingAppointmentEntity> entities);
 
-
-    @Named("toDto")
+    @Named("entityToVo")
     CheckingAppointmentVo entityToVo(CheckingAppointmentEntity entity);
-    @Named("toDtos")
-    @IterableMapping(qualifiedByName = "toDto")
+    @Named("entitiesToVos")
+    @IterableMapping(qualifiedByName = "entityToVo")
     List<CheckingAppointmentVo> entityToVo(List<CheckingAppointmentEntity> entities);
 
 }
