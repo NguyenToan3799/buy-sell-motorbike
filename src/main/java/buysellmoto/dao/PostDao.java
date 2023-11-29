@@ -52,4 +52,8 @@ public class PostDao {
                 postFilter.getBrandName());
     }
 
+    public List<PostProjection> getPostByShowroomId(Long showroomId) {
+        return postRepository.getPostByShowroomId(showroomId);
+    }
+
 }

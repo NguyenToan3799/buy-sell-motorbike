@@ -2,11 +2,13 @@ package buysellmoto.service;
 
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
-import buysellmoto.dao.PostDao;
+import buysellmoto.dao.*;
+import buysellmoto.model.dto.MotorbikeDto;
 import buysellmoto.model.dto.PostDto;
 import buysellmoto.model.filter.PostFilter;
 import buysellmoto.model.mapper.PostMapper;
 import buysellmoto.model.vo.PostProjection;
+import buysellmoto.model.vo.PostVo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,12 +23,21 @@ public class PostService {
     @Autowired
     private PostDao postDao;
     @Autowired
+    private ShowroomDao showroomDao;
+    @Autowired
+    private SellRequestDao sellRequestDao;
+    @Autowired
+    private MotorbikeDao motorbikeDao;
+
+    @Autowired
     private PostMapper postMapper;
 
-    public PostDto getById(Long id) {
-        if(Objects.isNull(id)){
-        }
-        return postDao.getById(id);
+    public PostVo getById(Long id) {
+        PostVo postVo = postMapper.dtoToVo(postDao.getById(id));
+        postVo.setMotorbikeDto(motorbikeDao.getById(postVo.getMotorbikeId()));
+        postVo.setSellRequestDto(sellRequestDao.getById(postVo.getSellRequestId()));
+        postVo.setShowroomDto(showroomDao.getById(postVo.getShowroomId()));
+        return postVo;
     }
     
     public List<PostDto> getAll() {
@@ -57,6 +68,10 @@ public class PostService {
 
     public Page<PostProjection> getPaging(PostFilter postFilter) {
         return postDao.getPaging(postFilter);
+    }
+
+    public List<PostProjection> getPostByShowroomId(Long showroomId) {
+        return postDao.getPostByShowroomId(showroomId);
     }
 
 }

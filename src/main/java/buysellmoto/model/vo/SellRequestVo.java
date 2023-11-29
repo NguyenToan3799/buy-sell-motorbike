@@ -20,6 +20,8 @@ public class SellRequestVo extends SellRequestDto {
 
     private CustomerDto customerDto;
 
+    private CustomerVo customerVo;
+
     private MotorbikeDto motorbikeDto;
 
     private List<MotorbikeImageDto> motorbikeImageDto = new ArrayList<>();

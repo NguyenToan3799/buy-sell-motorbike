@@ -56,4 +56,10 @@ public class PostController {
         return ResponseEntity.ok(postService.getPaging(filter));
     }
 
+    @Operation(summary = "Get Post by Showroom Id")
+    @GetMapping("/projection/{showroomId}")
+    public ResponseEntity<List<PostProjection>> getPostByShowroomId(@PathVariable Long showroomId) {
+        return ResponseEntity.ok(postService.getPostByShowroomId(showroomId));
+    }
+
 }

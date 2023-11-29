@@ -8,13 +8,11 @@ import buysellmoto.model.dto.*;
 import buysellmoto.model.filter.MotorbikeFilter;
 import buysellmoto.model.filter.RejectRequestFilter;
 import buysellmoto.model.filter.SellRequestFilter;
-import buysellmoto.model.mapper.MotorbikeImageMapper;
-import buysellmoto.model.mapper.MotorbikeMapper;
-import buysellmoto.model.mapper.RejectRequestMapper;
-import buysellmoto.model.mapper.SellRequestMapper;
+import buysellmoto.model.mapper.*;
 import buysellmoto.model.vo.MotorbikeVo;
 import buysellmoto.model.vo.SellRequestVo;
 import jakarta.transaction.Transactional;
+import org.apache.catalina.User;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,13 +44,19 @@ public class SellRequestService {
     @Autowired
     private CheckedSellRequestDao checkedSellRequestDao;
     @Autowired
+    private UserDao userDao;
+    @Autowired
     private MotorbikeMapper motorbikeMapper;
+    @Autowired
+    private CustomerMapper customerMapper;
 
     public SellRequestVo getById(Long id) {
         SellRequestVo sellRequestVo = sellRequestDao.getById(id);
 
         sellRequestVo.setShowroomDto(showroomDao.getById(sellRequestVo.getShowroomId()));
-        sellRequestVo.setCustomerDto(customerDao.getById(sellRequestVo.getCustomerId()));
+        sellRequestVo.setCustomerVo(customerMapper.dtoToVo(customerDao.getById(sellRequestVo.getCustomerId())));
+        sellRequestVo.getCustomerVo().setPhone(userDao.getById(sellRequestVo.getCustomerVo().getUserId()).getPhone());
+
         sellRequestVo.setMotorbikeImageDto(motorbikeImageDao.getByMotorbikeId(sellRequestVo.getMotorbikeId()));
 
         if (sellRequestVo.getStatus().equals(SellRequestEnum.REJECTED.getCode())) {
@@ -63,7 +67,6 @@ public class SellRequestService {
         }
 
         return sellRequestVo;
-
     }
 
     public List<SellRequestDto> getAll() {

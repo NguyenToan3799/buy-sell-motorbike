@@ -3,6 +3,7 @@ package buysellmoto.model.mapper;
 import buysellmoto.model.dto.PostDto;
 import buysellmoto.model.entity.PostEntity;
 import buysellmoto.model.filter.PostFilter;
+import buysellmoto.model.vo.PostVo;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -31,5 +32,20 @@ public interface PostMapper {
     @Named("toDtos")
     @IterableMapping(qualifiedByName = "toDto")
     List<PostDto> toDto(List<PostEntity> entities);
+
+
+    @Named("dtoToVo")
+    PostVo dtoToVo(PostDto dto);
+
+    @Named("entityToVo")
+    PostVo entityToVo(PostEntity entity);
+
+    @Named("dtosToVos")
+    @IterableMapping(qualifiedByName = "dtoToVo")
+    List<PostVo> dtoToVo(List<PostDto> dtos);
+
+    @Named("entitiesToVos")
+    @IterableMapping(qualifiedByName = "entityToVo")
+    List<PostVo> entityToVo(List<PostEntity> entities);
 
 }
