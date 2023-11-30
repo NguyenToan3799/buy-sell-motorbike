@@ -3,6 +3,7 @@ package buysellmoto.controller;
 import buysellmoto.model.dto.PostDto;
 import buysellmoto.model.filter.PostFilter;
 import buysellmoto.model.vo.PostProjection;
+import buysellmoto.model.vo.PostVo;
 import buysellmoto.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class PostController {
 
     @Operation(summary = "Get Post By Id")
     @GetMapping("/{id}")
-    public ResponseEntity<PostDto> getById(@PathVariable Long id) {
+    public ResponseEntity<PostVo> getById(@PathVariable Long id) {
         return ResponseEntity.ok(postService.getById(id));
     }
 
