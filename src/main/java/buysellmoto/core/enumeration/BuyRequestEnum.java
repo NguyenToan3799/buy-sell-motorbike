@@ -16,7 +16,8 @@ public enum BuyRequestEnum {
     //Showroom
     CONFIRMED("CONFIRMED", "Xác nhận xem xe"),
     DEPOSITED("DEPOSITED", "Xác nhận mua xe và đã cọc"),
-    COMPLETED("COMPLETED", "Hoàn tất nhận xe để bán"),
+    SCHEDULED("SCHEDULED", "Đã sắp lịch hoàn tất thủ tục và bàn giao xe"),
+    COMPLETED("COMPLETED", "Đã tất toán xe"),
 
     INVALID("INVALID","Sai status");
 

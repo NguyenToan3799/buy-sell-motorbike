@@ -30,6 +30,10 @@ public class MotorbikeDao {
         return mapper.toDto(motorbikeRepository.findByIdIn(ids));
     }
 
+    public List<MotorbikeDto> getAllInShowroom(Long showroomId) {
+        return mapper.toDto(motorbikeRepository.findByShowroomId(showroomId));
+    }
+
     @Transactional(rollbackOn = {Exception.class})
     public MotorbikeDto createOne(MotorbikeDto dto) {
         return mapper.toDto(motorbikeRepository.save(mapper.toEntity(dto)));

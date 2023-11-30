@@ -25,6 +25,8 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static buysellmoto.core.enumeration.BuyRequestEnum.*;
+
 @Service
 public class BuyRequestService {
 
@@ -66,7 +68,7 @@ public class BuyRequestService {
     @Transactional(rollbackOn = {Exception.class})
     public Boolean createOne(BuyRequestFilter filter) {
         BuyRequestDto preparingDto = filter.getCriteria();
-        preparingDto.setStatus(BuyRequestEnum.CREATED.getCode());
+        preparingDto.setStatus(CREATED.getCode());
         preparingDto.setId(null);
         buyRequestDao.createOne(preparingDto);
         return true;
@@ -101,7 +103,7 @@ public class BuyRequestService {
         if (Objects.isNull(buyRequestDao.getById(id))) {
             throw new BusinessException(ApiMessageCode.BUY_REQUEST_ID_REQUIRED);
         }
-        this.updateStatus(id, BuyRequestEnum.CONFIRMED.getCode());
+        this.updateStatus(id, CONFIRMED.getCode());
         return true;
     }
 
@@ -110,7 +112,7 @@ public class BuyRequestService {
         if (Objects.isNull(buyRequestDao.getById(id))) {
             throw new BusinessException(ApiMessageCode.BUY_REQUEST_ID_REQUIRED);
         }
-        this.updateStatus(id, BuyRequestEnum.DEPOSITED.getCode());
+        this.updateStatus(id, DEPOSITED.getCode());
         return true;
     }
 
@@ -165,7 +167,7 @@ public class BuyRequestService {
     private Boolean updateStatus(Long id, String newStatus) {
         BuyRequestDto loadingDto = buyRequestDao.getById(id);
         if (!validateStatusMoving(BuyRequestEnum.of(loadingDto.getStatus()), BuyRequestEnum.of(newStatus))) {
-            throw new BusinessException(ApiMessageCode.INVALID_STATUS_MOVING);
+            throw new BusinessException(ApiMessageCode.INVALID_STATUS_MOVING + " : from=" + loadingDto.getStatus() + " -> to=" + newStatus);
         }
         loadingDto.setStatus(newStatus);
         buyRequestDao.updateOne(loadingDto);
@@ -179,22 +181,14 @@ public class BuyRequestService {
     }
 
     private boolean validateStatusMoving(BuyRequestEnum preStatus, BuyRequestEnum newStatus) {
-        switch (preStatus) {
-            case CREATED:
-                if (newStatus == BuyRequestEnum.CONFIRMED || newStatus == BuyRequestEnum.CANCELLED) {
-                    return true;
-                }
-            case CONFIRMED:
-                if (newStatus == BuyRequestEnum.DEPOSITED) {
-                    return true;
-                }
-            case DEPOSITED:
-                if (newStatus == BuyRequestEnum.COMPLETED) {
-                    return true;
-                }
-            default:
-                return false;
-        }
-    }
+        Map<BuyRequestEnum, List<?>> stateMachine = Map.of(
+            CREATED, List.of(CONFIRMED, CANCELLED),
+            CONFIRMED, List.of(DEPOSITED, CANCELLED),
+            DEPOSITED, List.of(SCHEDULED, CANCELLED),
+            SCHEDULED, List.of(COMPLETED, CANCELLED)
+        );
 
+        var movableStatuses = stateMachine.getOrDefault(preStatus, List.of());
+        return movableStatuses.contains(newStatus);
+    }
 }

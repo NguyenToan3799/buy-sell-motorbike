@@ -28,8 +28,12 @@ public class MotorbikeService {
         return motorbikeDao.getById(id);
     }
 
-    public List<MotorbikeDto> getAll() {
-        return motorbikeDao.getAll();
+    public List<MotorbikeDto> getAll(Long showroomId) {
+        if (showroomId == null) {
+            return motorbikeDao.getAll();
+        } else {
+            return motorbikeDao.getAllInShowroom(showroomId);
+        }
     }
 
     @Transactional(rollbackOn = {Exception.class})

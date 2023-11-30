@@ -24,10 +24,11 @@ public class MotorbikeController {
         return ResponseEntity.ok(motorbikeService.getById(id));
     }
 
+
     @Operation(summary = "Get All Motorbike")
     @GetMapping()
-    public ResponseEntity<List<MotorbikeDto>> getAll() {
-        return ResponseEntity.ok(motorbikeService.getAll());
+    public ResponseEntity<List<MotorbikeDto>> getAll(@RequestParam("sid") Long showroomId) {
+        return ResponseEntity.ok(motorbikeService.getAll(showroomId));
     }
 
     @Operation(summary = "Create New Motorbike")

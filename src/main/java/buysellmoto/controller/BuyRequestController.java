@@ -1,6 +1,7 @@
 package buysellmoto.controller;
 
 import buysellmoto.model.dto.BuyRequestDto;
+import buysellmoto.model.dto.CheckingAppointmentDto;
 import buysellmoto.model.filter.BuyRequestFilter;
 import buysellmoto.model.vo.BuyRequestVo;
 import buysellmoto.model.vo.SellRequestVo;

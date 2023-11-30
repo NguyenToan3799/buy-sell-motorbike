@@ -11,5 +11,6 @@ import java.util.List;
 public interface MotorbikeRepository extends JpaRepository<MotorbikeEntity, Long> {
 
     List<MotorbikeEntity> findByIdIn(List<Long> ids);
+    List<MotorbikeEntity> findByShowroomId(Long showroomId);
 
 }
