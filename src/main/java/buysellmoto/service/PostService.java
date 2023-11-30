@@ -5,6 +5,7 @@ import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
 import buysellmoto.dao.*;
 import buysellmoto.model.dto.MotorbikeDto;
+import buysellmoto.model.dto.MotorbikeImageDto;
 import buysellmoto.model.dto.PostDto;
 import buysellmoto.model.dto.SellRequestDto;
 import buysellmoto.model.filter.PostFilter;
@@ -30,6 +31,8 @@ public class PostService {
     private SellRequestDao sellRequestDao;
     @Autowired
     private MotorbikeDao motorbikeDao;
+    @Autowired
+    private MotorbikeImageDao motorbikeImageDao;
 
     @Autowired
     private PostMapper postMapper;
@@ -39,6 +42,7 @@ public class PostService {
         postVo.setMotorbikeDto(motorbikeDao.getById(postVo.getMotorbikeId()));
         postVo.setSellRequestDto(sellRequestDao.getById(postVo.getSellRequestId()));
         postVo.setShowroomDto(showroomDao.getById(postVo.getShowroomId()));
+        postVo.setMotorbikeImageDtos(motorbikeImageDao.getByMotorbikeId(postVo.getMotorbikeId()));
         return postVo;
     }
     
