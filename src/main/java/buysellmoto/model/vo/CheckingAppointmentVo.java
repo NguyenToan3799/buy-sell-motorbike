@@ -19,4 +19,6 @@ public class CheckingAppointmentVo extends CheckingAppointmentDto {
 
     private BuyRequestDto buyRequestDto;
 
+    private BuyRequestVo buyRequestVo;
+
 }

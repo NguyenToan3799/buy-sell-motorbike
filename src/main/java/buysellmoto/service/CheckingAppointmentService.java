@@ -38,8 +38,7 @@ public class CheckingAppointmentService {
 
     public CheckingAppointmentVo getById(Long id) {
         CheckingAppointmentVo checkingAppointmentVo = checkingAppointmentDao.getById(id);
-        checkingAppointmentVo.setCustomerDto(customerDao.getById(checkingAppointmentVo.getCustomerId()));
-        checkingAppointmentVo.setBuyRequestDto(buyRequestDao.getById(checkingAppointmentVo.getBuyRequestId()));
+        checkingAppointmentVo.setBuyRequestVo(buyRequestService.getById(checkingAppointmentVo.getBuyRequestId()));
         return checkingAppointmentDao.getById(id);
     }
 
