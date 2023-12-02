@@ -24,7 +24,6 @@ public class ShowroomFilter extends ApiFilter<ShowroomDto> {
     public void beautify() {
         this.searchValue = StringUtil.trim(this.searchValue);
         this.province = StringUtil.trim(this.province);
-
     }
 
 }

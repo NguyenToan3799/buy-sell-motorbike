@@ -24,9 +24,12 @@ public class PostFilter extends ApiFilter<PostDto> {
 
     private String brandName;
 
+    private String province;
+
     @JsonIgnore
     public void beautify() {
         this.searchValue = StringUtil.trim(this.searchValue);
         this.brandName = StringUtil.trim(this.brandName);
+        this.province = StringUtil.trim(this.province);
     }
 }

@@ -2,9 +2,11 @@ package buysellmoto.controller;
 
 import buysellmoto.model.dto.ShowroomDto;
 import buysellmoto.model.filter.ShowroomFilter;
+import buysellmoto.model.vo.ShowroomProjection;
 import buysellmoto.service.ShowroomService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +48,12 @@ public class ShowroomController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {
         return ResponseEntity.ok(showroomService.deleteById(id));
+    }
+
+    @Operation(summary = "Paging")
+    @PostMapping("/paging")
+    public ResponseEntity<Page<ShowroomProjection>> getPaging(@RequestBody ShowroomFilter filter) {
+        return ResponseEntity.ok(showroomService.getPaging(filter));
     }
 
 }

@@ -51,7 +51,10 @@ public class ShowroomDao {
     }
 
     public Page<ShowroomProjection> getPaging(ShowroomFilter filter) {
-        return null;
+        filter.beautify();
+        return showroomRepository.getPaging(filter.getPageable(),
+                filter.getSearchValue(),
+                filter.getProvince());
     }
 
 }

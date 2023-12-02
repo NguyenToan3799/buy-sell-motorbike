@@ -57,8 +57,8 @@ public class ShowroomService {
         return true;
     }
 
-    public Page<ShowroomProjection> getPaging(ShowroomFilter) {
-        return null;
+    public Page<ShowroomProjection> getPaging(ShowroomFilter filter) {
+        return showroomDao.getPaging(filter);
     }
 
 }

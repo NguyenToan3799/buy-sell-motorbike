@@ -27,10 +27,12 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
             + "WHERE ((UPPER(COALESCE(m.name, '')) LIKE CONCAT('%', UPPER(:searchValue), '%')) "
             + "OR (UPPER(COALESCE(mb.name, '')) LIKE CONCAT('%', UPPER(:searchValue), '%'))) "
             + "AND (UPPER(COALESCE(mb.name, '')) LIKE CONCAT('%', UPPER(:brandName), '%')) "
+            + "AND (UPPER(COALESCE(s.province, '')) LIKE CONCAT('%', UPPER(:province), '%')) "
             + "AND mi.is_thumbnail = true", nativeQuery = true)
     Page<PostProjection> getPaging(Pageable pageable,
                                    @Param("searchValue") String searchValue,
-                                   @Param("brandName") String brandName);
+                                   @Param("brandName") String brandName,
+                                   @Param("province") String province);
 
     @Query(value = "SELECT p.id AS id, p.price AS price, p.created_date AS createdDate, "
             + "m.name AS motorbikeName, m.condition AS motorbikeCondition, "
