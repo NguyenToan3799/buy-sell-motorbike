@@ -57,15 +57,9 @@ public class TransactionService {
         preparingDto.setRecordedDate(LocalDateTime.now());
 
         switch (TransactionTypeEnum.of(filter.getCriteria().getType())) {
-            case DEPOSIT:
-                buyRequestService.depositBuyRequest(filter.getCriteria().getBuyRequestId());
-                break;
-            case FINALISE:
-                buyRequestService.completeBuyRequest(filter.getCriteria().getBuyRequestId());
-                break;
-            case SELLER_PAY:
-                sellRequestService.completeSellRequest(filter.getCriteria().getSellRequestId());
-                break;
+            case DEPOSIT -> buyRequestService.depositBuyRequest(filter.getCriteria().getBuyRequestId());
+            case FINALISE -> buyRequestService.completeBuyRequest(filter.getCriteria().getBuyRequestId());
+            case SELLER_PAY -> sellRequestService.completeSellRequest(filter.getCriteria().getSellRequestId());
         }
         return transactionDao.createOne(preparingDto);
     }

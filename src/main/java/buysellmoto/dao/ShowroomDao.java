@@ -1,10 +1,14 @@
 package buysellmoto.dao;
 
 import buysellmoto.model.dto.ShowroomDto;
+import buysellmoto.model.filter.ShowroomFilter;
 import buysellmoto.model.mapper.ShowroomMapper;
+import buysellmoto.model.vo.ShowroomProjection;
+import buysellmoto.model.vo.ShowroomVo;
 import buysellmoto.repository.ShowroomRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,6 +48,10 @@ public class ShowroomDao {
     public boolean deleteById(Long id) {
         showroomRepository.delete(showroomRepository.findById(id).orElseThrow());
         return true;
+    }
+
+    public Page<ShowroomProjection> getPaging(ShowroomFilter filter) {
+        return null;
     }
 
 }
