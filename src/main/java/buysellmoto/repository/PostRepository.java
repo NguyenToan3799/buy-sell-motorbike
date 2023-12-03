@@ -24,14 +24,13 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
             + "INNER JOIN showroom s ON s.id = p.showroom_id "
             + "INNER JOIN moto_brand mb ON m.moto_brand_id = mb.id "
             + "LEFT JOIN motorbike_image mi ON mi.motorbike_id = m.id "
-            + "WHERE ((UPPER(COALESCE(m.name, '')) LIKE CONCAT('%', UPPER(:searchValue), '%')) "
-            + "OR (UPPER(COALESCE(mb.name, '')) LIKE CONCAT('%', UPPER(:searchValue), '%'))) "
-            + "AND (UPPER(COALESCE(mb.name, '')) LIKE CONCAT('%', UPPER(:brandName), '%')) "
+            + "WHERE (UPPER(COALESCE(m.name, '')) LIKE CONCAT('%', UPPER(:searchValue), '%')) "
+            + "AND ((:brandName IS NULL) OR (mb.name IN :brandName)) "
             + "AND (UPPER(COALESCE(s.province, '')) LIKE CONCAT('%', UPPER(:province), '%')) "
             + "AND mi.is_thumbnail = true", nativeQuery = true)
     Page<PostProjection> getPaging(Pageable pageable,
                                    @Param("searchValue") String searchValue,
-                                   @Param("brandName") String brandName,
+                                   @Param("brandName") List<String> brandName,
                                    @Param("province") String province);
 
     @Query(value = "SELECT p.id AS id, p.price AS price, p.created_date AS createdDate, "

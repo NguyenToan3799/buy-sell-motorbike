@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,14 +24,13 @@ public class PostFilter extends ApiFilter<PostDto> {
 
     private String searchValue;
 
-    private String brandName;
+    private List<String> brandName = new ArrayList<>();
 
     private String province;
 
     @JsonIgnore
     public void beautify() {
         this.searchValue = StringUtil.trim(this.searchValue);
-        this.brandName = StringUtil.trim(this.brandName);
         this.province = StringUtil.trim(this.province);
     }
 }
