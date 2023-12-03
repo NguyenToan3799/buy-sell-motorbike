@@ -4,6 +4,7 @@ package buysellmoto.service;
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
 import buysellmoto.dao.ShowroomDao;
+import buysellmoto.dao.ShowroomImageDao;
 import buysellmoto.model.dto.ShowroomDto;
 import buysellmoto.model.filter.ShowroomFilter;
 import buysellmoto.model.mapper.ShowroomMapper;
@@ -23,12 +24,14 @@ public class ShowroomService {
     @Autowired
     private ShowroomDao showroomDao;
     @Autowired
+    private ShowroomImageDao showroomImageDao;
+    @Autowired
     private ShowroomMapper customerMapper;
 
-    public ShowroomDto getById(Long id) {
-        if(Objects.isNull(id)){
-        }
-        return showroomDao.getById(id);
+    public ShowroomVo getById(Long id) {
+        ShowroomVo showroomVo = customerMapper.dtoToVo(showroomDao.getById(id));
+        showroomVo.setShowroomImageDtos(showroomImageDao.getByShowroomId(showroomVo.getId()));
+        return showroomVo;
     }
     
     public List<ShowroomDto> getAll() {

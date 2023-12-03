@@ -22,6 +22,10 @@ public class ShowroomImageDao {
         return mapper.toDto(showroomImageRepository.findById(id).orElseThrow());
     }
 
+    public List<ShowroomImageDto> getByShowroomId(Long showroomId) {
+        return mapper.toDto(showroomImageRepository.findAllByShowroomId(showroomId));
+    }
+
     public List<ShowroomImageDto> getAll() {
         return mapper.toDto(showroomImageRepository.findAll());
     }

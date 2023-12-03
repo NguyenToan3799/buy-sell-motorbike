@@ -23,8 +23,6 @@ public class CustomerService {
     private CustomerMapper customerMapper;
 
     public CustomerDto getById(Long id) {
-        if(Objects.isNull(id)){
-        }
         return customerDao.getById(id);
     }
     

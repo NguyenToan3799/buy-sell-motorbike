@@ -3,6 +3,7 @@ package buysellmoto.model.mapper;
 import buysellmoto.model.dto.CustomerReviewsDto;
 import buysellmoto.model.entity.CustomerReviewsEntity;
 import buysellmoto.model.filter.CustomerReviewsFilter;
+import buysellmoto.model.vo.CustomerReviewsVo;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -31,5 +32,12 @@ public interface CustomerReviewsMapper {
     @Named("toDtos")
     @IterableMapping(qualifiedByName = "toDto")
     List<CustomerReviewsDto> toDto(List<CustomerReviewsEntity> entities);
+
+    @Named("entityToVo")
+    CustomerReviewsVo entityToVo(CustomerReviewsEntity entity);
+
+    @Named("entitiesToVos")
+    @IterableMapping(qualifiedByName = "entityToVo")
+    List<CustomerReviewsVo> entityToVo(List<CustomerReviewsEntity> entities);
 
 }
