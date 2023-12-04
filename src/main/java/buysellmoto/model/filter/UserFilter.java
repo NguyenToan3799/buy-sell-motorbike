@@ -19,6 +19,11 @@ import java.util.List;
 @NoArgsConstructor
 public class UserFilter extends ApiFilter<UserDto> {
 
+    //Change password
+    private String oldPassword;
+    private String newPassword;
+    private String confirmNewPassword;
+
     //Other
     private CustomerDto customerDto;
 

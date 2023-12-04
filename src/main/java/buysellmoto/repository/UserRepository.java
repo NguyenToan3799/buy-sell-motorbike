@@ -22,4 +22,14 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     List<UserEntity> findAllByIdIn(List<Long> ids);
 
+    boolean existsByEmail(String email);
+
+    boolean existsByPhone(String phone);
+
+    boolean existsByUserName(String phone);
+
+    boolean existsByIdNotAndEmail(Long id, String email);
+
+    boolean existsByIdNotAndPhone(Long id, String phone);
+
 }

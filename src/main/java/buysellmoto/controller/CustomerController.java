@@ -42,6 +42,13 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.updateOne(filter));
     }
 
+    @Operation(summary = "Update Avatar")
+    @PutMapping("/{id}/update-avatar")
+    public ResponseEntity<CustomerDto> updateAvatar(@PathVariable Long id,
+                                                    @RequestParam String avatarUrl) {
+        return ResponseEntity.ok(customerService.updateAvatar(id, avatarUrl));
+    }
+
     @Operation(summary = "Delete Existing Customer")
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {

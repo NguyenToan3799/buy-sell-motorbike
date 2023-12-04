@@ -107,6 +107,15 @@ public class UserService {
     @Transactional(rollbackOn = {Exception.class})
     public UserVo createCustomer(UserFilter filter) {
         UserDto preparingDto = filter.getCriteria();
+        if (userDao.existsByUserName(preparingDto.getUserName())) {
+            throw new BusinessException(ApiMessageCode.USER_NAME_EXIST);
+        }
+        if (userDao.existByPhone(preparingDto.getPhone())) {
+            throw new BusinessException(ApiMessageCode.PHONE_EXIST);
+        }
+        if (userDao.existsByEmail(preparingDto.getEmail())) {
+            throw new BusinessException(ApiMessageCode.EMAIL_EXIST);
+        }
         preparingDto.setId(null);
         preparingDto.setStatus(true);
         preparingDto.setRoleId(roleDao.getByName(RoleEnum.CUSTOMER.getCode()).getId());
@@ -143,6 +152,33 @@ public class UserService {
         }
         UserDto preparingDto = filter.getCriteria();
         return userDao.updateOne(preparingDto);
+    }
+
+    @Transactional(rollbackOn = {Exception.class})
+    public Boolean updateCustomerInfor(UserFilter filter) {
+        if (Objects.isNull(filter.getCriteria().getId())) {
+            throw new BusinessException(ApiMessageCode.REQUIRED_ID);
+        }
+        userDao.updateOne(filter.getCriteria());
+        customerDao.updateOne(filter.getCustomerDto());
+        return true;
+    }
+
+    @Transactional(rollbackOn = {Exception.class})
+    public Boolean updatePassword(UserFilter filter) {
+        if (Objects.isNull(filter.getCriteria().getId())) {
+            throw new BusinessException(ApiMessageCode.REQUIRED_ID);
+        }
+        UserDto userDto = userDao.getById(filter.getCriteria().getId());
+        if(Objects.equals(filter.getOldPassword(), userDto.getPassword())){
+            throw new BusinessException(ApiMessageCode.WRONG_OLD_PASSWORD);
+        }
+        if(Objects.equals(filter.getNewPassword(), filter.getConfirmNewPassword())){
+            throw new BusinessException(ApiMessageCode.NEW_PASSWORD_NOT_MATCH);
+        }
+        userDto.setPassword(filter.getNewPassword());
+        userDao.updateOne(filter.getCriteria());
+        return true;
     }
 
     @Transactional(rollbackOn = {Exception.class})

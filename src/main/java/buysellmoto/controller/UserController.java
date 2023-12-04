@@ -68,6 +68,18 @@ public class UserController {
         return ResponseEntity.ok(userService.updateOne(filter));
     }
 
+    @Operation(summary = "Update Customer Info")
+    @PutMapping("/{id}/customer")
+    public ResponseEntity<Boolean> updateCustomerInfor(@RequestBody UserFilter filter) {
+        return ResponseEntity.ok(userService.updateCustomerInfor(filter));
+    }
+
+    @Operation(summary = "Update Password")
+    @PutMapping("/change-password")
+    public ResponseEntity<Boolean> updatePassword(@RequestBody UserFilter filter) {
+        return ResponseEntity.ok(userService.updatePassword(filter));
+    }
+
     @Operation(summary = "Delete Existing User")
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {

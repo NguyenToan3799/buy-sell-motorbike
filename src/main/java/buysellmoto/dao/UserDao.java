@@ -49,6 +49,12 @@ public class UserDao {
 
     @Transactional(rollbackOn = {Exception.class})
     public UserDto updateOne(UserDto dto) {
+        if (userRepository.existsByIdNotAndEmail(dto.getId(), dto.getEmail())){
+            throw new BusinessException(ApiMessageCode.EMAIL_EXIST);
+        }
+        if (userRepository.existsByIdNotAndPhone(dto.getId(), dto.getPhone())){
+            throw new BusinessException(ApiMessageCode.PHONE_EXIST);
+        }
         return mapper.toDto(userRepository.save(mapper.toEntity(dto)));
     }
 
@@ -56,6 +62,18 @@ public class UserDao {
     public boolean deleteById(Long id) {
         userRepository.delete(userRepository.findById(id).orElseThrow());
         return true;
+    }
+
+    public boolean existByPhone(String phone){
+        return userRepository.existsByPhone(phone);
+    }
+
+    public boolean existsByEmail(String email){
+        return userRepository.existsByEmail(email);
+    }
+
+    public boolean existsByUserName(String userName){
+        return userRepository.existsByUserName(userName);
     }
 
 }

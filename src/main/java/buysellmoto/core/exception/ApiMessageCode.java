@@ -11,6 +11,11 @@ public final class ApiMessageCode {
     public static final String REQUIRED_ID = "required_id";
     public static final String SELL_REQUEST_ID_REQUIRED = "sell_request_id_required";
     public static final String BUY_REQUEST_ID_REQUIRED = "buy_request_id_required";
+    public static final String USER_NAME_EXIST = "user_name_exist";
+    public static final String PHONE_EXIST = "phone_exist";
+    public static final String EMAIL_EXIST = "email_exist";
+    public static final String WRONG_OLD_PASSWORD = "wrong_old_password";
+    public static final String NEW_PASSWORD_NOT_MATCH = "new_password_not_match";
 
     // User error
     public static final String INVALID_LOGIN_IDENTITIES_OR_PASSWORD = "Sai thông tin tài khoản hoặc mật khẩu";

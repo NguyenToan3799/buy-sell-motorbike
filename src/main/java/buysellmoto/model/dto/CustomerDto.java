@@ -34,6 +34,8 @@ public class CustomerDto implements Serializable {
 
     private String address;
 
+    private String avatarUrl;
+
     private Long userId;
 
 }

@@ -47,6 +47,13 @@ public class CustomerService {
     }
 
     @Transactional(rollbackOn = {Exception.class})
+    public CustomerDto updateAvatar(Long id, String avatarUrl) {
+        CustomerDto preparingDto = customerDao.getById(id);
+        preparingDto.setAvatarUrl(avatarUrl);
+        return customerDao.updateOne(preparingDto);
+    }
+
+    @Transactional(rollbackOn = {Exception.class})
     public Boolean deleteById(Long id) {
         customerDao.deleteById(id);
         return true;

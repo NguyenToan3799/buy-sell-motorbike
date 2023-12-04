@@ -29,6 +29,8 @@ public class CustomerEntity implements Serializable {
 
     private String address;
 
+    private String avatarUrl;
+
     @Column(nullable = false, columnDefinition = "BIGINT")
     private Long userId;
 
