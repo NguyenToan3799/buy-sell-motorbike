@@ -2,6 +2,7 @@ package buysellmoto.controller;
 
 import buysellmoto.model.dto.CustomerReviewsDto;
 import buysellmoto.model.filter.CustomerReviewsFilter;
+import buysellmoto.model.vo.CustomerReviewsVo;
 import buysellmoto.service.CustomerReviewsService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,12 @@ public class CustomerReviewsController {
     @GetMapping()
     public ResponseEntity<List<CustomerReviewsDto>> getAll() {
         return ResponseEntity.ok(customerReviewsService.getAll());
+    }
+
+    @Operation(summary = "Get By Showroom Id")
+    @GetMapping("/showroom/{showroomId}")
+    public ResponseEntity<List<CustomerReviewsVo>> getAll(@PathVariable Long showroomId) {
+        return ResponseEntity.ok(customerReviewsService.getByShowroomId(showroomId));
     }
 
     @Operation(summary = "Create New Customer Reviews")
