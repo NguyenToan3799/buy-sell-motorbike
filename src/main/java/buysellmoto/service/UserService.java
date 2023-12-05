@@ -125,6 +125,8 @@ public class UserService {
         CustomerDto preparingCustomer = filter.getCustomerDto();
         preparingCustomer.setUserId(userVo.getId());
         preparingCustomer.setId(null);
+        preparingCustomer.setIsBuy(true);
+        preparingCustomer.setIsBuy(true);
         userVo.setCustomerDto(customerDao.createOne(preparingCustomer));
 
         return userVo;

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -130,6 +131,9 @@ public class BuyRequestService {
             throw new BusinessException(ApiMessageCode.INVALID_STATUS);
         }
         List<BuyRequestVo> buyRequestVos = buyRequestDao.getByShowroomIdAndStatus(showroomId, status);
+        buyRequestVos = buyRequestVos.stream()
+                .sorted(Comparator.comparing(BuyRequestVo::getCreatedDate).reversed())
+                .toList();
 
         // Lấy Customer
         List<Long> customerIds = buyRequestVos.stream().map(BuyRequestVo::getCustomerId).distinct().toList();

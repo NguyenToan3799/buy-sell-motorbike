@@ -22,24 +22,24 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomerDto implements Serializable {
+public class CommentReviewsDto implements Serializable {
 
     private Long id;
 
-    private String fullName;
+    private String commentatorId;
 
-    @JsonSerialize(using = DateToTimestamp.class)
-    @JsonDeserialize(using = TimestampToDate.class)
-    private LocalDateTime dob;
+    private String commentatorName;
 
-    private String address;
+    private String commentatorType;
 
     private String avatarUrl;
 
-    private Boolean isSell;
+    private String commentContent;
 
-    private Boolean isBuy;
+    @JsonSerialize(using = DateToTimestamp.class)
+    @JsonDeserialize(using = TimestampToDate.class)
+    private LocalDateTime commentDate;
 
-    private Long userId;
+    private Long customerReviewsId;
 
 }

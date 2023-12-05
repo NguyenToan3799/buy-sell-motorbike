@@ -13,29 +13,28 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "CUSTOMER")
-public class CustomerEntity implements Serializable {
+@Table(name = "COMMENT_REVIEWS")
+public class CommentReviewsEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String fullName;
+    private String commentatorId;
 
-    @Column(columnDefinition = "TIMESTAMP")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime dob;
+    private String commentatorName;
 
-    private String address;
+    private String commentatorType;
 
     private String avatarUrl;
 
-    private Boolean isSell;
+    private String commentContent;
 
-    private Boolean isBuy;
+    @Column(columnDefinition = "TIMESTAMP")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime commentDate;
 
     @Column(nullable = false, columnDefinition = "BIGINT")
-    private Long userId;
+    private Long customerReviewsId;
 
 }
