@@ -3,8 +3,10 @@ package buysellmoto.service;
 
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
+import buysellmoto.dao.CommentReviewsDao;
 import buysellmoto.dao.CustomerDao;
 import buysellmoto.dao.CustomerReviewsDao;
+import buysellmoto.model.dto.CommentReviewsDto;
 import buysellmoto.model.dto.CustomerDto;
 import buysellmoto.model.dto.CustomerReviewsDto;
 import buysellmoto.model.filter.CustomerReviewsFilter;
@@ -28,6 +30,8 @@ public class CustomerReviewsService {
     @Autowired
     private CustomerDao customerDao;
     @Autowired
+    private CommentReviewsDao commentReviewsDao;
+    @Autowired
     private CustomerReviewsMapper customerReviewsMapper;
 
     public CustomerReviewsDto getById(Long id) {
@@ -47,8 +51,14 @@ public class CustomerReviewsService {
         Map<Long, CustomerDto> customerDtoMap = customerDao.getByIds(customerIds).stream()
                 .collect(Collectors.toMap(CustomerDto::getId, Function.identity()));
 
-        customerReviewsVos.forEach(customerReviewsVo
-                -> customerReviewsVo.setCustomerDto(customerDtoMap.get(customerReviewsVo.getCustomerId())));
+        List<Long> customerReviewsIds = customerReviewsVos.stream().map(CustomerReviewsVo::getId).toList();
+        Map<Long, List<CommentReviewsDto>> mapComment = commentReviewsDao.getByCustomerReviewsIds(customerReviewsIds).stream()
+                        .collect(Collectors.groupingBy(CommentReviewsDto::getCustomerReviewsId));
+
+        customerReviewsVos.forEach(customerReviewsVo -> {
+            customerReviewsVo.setCustomerDto(customerDtoMap.get(customerReviewsVo.getCustomerId()));
+            customerReviewsVo.setCommentReviewsDtos(mapComment.get(customerReviewsVo.getId()));
+        });
         return customerReviewsVos;
     }
 

@@ -30,6 +30,10 @@ public class CommentReviewsDao {
         return mapper.toDto(commentReviewsRepository.findAllByCustomerReviewsId(customerReviewId));
     }
 
+    public List<CommentReviewsDto> getByCustomerReviewsIds(List<Long> customerReviewIds) {
+        return mapper.toDto(commentReviewsRepository.findAllByCustomerReviewsIdIn(customerReviewIds));
+    }
+
     @Transactional(rollbackOn = {Exception.class})
     public CommentReviewsDto createOne(CommentReviewsDto dto) {
         return mapper.toDto(commentReviewsRepository.save(mapper.toEntity(dto)));

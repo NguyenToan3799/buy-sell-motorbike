@@ -12,4 +12,6 @@ public interface CommentReviewsRepository extends JpaRepository<CommentReviewsEn
 
     List<CommentReviewsEntity> findAllByCustomerReviewsId(Long customerReviewsId);
 
+    List<CommentReviewsEntity> findAllByCustomerReviewsIdIn(List<Long> customerReviewsIds);
+
 }
