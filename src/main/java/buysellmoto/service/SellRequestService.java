@@ -20,6 +20,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -116,6 +117,9 @@ public class SellRequestService {
             throw new BusinessException(ApiMessageCode.INVALID_STATUS);
         }
         List<SellRequestVo> sellRequestVos = sellRequestDao.getByShowroomIdAndStatus(showroomId, status);
+        sellRequestVos = sellRequestVos.stream()
+                .sorted(Comparator.comparing(SellRequestVo::getCreatedDate).reversed())
+                .toList();
 
         // Lấy Customer
         List<Long> customerIds = sellRequestVos.stream().map(SellRequestVo::getCustomerId).distinct().toList();

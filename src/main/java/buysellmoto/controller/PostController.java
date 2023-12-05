@@ -53,7 +53,7 @@ public class PostController {
 
     @Operation(summary = "Paging Post")
     @PostMapping("/paging")
-    public ResponseEntity<Page<PostProjection>> deleteById(@RequestBody PostFilter filter) {
+    public ResponseEntity<Page<PostProjection>> getPaging(@RequestBody PostFilter filter) {
         return ResponseEntity.ok(postService.getPaging(filter));
     }
 
