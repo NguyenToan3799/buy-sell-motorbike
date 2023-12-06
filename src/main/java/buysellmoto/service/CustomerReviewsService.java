@@ -59,6 +59,7 @@ public class CustomerReviewsService {
             customerReviewsVo.setCustomerDto(customerDtoMap.get(customerReviewsVo.getCustomerId()));
             customerReviewsVo.setCommentReviewsDtos(mapComment.get(customerReviewsVo.getId()));
         });
+        
         return customerReviewsVos;
     }
 
