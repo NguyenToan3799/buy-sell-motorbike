@@ -8,6 +8,7 @@ import buysellmoto.dao.ShowroomImageDao;
 import buysellmoto.model.dto.ShowroomDto;
 import buysellmoto.model.filter.ShowroomFilter;
 import buysellmoto.model.mapper.ShowroomMapper;
+import buysellmoto.model.vo.BuyRequestVo;
 import buysellmoto.model.vo.ShowroomProjection;
 import buysellmoto.model.vo.ShowroomVo;
 import jakarta.transaction.Transactional;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,7 +37,11 @@ public class ShowroomService {
     }
     
     public List<ShowroomDto> getAll() {
-        return showroomDao.getAll();
+        List<ShowroomDto> showroomDtos = showroomDao.getAll();
+        showroomDtos = showroomDtos.stream()
+                .sorted(Comparator.comparing(ShowroomDto::getId))
+                .toList();
+        return showroomDtos;
     }
 
     @Transactional(rollbackOn = {Exception.class})

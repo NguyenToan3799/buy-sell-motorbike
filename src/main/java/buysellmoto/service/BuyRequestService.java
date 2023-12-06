@@ -71,6 +71,7 @@ public class BuyRequestService {
         BuyRequestDto preparingDto = filter.getCriteria();
         preparingDto.setStatus(CREATED.getCode());
         preparingDto.setId(null);
+        preparingDto.setCreatedDate(LocalDateTime.now());
         buyRequestDao.createOne(preparingDto);
         return true;
     }
