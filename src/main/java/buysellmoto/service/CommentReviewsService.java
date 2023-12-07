@@ -1,6 +1,7 @@
 package buysellmoto.service;
 
 
+import buysellmoto.core.enumeration.CommentatorTypeEnum;
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
 import buysellmoto.dao.CommentReviewsDao;
@@ -9,8 +10,10 @@ import buysellmoto.model.filter.CommentReviewsFilter;
 import buysellmoto.model.mapper.CommentReviewsMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,7 +38,11 @@ public class CommentReviewsService {
     @Transactional(rollbackOn = {Exception.class})
     public CommentReviewsDto createOne (CommentReviewsFilter filter) {
         CommentReviewsDto preparingDto = filter.getCriteria();
+        if (Objects.equals(CommentatorTypeEnum.of(preparingDto.getCommentatorType()), CommentatorTypeEnum.INVALID)) {
+            throw new BusinessException(ApiMessageCode.COMMENTATOR_TYPE_INVALID);
+        }
         preparingDto.setId(null);
+        preparingDto.setCommentDate(LocalDateTime.now());
         return commentReviewsDao.createOne(preparingDto);
     }
 

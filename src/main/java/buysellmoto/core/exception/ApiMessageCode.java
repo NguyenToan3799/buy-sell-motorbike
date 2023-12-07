@@ -16,6 +16,8 @@ public final class ApiMessageCode {
     public static final String EMAIL_EXIST = "email_exist";
     public static final String WRONG_OLD_PASSWORD = "wrong_old_password";
     public static final String NEW_PASSWORD_NOT_MATCH = "new_password_not_match";
+    public static final String COMMENTATOR_TYPE_INVALID = "commentator_type_invalid";
+
 
     // User error
     public static final String INVALID_LOGIN_IDENTITIES_OR_PASSWORD = "Sai thông tin tài khoản hoặc mật khẩu";
