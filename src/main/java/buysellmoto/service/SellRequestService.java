@@ -92,7 +92,7 @@ public class SellRequestService {
         MotorbikeDto motorbikeDto = motorbikeDao.createOne(motorbikeMapper.voToDto(motorbikeVo));
 
         //Crate List Image
-        if (ObjectUtils.isEmpty(motorbikeVo.getMotorbikeImageDtos())) {
+        if (!ObjectUtils.isEmpty(motorbikeVo.getMotorbikeImageDtos())) {
             List<MotorbikeImageDto> motorbikeImageDtos = motorbikeVo.getMotorbikeImageDtos();
             motorbikeImageDtos.forEach(motorbikeImageDto -> {
                 motorbikeImageDto.setId(null);
