@@ -112,11 +112,35 @@ public class SellRequestService {
         return sellRequestDao.createOne(sellRequestDto);
     }
 
-    public List<SellRequestVo> getListSellRequest(Long showroomId, String status) {
+    public List<SellRequestVo> getListSellRequestByShowroomId(Long showroomId, String status) {
         if (SellRequestEnum.of(status) == SellRequestEnum.INVALID) {
             throw new BusinessException(ApiMessageCode.INVALID_STATUS);
         }
         List<SellRequestVo> sellRequestVos = sellRequestDao.getByShowroomIdAndStatus(showroomId, status);
+        sellRequestVos = sellRequestVos.stream()
+                .sorted(Comparator.comparing(SellRequestVo::getCreatedDate).reversed())
+                .toList();
+
+        // Lấy Customer
+        List<Long> customerIds = sellRequestVos.stream().map(SellRequestVo::getCustomerId).distinct().toList();
+        Map<Long, CustomerDto> mapCustomerDtos = customerDao.getByIds(customerIds).stream()
+                .collect(Collectors.toMap(CustomerDto::getId, Function.identity()));
+
+        // Lấy Motorbike
+        List<Long> motorbikeIds = sellRequestVos.stream().map(SellRequestVo::getMotorbikeId).distinct().toList();
+        Map<Long, MotorbikeDto> mapMotorbikeDto = motorbikeDao.getByIds(motorbikeIds).stream()
+                .collect(Collectors.toMap(MotorbikeDto::getId, Function.identity()));
+
+        sellRequestVos.forEach(sellRequestVo -> {
+            sellRequestVo.setCustomerDto(mapCustomerDtos.get(sellRequestVo.getCustomerId()));
+            sellRequestVo.setMotorbikeDto(mapMotorbikeDto.get(sellRequestVo.getMotorbikeId()));
+        });
+
+        return sellRequestVos;
+    }
+
+    public List<SellRequestVo> getListSellRequestByCustomerId(Long customerId) {
+        List<SellRequestVo> sellRequestVos = sellRequestDao.findAllByCustomerId(customerId);
         sellRequestVos = sellRequestVos.stream()
                 .sorted(Comparator.comparing(SellRequestVo::getCreatedDate).reversed())
                 .toList();

@@ -35,6 +35,9 @@ public class BuyRequestDao {
         return mapper.entityToVo(buyRequestRepository.findAllByShowroomIdAndStatus(showroomId, status));
     }
 
+    public List<BuyRequestVo> getByCustomerId(Long customerId) {
+        return mapper.entityToVo(buyRequestRepository.findAllByCustomerId(customerId));
+    }
 
     @Transactional(rollbackOn = {Exception.class})
     public BuyRequestDto createOne(BuyRequestDto dto) {

@@ -47,4 +47,8 @@ public class SellRequestDao {
         return mapper.entityToVo(sellRequestRepository.findAllByShowroomIdAndStatus(showroomId, status));
     }
 
+    public List<SellRequestVo> findAllByCustomerId(Long customerId){
+        return mapper.entityToVo(sellRequestRepository.findAllByCustomerId(customerId));
+    }
+
 }

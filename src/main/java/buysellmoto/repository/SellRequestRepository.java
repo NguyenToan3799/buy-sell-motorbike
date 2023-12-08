@@ -11,4 +11,6 @@ public interface SellRequestRepository extends JpaRepository<SellRequestEntity, 
 
     List<SellRequestEntity> findAllByShowroomIdAndStatus(Long showroomId, String status);
 
+    List<SellRequestEntity> findAllByCustomerId(Long customerId);
+
 }

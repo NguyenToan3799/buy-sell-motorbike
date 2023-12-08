@@ -37,8 +37,14 @@ public class BuyRequestController {
     @Operation(summary = "Get List Buy Request")
     @GetMapping("/list/{showroomId}")
     public ResponseEntity<List<BuyRequestVo>> getListBuyRequest(@PathVariable Long showroomId,
-                                                                  @RequestParam String status) {
+                                                                @RequestParam String status) {
         return ResponseEntity.ok(buyRequestService.getListBuyRequest(showroomId, status));
+    }
+
+    @Operation(summary = "Get List Buy Request By CustomerId")
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<List<BuyRequestVo>> getListBuyRequestByCustomerId(@PathVariable Long customerId) {
+        return ResponseEntity.ok(buyRequestService.getListBuyRequestByCustomerId(customerId));
     }
 
     @Operation(summary = "Create New Buy Request")
