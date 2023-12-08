@@ -17,6 +17,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +70,7 @@ public class CustomerReviewsService {
     public CustomerReviewsDto createOne (CustomerReviewsFilter filter) {
         CustomerReviewsDto preparingDto = filter.getCriteria();
         preparingDto.setId(null);
+        preparingDto.setReviewDate(LocalDateTime.now());
         return customerReviewsDao.createOne(preparingDto);
     }
 
