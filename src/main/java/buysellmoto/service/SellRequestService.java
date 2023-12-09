@@ -14,6 +14,7 @@ import buysellmoto.model.vo.MotorbikeVo;
 import buysellmoto.model.vo.SellRequestVo;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
+import lombok.SneakyThrows;
 import org.apache.catalina.User;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,7 +116,6 @@ public class SellRequestService {
         sellRequestDto.setMotorbikeId(motorbikeDto.getId());
 
         sellRequestDto = sellRequestDao.createOne(sellRequestDto);
-        mailService.approveSellRequest(this.getById(sellRequestDto.getId()));
         return sellRequestDto;
     }
 
@@ -194,12 +194,16 @@ public class SellRequestService {
         return true;
     }
 
+    @SneakyThrows
     @Transactional(rollbackOn = {Exception.class})
     public Boolean approvedSellRequest(Long id) {
-        if (Objects.isNull(sellRequestDao.getById(id))) {
+        SellRequestDto sellRequestDto = sellRequestDao.getById(id);
+        if (Objects.isNull(sellRequestDto)) {
             throw new BusinessException(ApiMessageCode.SELL_REQUEST_NOT_EXIST);
         }
         this.updateStatus(id, SellRequestEnum.APPROVED.getCode());
+
+        mailService.approveSellRequest(this.getById(sellRequestDto.getId()));
         return true;
     }
 
