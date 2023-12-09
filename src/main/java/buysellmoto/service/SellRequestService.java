@@ -64,7 +64,7 @@ public class SellRequestService {
         sellRequestVo.getCustomerVo().setPhone(userDao.getById(sellRequestVo.getCustomerVo().getUserId()).getPhone());
 
         sellRequestVo.setMotorbikeImageDto(motorbikeImageDao.getByMotorbikeId(sellRequestVo.getMotorbikeId()));
-        sellRequestVo.setUserDto(userDao.getById(sellRequestVo.getCustomerDto().getUserId()));
+        sellRequestVo.setUserDto(userDao.getById(sellRequestVo.getCustomerVo().getUserId()));
 
         if (sellRequestVo.getStatus().equals(SellRequestEnum.REJECTED.getCode())) {
             sellRequestVo.setRejectRequestDto(rejectRequestDao.getBySellRequestId(sellRequestVo.getId()));
@@ -202,7 +202,6 @@ public class SellRequestService {
             throw new BusinessException(ApiMessageCode.SELL_REQUEST_NOT_EXIST);
         }
         this.updateStatus(id, SellRequestEnum.APPROVED.getCode());
-
         mailService.approveSellRequest(this.getById(sellRequestDto.getId()));
         return true;
     }
