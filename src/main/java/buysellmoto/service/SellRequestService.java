@@ -3,6 +3,7 @@ package buysellmoto.service;
 import buysellmoto.core.enumeration.SellRequestEnum;
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
+import buysellmoto.core.mail.MailService;
 import buysellmoto.dao.*;
 import buysellmoto.model.dto.*;
 import buysellmoto.model.filter.MotorbikeFilter;
@@ -11,6 +12,7 @@ import buysellmoto.model.filter.SellRequestFilter;
 import buysellmoto.model.mapper.*;
 import buysellmoto.model.vo.MotorbikeVo;
 import buysellmoto.model.vo.SellRequestVo;
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import org.apache.catalina.User;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -50,6 +52,8 @@ public class SellRequestService {
     private MotorbikeMapper motorbikeMapper;
     @Autowired
     private CustomerMapper customerMapper;
+    @Autowired
+    private MailService mailService;
 
     public SellRequestVo getById(Long id) {
         SellRequestVo sellRequestVo = sellRequestDao.getById(id);
@@ -59,6 +63,7 @@ public class SellRequestService {
         sellRequestVo.getCustomerVo().setPhone(userDao.getById(sellRequestVo.getCustomerVo().getUserId()).getPhone());
 
         sellRequestVo.setMotorbikeImageDto(motorbikeImageDao.getByMotorbikeId(sellRequestVo.getMotorbikeId()));
+        sellRequestVo.setUserDto(userDao.getById(sellRequestVo.getCustomerDto().getUserId()));
 
         if (sellRequestVo.getStatus().equals(SellRequestEnum.REJECTED.getCode())) {
             sellRequestVo.setRejectRequestDto(rejectRequestDao.getBySellRequestId(sellRequestVo.getId()));
@@ -84,7 +89,7 @@ public class SellRequestService {
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public SellRequestDto createOne(SellRequestFilter filter) {
+    public SellRequestDto createOne(SellRequestFilter filter) throws MessagingException {
 
         // Create Motorbike
         MotorbikeVo motorbikeVo = filter.getMotorbikeVo();
@@ -109,7 +114,9 @@ public class SellRequestService {
         sellRequestDto.setCreatedDate(LocalDateTime.now());
         sellRequestDto.setMotorbikeId(motorbikeDto.getId());
 
-        return sellRequestDao.createOne(sellRequestDto);
+        sellRequestDto = sellRequestDao.createOne(sellRequestDto);
+        mailService.approveSellRequest(this.getById(sellRequestDto.getId()));
+        return sellRequestDto;
     }
 
     public List<SellRequestVo> getListSellRequestByShowroomId(Long showroomId, String status) {

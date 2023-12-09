@@ -7,6 +7,7 @@ import buysellmoto.model.filter.SellRequestFilter;
 import buysellmoto.model.vo.SellRequestVo;
 import buysellmoto.service.SellRequestService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
@@ -75,7 +76,7 @@ public class SellRequestController {
 
     @Operation(summary = "Create New Sell Request")
     @PostMapping()
-    public ResponseEntity<SellRequestDto> createOne(@RequestBody SellRequestFilter filter) {
+    public ResponseEntity<SellRequestDto> createOne(@RequestBody SellRequestFilter filter) throws MessagingException {
         return ResponseEntity.ok(sellRequestService.createOne(filter));
     }
 

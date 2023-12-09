@@ -32,4 +32,6 @@ public class SellRequestVo extends SellRequestDto {
 
     private CheckedSellRequestDto checkedSellRequestDto;
 
+    private UserDto userDto;
+
 }
