@@ -50,6 +50,8 @@ public class SellRequestService {
     @Autowired
     private UserDao userDao;
     @Autowired
+    private PostDao postDao;
+    @Autowired
     private MotorbikeMapper motorbikeMapper;
     @Autowired
     private CustomerMapper customerMapper;
@@ -64,7 +66,7 @@ public class SellRequestService {
         sellRequestVo.getCustomerVo().setPhone(userDao.getById(sellRequestVo.getCustomerVo().getUserId()).getPhone());
 
         sellRequestVo.setMotorbikeImageDto(motorbikeImageDao.getByMotorbikeId(sellRequestVo.getMotorbikeId()));
-        sellRequestVo.setUserDto(userDao.getById(sellRequestVo.getCustomerDto().getUserId()));
+        sellRequestVo.setUserDto(userDao.getById(sellRequestVo.getCustomerVo().getUserId()));
 
         if (sellRequestVo.getStatus().equals(SellRequestEnum.REJECTED.getCode())) {
             sellRequestVo.setRejectRequestDto(rejectRequestDao.getBySellRequestId(sellRequestVo.getId()));
@@ -72,6 +74,9 @@ public class SellRequestService {
         if (sellRequestVo.getStatus().equals(SellRequestEnum.CHECKED.getCode())) {
             sellRequestVo.setCheckedSellRequestDto(checkedSellRequestDao.getBySellRequestId(sellRequestVo.getId()));
         }
+//        if (sellRequestVo.getStatus().equals(SellRequestEnum.POSTED.getCode())) {
+//            sellRequestVo.setPostDto(postDao.getById());
+//        }
 
         return sellRequestVo;
     }
@@ -202,7 +207,6 @@ public class SellRequestService {
             throw new BusinessException(ApiMessageCode.SELL_REQUEST_NOT_EXIST);
         }
         this.updateStatus(id, SellRequestEnum.APPROVED.getCode());
-
         mailService.approveSellRequest(this.getById(sellRequestDto.getId()));
         return true;
     }

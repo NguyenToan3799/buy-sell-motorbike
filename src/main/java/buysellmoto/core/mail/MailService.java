@@ -59,7 +59,7 @@ public class MailService {
         // Create a Thymeleaf context
         Context context = new Context();
 
-        context.setVariable("customerName", sellRequestVo.getCustomerDto().getFullName());
+        context.setVariable("customerName", sellRequestVo.getCustomerVo().getFullName());
         context.setVariable("showroomName", sellRequestVo.getShowroomDto().getName());
         context.setVariable("address", sellRequestVo.getShowroomDto().getAddress());
         context.setVariable("phone", sellRequestVo.getShowroomDto().getPhone());
