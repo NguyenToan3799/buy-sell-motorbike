@@ -34,13 +34,15 @@ public class PostDto implements Serializable {
     @JsonDeserialize(using = TimestampToDate.class)
     private LocalDateTime expiredDate;
 
+    private String postedBy;
+
     private Double price;
 
     private String title;
 
     private String content;
 
-//    private String status;
+    private String status;
 
     private Long motorbikeId;
 

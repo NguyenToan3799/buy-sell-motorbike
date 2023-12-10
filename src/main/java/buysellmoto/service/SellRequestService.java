@@ -105,7 +105,7 @@ public class SellRequestService {
                 motorbikeImageDto.setMotorbikeId(motorbikeDto.getId());
             });
             motorbikeImageDao.createAll(motorbikeImageDtos);
-        } 
+        }
 
         // Create
         SellRequestDto sellRequestDto = filter.getCriteria();
@@ -255,30 +255,14 @@ public class SellRequestService {
     }
 
     private boolean validateStatusMoving(SellRequestEnum preStatus, SellRequestEnum newStatus) {
-        switch (preStatus) {
-            case CREATED:
-                if (newStatus == SellRequestEnum.APPROVED || newStatus == SellRequestEnum.REJECTED) {
-                    return true;
-                }
-            case APPROVED:
-                if (newStatus == SellRequestEnum.CHECKED || newStatus == SellRequestEnum.REJECTED) {
-                    return true;
-                }
-            case CHECKED:
-                if (newStatus == SellRequestEnum.POSTED) {
-                    return true;
-                }
-            case POSTED:
-                if (newStatus == SellRequestEnum.COMPLETED || newStatus == SellRequestEnum.EXPIRED) {
-                    return true;
-                }
-            case EXPIRED:
-                if (newStatus == SellRequestEnum.POSTED || newStatus == SellRequestEnum.REJECTED) {
-                    return true;
-                }
-            default:
-                return false;
-        }
+        return switch (preStatus) {
+            case CREATED -> newStatus == SellRequestEnum.APPROVED || newStatus == SellRequestEnum.REJECTED;
+            case APPROVED -> newStatus == SellRequestEnum.CHECKED || newStatus == SellRequestEnum.REJECTED;
+            case CHECKED -> newStatus == SellRequestEnum.POSTED;
+            case POSTED -> newStatus == SellRequestEnum.COMPLETED || newStatus == SellRequestEnum.EXPIRED;
+            case EXPIRED -> newStatus == SellRequestEnum.POSTED || newStatus == SellRequestEnum.REJECTED;
+            default -> false;
+        };
     }
 
 }

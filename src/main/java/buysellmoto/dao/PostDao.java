@@ -1,6 +1,7 @@
 package buysellmoto.dao;
 
 import buysellmoto.core.enumeration.NamingConventionEnum;
+import buysellmoto.core.enumeration.PostStatusEnum;
 import buysellmoto.model.dto.PostDto;
 import buysellmoto.model.filter.PostFilter;
 import buysellmoto.model.mapper.PostMapper;
@@ -56,11 +57,12 @@ public class PostDao {
         return postRepository.getPaging(postFilter.getPageable(),
                 postFilter.getSearchValue(),
                 postFilter.getBrandName(),
-                postFilter.getProvince());
+                postFilter.getProvince(),
+                PostStatusEnum.ACTIVE.getCode());
     }
 
-    public List<PostProjection> getPostByShowroomId(Long showroomId) {
-        return postRepository.getPostByShowroomId(showroomId);
+    public List<PostProjection> getPostByShowroomId(Long showroomId, String status) {
+        return postRepository.getPostByShowroomId(showroomId, status);
     }
 
 }

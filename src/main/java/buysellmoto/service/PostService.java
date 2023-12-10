@@ -1,5 +1,6 @@
 package buysellmoto.service;
 
+import buysellmoto.core.enumeration.PostStatusEnum;
 import buysellmoto.core.enumeration.SellRequestEnum;
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
@@ -61,6 +62,7 @@ public class PostService {
 
         PostDto preparingDto = filter.getCriteria();
         preparingDto.setId(null);
+        preparingDto.setStatus(PostStatusEnum.ACTIVE.getCode());
         return postDao.createOne(preparingDto);
     }
 
@@ -83,8 +85,11 @@ public class PostService {
         return postDao.getPaging(postFilter);
     }
 
-    public List<PostProjection> getPostByShowroomId(Long showroomId) {
-        return postDao.getPostByShowroomId(showroomId);
+    public List<PostProjection> getPostByShowroomId(Long showroomId, String status) {
+        if (Objects.equals(PostStatusEnum.of(status), PostStatusEnum.INVALID)) {
+            throw new BusinessException(ApiMessageCode.INVALID_STATUS);
+        }
+        return postDao.getPostByShowroomId(showroomId, status);
     }
 
 }

@@ -28,6 +28,10 @@ public class PostEntity implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime expiredDate;
 
+    private String postedBy;
+
+    private String status;
+
     @Column(nullable = false)
     private Double price;
 

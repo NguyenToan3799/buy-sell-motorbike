@@ -59,8 +59,9 @@ public class PostController {
 
     @Operation(summary = "Get Post by Showroom Id")
     @GetMapping("/projection/{showroomId}")
-    public ResponseEntity<List<PostProjection>> getPostByShowroomId(@PathVariable Long showroomId) {
-        return ResponseEntity.ok(postService.getPostByShowroomId(showroomId));
+    public ResponseEntity<List<PostProjection>> getPostByShowroomId(@PathVariable Long showroomId,
+                                                                    @RequestParam String status) {
+        return ResponseEntity.ok(postService.getPostByShowroomId(showroomId, status));
     }
 
 }

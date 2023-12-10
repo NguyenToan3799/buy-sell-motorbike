@@ -27,12 +27,13 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
             + "WHERE (UPPER(COALESCE(m.name, '')) LIKE CONCAT('%', UPPER(:searchValue), '%')) "
             + "AND ((:brandName IS NULL) OR (mb.name IN :brandName)) "
             + "AND (UPPER(COALESCE(s.province, '')) LIKE CONCAT('%', UPPER(:province), '%')) "
-            + "AND mi.is_thumbnail = true "
+            + "AND mi.is_thumbnail = true AND p.status = :status "
             + "ORDER BY p.created_date DESC ", nativeQuery = true)
     Page<PostProjection> getPaging(Pageable pageable,
                                    @Param("searchValue") String searchValue,
                                    @Param("brandName") List<String> brandName,
-                                   @Param("province") String province);
+                                   @Param("province") String province,
+                                   @Param("status") String status);
 
     @Query(value = "SELECT p.id AS id, p.price AS price, p.created_date AS createdDate, "
             + "m.name AS motorbikeName, m.condition AS motorbikeCondition, "
@@ -44,9 +45,9 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
             + "INNER JOIN moto_brand mb ON m.moto_brand_id = mb.id "
             + "LEFT JOIN motorbike_image mi ON mi.motorbike_id = m.id "
             + "WHERE p.showroom_id = :showroomId "
-            + "AND mi.is_thumbnail = true "
+            + "AND mi.is_thumbnail = true AND p.status = :status "
             + "ORDER BY p.created_date DESC ", nativeQuery = true)
-    List<PostProjection> getPostByShowroomId(Long showroomId);
+    List<PostProjection> getPostByShowroomId(Long showroomId, String status);
 
     List<PostEntity> findAllByIdIn(List<Long> ids);
 
