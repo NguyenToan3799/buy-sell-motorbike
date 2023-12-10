@@ -34,4 +34,6 @@ public class SellRequestVo extends SellRequestDto {
 
     private UserDto userDto;
 
+    private List<PostDto> postDto;
+
 }

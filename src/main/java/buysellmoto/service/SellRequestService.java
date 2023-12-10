@@ -50,6 +50,8 @@ public class SellRequestService {
     @Autowired
     private UserDao userDao;
     @Autowired
+    private PostDao postDao;
+    @Autowired
     private MotorbikeMapper motorbikeMapper;
     @Autowired
     private CustomerMapper customerMapper;
@@ -72,6 +74,9 @@ public class SellRequestService {
         if (sellRequestVo.getStatus().equals(SellRequestEnum.CHECKED.getCode())) {
             sellRequestVo.setCheckedSellRequestDto(checkedSellRequestDao.getBySellRequestId(sellRequestVo.getId()));
         }
+//        if (sellRequestVo.getStatus().equals(SellRequestEnum.POSTED.getCode())) {
+//            sellRequestVo.setPostDto(postDao.getById());
+//        }
 
         return sellRequestVo;
     }
