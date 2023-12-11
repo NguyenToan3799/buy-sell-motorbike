@@ -172,10 +172,10 @@ public class UserService {
             throw new BusinessException(ApiMessageCode.REQUIRED_ID);
         }
         UserDto userDto = userDao.getById(filter.getCriteria().getId());
-        if(Objects.equals(filter.getOldPassword(), userDto.getPassword())){
+        if(!Objects.equals(filter.getOldPassword(), userDto.getPassword())){
             throw new BusinessException(ApiMessageCode.WRONG_OLD_PASSWORD);
         }
-        if(Objects.equals(filter.getNewPassword(), filter.getConfirmNewPassword())){
+        if(!Objects.equals(filter.getNewPassword(), filter.getConfirmNewPassword())){
             throw new BusinessException(ApiMessageCode.NEW_PASSWORD_NOT_MATCH);
         }
         userDto.setPassword(filter.getNewPassword());
