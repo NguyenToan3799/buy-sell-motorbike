@@ -179,7 +179,7 @@ public class UserService {
             throw new BusinessException(ApiMessageCode.NEW_PASSWORD_NOT_MATCH);
         }
         userDto.setPassword(filter.getNewPassword());
-        userDao.updateOne(filter.getCriteria());
+        userDao.updateOne(userDto);
         return true;
     }
 
