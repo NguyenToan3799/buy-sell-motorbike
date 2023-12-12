@@ -13,6 +13,7 @@ public enum TransactionTypeEnum {
     FINALISE("FINALISE"),
     SELLER_PAY("SELLER_PAY"),
     INTERNAL("INTERNAL"),
+    POSTING_FEE("POSTING_FEE"),
 
     INVALID("INVALID");
 

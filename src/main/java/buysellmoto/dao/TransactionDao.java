@@ -50,4 +50,12 @@ public class TransactionDao {
         return true;
     }
 
+    public List<TransactionDto> getByBuyRequestId(Long buyRequestId) {
+        return transactionMapper.toDto(transactionRepository.findAllByBuyRequestId(buyRequestId));
+    }
+
+    public List<TransactionDto> getBySellRequestId(Long sellRequestId) {
+        return transactionMapper.toDto(transactionRepository.findAllBySellRequestId(sellRequestId));
+    }
+
 }

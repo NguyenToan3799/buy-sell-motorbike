@@ -25,6 +25,18 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.getById(id));
     }
 
+    @Operation(summary = "Get Transaction By Sell Request Id")
+    @GetMapping("/sell-request/{sellRequestId}")
+    public ResponseEntity<List<TransactionDto>> getBySellRequestId(@PathVariable Long sellRequestId) {
+        return ResponseEntity.ok(transactionService.getBySellRequestId(sellRequestId));
+    }
+
+    @Operation(summary = "Get Transaction By Buy Request Id")
+    @GetMapping("/buy-request/{buyRequestId}")
+    public ResponseEntity<List<TransactionDto>> getByBuyRequestId(@PathVariable Long buyRequestId) {
+        return ResponseEntity.ok(transactionService.getByBuyRequestId(buyRequestId));
+    }
+
     @Operation(summary = "Get All Transaction")
     @GetMapping()
     public ResponseEntity<List<TransactionDto>> getAll() {

@@ -13,4 +13,8 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
 
     List<TransactionEntity> findAllByShowroomIdAndType(Long showroomId, String type);
 
+    List<TransactionEntity> findAllBySellRequestId(Long sellRequestId);
+
+    List<TransactionEntity> findAllByBuyRequestId(Long buyRequestId);
+
 }

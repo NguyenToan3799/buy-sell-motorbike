@@ -42,6 +42,14 @@ public class TransactionService {
         return transactionDao.getAll();
     }
 
+    public List<TransactionDto> getByBuyRequestId(Long buyRequestId) {
+        return transactionDao.getByBuyRequestId(buyRequestId);
+    }
+
+    public List<TransactionDto> getBySellRequestId(Long sellRequestId) {
+        return transactionDao.getBySellRequestId(sellRequestId);
+    }
+
     public List<TransactionDto> getByShowroomId(Long showroomId) {
         return transactionDao.getByShowroomId(showroomId);
     }
