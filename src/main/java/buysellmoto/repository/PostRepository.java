@@ -51,4 +51,5 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
 
     List<PostEntity> findAllByIdIn(List<Long> ids);
 
+    List<PostEntity> findAllBySellRequestId(Long sellRequestId);
 }

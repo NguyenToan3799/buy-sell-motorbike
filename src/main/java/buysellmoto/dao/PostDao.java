@@ -3,6 +3,7 @@ package buysellmoto.dao;
 import buysellmoto.core.enumeration.NamingConventionEnum;
 import buysellmoto.core.enumeration.PostStatusEnum;
 import buysellmoto.model.dto.PostDto;
+import buysellmoto.model.entity.PostEntity;
 import buysellmoto.model.filter.PostFilter;
 import buysellmoto.model.mapper.PostMapper;
 import buysellmoto.model.vo.PostProjection;
@@ -65,4 +66,7 @@ public class PostDao {
         return postRepository.getPostByShowroomId(showroomId, status);
     }
 
+    public List<PostDto> getBySellRequestId(Long sellRequestId) {
+        return mapper.toDto(postRepository.findAllBySellRequestId(sellRequestId));
+    }
 }

@@ -46,6 +46,8 @@ public class BuyRequestService {
     @Autowired
     private PostDao postDao;
     @Autowired
+    private TransactionDao transactionDao;
+    @Autowired
     private CustomerMapper customerMapper;
     @Autowired
     private BuyRequestMapper buyRequestMapper;
@@ -59,6 +61,7 @@ public class BuyRequestService {
         buyRequestVo.setMotorbikeImageDto(motorbikeImageDao.getByMotorbikeId(buyRequestVo.getMotorbikeId()));
         buyRequestVo.setPostDto(postDao.getById(buyRequestVo.getPostId()));
         buyRequestVo.setMotorbikeDto(motorbikeDao.getById(buyRequestVo.getMotorbikeId()));
+        buyRequestVo.setTransactionDtos(transactionDao.getByBuyRequestId(buyRequestVo.getId()));
         return buyRequestVo;
     }
 

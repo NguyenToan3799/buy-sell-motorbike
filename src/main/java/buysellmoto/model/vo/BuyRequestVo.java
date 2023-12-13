@@ -19,10 +19,12 @@ public class BuyRequestVo extends BuyRequestDto {
 
     private MotorbikeDto motorbikeDto;
 
-    private List<MotorbikeImageDto> motorbikeImageDto = new ArrayList<>();
+    private List<MotorbikeImageDto> motorbikeImageDto;
 
     private ShowroomDto showroomDto;
 
     private PostDto postDto;
+
+    private List<TransactionDto> transactionDtos;
 
 }
