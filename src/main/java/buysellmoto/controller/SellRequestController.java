@@ -42,7 +42,7 @@ public class SellRequestController {
         return ResponseEntity.ok(sellRequestService.getListSellRequestByShowroomId(showroomId, status));
     }
 
-    @Operation(summary = "Get List Sell Request By Showroom")
+    @Operation(summary = "Get List Sell Request By Customer")
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<List<SellRequestVo>> getListSellRequest(@PathVariable Long customerId) {
         return ResponseEntity.ok(sellRequestService.getListSellRequestByCustomerId(customerId));

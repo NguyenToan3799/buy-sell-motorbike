@@ -11,4 +11,7 @@ import java.util.List;
 public interface MotorbikeImageRepository extends JpaRepository<MotorbikeImageEntity, Long> {
 
     List<MotorbikeImageEntity> findByMotorbikeId(Long motorbikeId);
+
+    List<MotorbikeImageEntity> findByMotorbikeIdIn(List<Long> motorbikeIds);
+
 }

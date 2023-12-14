@@ -30,6 +30,10 @@ public class MotorbikeImageDao {
         return mapper.toDto(motorbikeImageRepository.findByMotorbikeId(motorbikeId));
     }
 
+    public List<MotorbikeImageDto> getByMotorbikeIds(List<Long> motorbikeIds) {
+        return mapper.toDto(motorbikeImageRepository.findByMotorbikeIdIn(motorbikeIds));
+    }
+
 
     @Transactional(rollbackOn = {Exception.class})
     public MotorbikeImageDto createOne(MotorbikeImageDto dto) {

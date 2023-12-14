@@ -169,9 +169,15 @@ public class SellRequestService {
         Map<Long, MotorbikeDto> mapMotorbikeDto = motorbikeDao.getByIds(motorbikeIds).stream()
                 .collect(Collectors.toMap(MotorbikeDto::getId, Function.identity()));
 
+        // Lay motorbike images
+        Map<Long, List<MotorbikeImageDto>> mapMotorbikeImage = motorbikeImageDao.getByMotorbikeIds(motorbikeIds).stream()
+                .collect(Collectors.groupingBy(MotorbikeImageDto::getMotorbikeId));
+
+
         sellRequestVos.forEach(sellRequestVo -> {
             sellRequestVo.setCustomerDto(mapCustomerDtos.get(sellRequestVo.getCustomerId()));
             sellRequestVo.setMotorbikeDto(mapMotorbikeDto.get(sellRequestVo.getMotorbikeId()));
+            sellRequestVo.setMotorbikeImageDto(mapMotorbikeImage.get(sellRequestVo.getMotorbikeId()));
         });
 
         return sellRequestVos;

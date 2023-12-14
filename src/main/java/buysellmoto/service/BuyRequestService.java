@@ -197,6 +197,9 @@ public class BuyRequestService {
         Map<Long, MotorbikeDto> mapMotorbikeDto = motorbikeDao.getByIds(motorbikeIds).stream()
                 .collect(Collectors.toMap(MotorbikeDto::getId, Function.identity()));
 
+        Map<Long, List<MotorbikeImageDto>> mapMotorbikeImage = motorbikeImageDao.getByMotorbikeIds(motorbikeIds).stream()
+                .collect(Collectors.groupingBy(MotorbikeImageDto::getMotorbikeId));
+
         // Lấy Post
         List<Long> postIds = buyRequestVos.stream().map(BuyRequestVo::getPostId).distinct().toList();
         Map<Long, PostDto> mapPostDto = postDao.getByIds(postIds).stream()
@@ -206,6 +209,7 @@ public class BuyRequestService {
             buyRequestVo.setCustomerVo(mapCustomerVos.get(buyRequestVo.getCustomerId()));
             buyRequestVo.setMotorbikeDto(mapMotorbikeDto.get(buyRequestVo.getMotorbikeId()));
             buyRequestVo.setPostDto(mapPostDto.get(buyRequestVo.getPostId()));
+            buyRequestVo.setMotorbikeImageDto(mapMotorbikeImage.get(buyRequestVo.getMotorbikeId()));
         });
 
         return buyRequestVos;
