@@ -20,6 +20,7 @@ import buysellmoto.model.mapper.UserMapper;
 import buysellmoto.model.vo.UserVo;
 import jakarta.transaction.Transactional;
 import lombok.SneakyThrows;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -161,7 +162,11 @@ public class UserService {
         if (Objects.isNull(filter.getCriteria().getId())) {
             throw new BusinessException(ApiMessageCode.REQUIRED_ID);
         }
-        userDao.updateOne(filter.getCriteria());
+        UserDto userDto = userDao.getById(filter.getCriteria().getId());
+        userDto.setPhone(filter.getCriteria().getPhone());
+        userDto.setEmail(filter.getCriteria().getEmail());
+
+        userDao.updateOne(userDto);
         customerDao.updateOne(filter.getCustomerDto());
         return true;
     }
