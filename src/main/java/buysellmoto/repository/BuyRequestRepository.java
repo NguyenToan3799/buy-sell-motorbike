@@ -16,4 +16,6 @@ public interface BuyRequestRepository extends JpaRepository<BuyRequestEntity, Lo
     List<BuyRequestEntity> findAllByIdIn(List<Long> ids);
 
     List<BuyRequestEntity> findAllByCustomerId(Long customerId);
+
+    List<BuyRequestEntity> findAllByPostIdAndStatus(Long postId, String status);
 }

@@ -26,6 +26,8 @@ public class BuyRequestEntity implements Serializable {
 
     private String status;
 
+    private String cancelReason;
+
     @Column(nullable = false, columnDefinition = "BIGINT")
     private Long customerId;
 

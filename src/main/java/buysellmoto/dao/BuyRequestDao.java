@@ -50,9 +50,19 @@ public class BuyRequestDao {
     }
 
     @Transactional(rollbackOn = {Exception.class})
+    public List<BuyRequestDto> updateAllVos(List<BuyRequestVo> vos) {
+        return mapper.toDto(buyRequestRepository.saveAll(mapper.voToEntity(vos)));
+    }
+
+
+    @Transactional(rollbackOn = {Exception.class})
     public boolean deleteById(Long id) {
         buyRequestRepository.delete(buyRequestRepository.findById(id).orElseThrow());
         return true;
+    }
+
+    public List<BuyRequestVo> findAllByPostIdAndStatus(Long postId, String status) {
+        return mapper.entityToVo(buyRequestRepository.findAllByPostIdAndStatus(postId, status));
     }
 
 }

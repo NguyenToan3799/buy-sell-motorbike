@@ -1,5 +1,6 @@
 package buysellmoto.dao;
 
+import buysellmoto.core.enumeration.CheckingAppointmentEnum;
 import buysellmoto.model.dto.CheckingAppointmentDto;
 import buysellmoto.model.mapper.CheckingAppointmentMapper;
 import buysellmoto.model.vo.CheckingAppointmentVo;
@@ -23,12 +24,16 @@ public class CheckingAppointmentDao {
         return mapper.entityToVo(checkingAppointmentRepository.findById(id).orElseThrow());
     }
 
+    public List<CheckingAppointmentVo> getAllActive() {
+        return mapper.entityToVo(checkingAppointmentRepository.findAllByStatus(CheckingAppointmentEnum.ACTIVE.getCode()));
+    }
+
     public List<CheckingAppointmentDto> getAll() {
         return mapper.toDto(checkingAppointmentRepository.findAll());
     }
 
     public List<CheckingAppointmentVo> getByShowroomId(Long showroomId) {
-        return mapper.entityToVo(checkingAppointmentRepository.findAllByShowroomId(showroomId));
+        return mapper.entityToVo(checkingAppointmentRepository.findAllByShowroomIdAndStatus(showroomId, CheckingAppointmentEnum.ACTIVE.getCode()));
     }
 
     @Transactional(rollbackOn = {Exception.class})

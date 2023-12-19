@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public interface CheckingAppointmentRepository extends JpaRepository<CheckingAppointmentEntity, Long> {
 
-    List<CheckingAppointmentEntity> findAllByShowroomId(Long showroomId);
+    List<CheckingAppointmentEntity> findAllByShowroomIdAndStatus(Long showroomId, String status);
 
+    List<CheckingAppointmentEntity> findAllByStatus(String status);
 }

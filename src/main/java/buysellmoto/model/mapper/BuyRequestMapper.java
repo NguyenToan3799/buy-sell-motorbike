@@ -46,4 +46,11 @@ public interface BuyRequestMapper {
     @Named("entitiesToVos")
     @IterableMapping(qualifiedByName = "entityToVo")
     List<BuyRequestVo> entityToVo(List<BuyRequestEntity> entities);
+
+    @Named("voToEntity")
+    BuyRequestEntity voToEntity(BuyRequestVo vos);
+
+    @Named("vosToEntities")
+    @IterableMapping(qualifiedByName = "voToEntity")
+    List<BuyRequestEntity> voToEntity(List<BuyRequestVo> vos);
 }

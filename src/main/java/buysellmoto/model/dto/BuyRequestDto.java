@@ -39,4 +39,6 @@ public class BuyRequestDto implements Serializable {
 
     private Long postId;
 
+    private String cancelReason;
+
 }

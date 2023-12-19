@@ -217,6 +217,46 @@ public class BuyRequestService {
         return buyRequestVos;
     }
 
+    public List<BuyRequestVo> getListBuyRequestByPostId(Long postId) {
+
+        List<BuyRequestVo> buyRequestVos = buyRequestDao.findAllByPostIdAndStatus(postId, CREATED.getCode());
+        buyRequestVos = buyRequestVos.stream()
+                .sorted(Comparator.comparing(BuyRequestVo::getCreatedDate).reversed())
+                .toList();
+
+        // Lấy Customer
+        List<Long> customerIds = buyRequestVos.stream().map(BuyRequestVo::getCustomerId).distinct().toList();
+        List<CustomerVo> customerVos = customerMapper.dtoToVo(customerDao.getByIds(customerIds));
+
+        // Lấy Phone
+        List<Long> userIds = customerVos.stream().map(CustomerVo::getUserId).distinct().toList();
+        Map<Long, UserDto> mapUserDtos = userDao.getByIds(userIds).stream()
+                .collect(Collectors.toMap(UserDto::getId, Function.identity()));
+
+        customerVos.forEach(customerVo -> customerVo.setPhone(mapUserDtos.get(customerVo.getUserId()).getPhone()));
+
+        Map<Long, CustomerVo> mapCustomerVos = customerVos.stream()
+                .collect(Collectors.toMap(CustomerVo::getId, Function.identity()));
+
+        // Lấy Motorbike
+        List<Long> motorbikeIds = buyRequestVos.stream().map(BuyRequestVo::getMotorbikeId).distinct().toList();
+        Map<Long, MotorbikeDto> mapMotorbikeDto = motorbikeDao.getByIds(motorbikeIds).stream()
+                .collect(Collectors.toMap(MotorbikeDto::getId, Function.identity()));
+
+        // Lấy Post
+        List<Long> postIds = buyRequestVos.stream().map(BuyRequestVo::getPostId).distinct().toList();
+        Map<Long, PostDto> mapPostDto = postDao.getByIds(postIds).stream()
+                .collect(Collectors.toMap(PostDto::getId, Function.identity()));
+
+        buyRequestVos.forEach(buyRequestVo -> {
+            buyRequestVo.setCustomerVo(mapCustomerVos.get(buyRequestVo.getCustomerId()));
+            buyRequestVo.setMotorbikeDto(mapMotorbikeDto.get(buyRequestVo.getMotorbikeId()));
+            buyRequestVo.setPostDto(mapPostDto.get(buyRequestVo.getPostId()));
+        });
+
+        return buyRequestVos;
+    }
+
 
     private Boolean updateStatus(Long id, String newStatus) {
         BuyRequestDto loadingDto = buyRequestDao.getById(id);
@@ -224,6 +264,10 @@ public class BuyRequestService {
             throw new BusinessException(ApiMessageCode.INVALID_STATUS_MOVING + " : from=" + loadingDto.getStatus() + " -> to=" + newStatus);
         }
         loadingDto.setStatus(newStatus);
+        if (SellRequestEnum.CANCELLED.getCode().equals(newStatus)) {
+            loadingDto.setCancelReason("Khách hàng huỷ yêu cầu");
+        }
+
         buyRequestDao.updateOne(loadingDto);
         return true;
     }
