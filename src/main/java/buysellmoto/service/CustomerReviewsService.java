@@ -13,6 +13,7 @@ import buysellmoto.model.dto.ShowroomDto;
 import buysellmoto.model.filter.CustomerReviewsFilter;
 import buysellmoto.model.mapper.CustomerReviewsMapper;
 import buysellmoto.model.vo.CustomerReviewsVo;
+import buysellmoto.model.vo.SellRequestVo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,10 @@ public class CustomerReviewsService {
 
     public List<CustomerReviewsVo> getByShowroomId(Long showroomId) {
         List<CustomerReviewsVo> customerReviewsVos = customerReviewsDao.getByShowroomId(showroomId);
+
+        customerReviewsVos = customerReviewsVos.stream()
+                .sorted(Comparator.comparing(CustomerReviewsVo::getReviewDate).reversed())
+                .toList();
 
         List<Long> customerIds = customerReviewsVos.stream().map(CustomerReviewsVo::getCustomerId).toList();
         Map<Long, CustomerDto> customerDtoMap = customerDao.getByIds(customerIds).stream()

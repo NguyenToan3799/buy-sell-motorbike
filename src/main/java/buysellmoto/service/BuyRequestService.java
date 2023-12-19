@@ -34,6 +34,8 @@ public class BuyRequestService {
     @Autowired
     private BuyRequestDao buyRequestDao;
     @Autowired
+    private SellRequestDao sellRequestDao;
+    @Autowired
     private ShowroomDao showroomDao;
     @Autowired
     private CustomerDao customerDao;

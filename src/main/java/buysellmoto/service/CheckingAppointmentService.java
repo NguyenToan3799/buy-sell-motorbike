@@ -1,13 +1,10 @@
 package buysellmoto.service;
 
+import buysellmoto.core.enumeration.PostStatusEnum;
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
-import buysellmoto.dao.BuyRequestDao;
-import buysellmoto.dao.CheckingAppointmentDao;
-import buysellmoto.dao.CustomerDao;
-import buysellmoto.model.dto.BuyRequestDto;
-import buysellmoto.model.dto.CheckingAppointmentDto;
-import buysellmoto.model.dto.CustomerDto;
+import buysellmoto.dao.*;
+import buysellmoto.model.dto.*;
 import buysellmoto.model.filter.CheckingAppointmentFilter;
 import buysellmoto.model.mapper.CheckingAppointmentMapper;
 import buysellmoto.model.vo.CheckingAppointmentVo;
@@ -27,6 +24,10 @@ public class CheckingAppointmentService {
 
     @Autowired
     private CheckingAppointmentDao checkingAppointmentDao;
+    @Autowired
+    private SellRequestDao sellRequestDao;
+    @Autowired
+    private PostDao postDao;
     @Autowired
     private CustomerDao customerDao;
     @Autowired
@@ -69,6 +70,12 @@ public class CheckingAppointmentService {
     public CheckingAppointmentDto createOne (CheckingAppointmentFilter filter) {
         CheckingAppointmentDto preparingDto = filter.getCriteria();
         preparingDto.setId(null);
+
+        BuyRequestDto buyRequestDto = buyRequestDao.getById(filter.getCriteria().getBuyRequestId());
+
+        PostDto postDto = postDao.getById(buyRequestDto.getPostId());
+        postDto.setStatus(PostStatusEnum.SCHEDULED.getCode());
+        postDao.updateOne(postDto);
 
         buyRequestService.confirmBuyRequest(filter.getCriteria().getBuyRequestId());
         return checkingAppointmentDao.createOne(preparingDto);
