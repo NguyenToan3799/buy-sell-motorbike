@@ -31,6 +31,10 @@ public class SellRequestDto implements Serializable {
     @JsonDeserialize(using = TimestampToDate.class)
     private LocalDateTime createdDate;
 
+    @JsonSerialize(using = DateToTimestamp.class)
+    @JsonDeserialize(using = TimestampToDate.class)
+    private LocalDateTime approvedDate;
+
     private String status;
 
     private Double askingPrice;

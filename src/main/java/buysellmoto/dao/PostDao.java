@@ -48,6 +48,12 @@ public class PostDao {
     }
 
     @Transactional(rollbackOn = {Exception.class})
+    public List<PostDto> updateAll(List<PostDto> dtos) {
+        return mapper.toDto(postRepository.saveAll(mapper.toEntity(dtos)));
+    }
+
+
+    @Transactional(rollbackOn = {Exception.class})
     public boolean deleteById(Long id) {
         postRepository.delete(postRepository.findById(id).orElseThrow());
         return true;
@@ -68,5 +74,9 @@ public class PostDao {
 
     public List<PostDto> getBySellRequestId(Long sellRequestId) {
         return mapper.toDto(postRepository.findAllBySellRequestId(sellRequestId));
+    }
+
+    public List<PostDto> getAllPostActive() {
+        return mapper.toDto(postRepository.findAllByStatus(PostStatusEnum.ACTIVE.getCode()));
     }
 }

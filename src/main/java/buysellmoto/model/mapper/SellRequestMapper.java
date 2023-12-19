@@ -40,4 +40,11 @@ public interface SellRequestMapper {
     @IterableMapping(qualifiedByName = "entityToVo")
     List<SellRequestVo> entityToVo(List<SellRequestEntity> entities);
 
+    @Named("voToEntity")
+    SellRequestEntity voToEntity(SellRequestVo vo);
+
+    @Named("vosToEntities")
+    @IterableMapping(qualifiedByName = "voToEntity")
+    List<SellRequestEntity> voToEntity(List<SellRequestVo> vos);
+
 }

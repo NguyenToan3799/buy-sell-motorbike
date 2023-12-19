@@ -61,4 +61,10 @@ public class MotorbikeImageDao {
         return true;
     }
 
+    @Transactional(rollbackOn = {Exception.class})
+    public boolean deleteByMotorbikeId(Long motorbikeId) {
+        motorbikeImageRepository.deleteById(motorbikeId);
+        return true;
+    }
+
 }

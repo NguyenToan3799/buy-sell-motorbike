@@ -27,6 +27,8 @@ public class CheckedSellRequestEntity implements Serializable {
     @Column(nullable = false)
     private Double finalPrice;
 
+    private Double sellerReceiveAmount;
+
     private String technicianNote;
 
     private String checkedBy;

@@ -183,6 +183,54 @@ public class SellRequestService {
         return sellRequestVos;
     }
 
+    public List<SellRequestVo> getListSellRequestByStatus(String status) {
+        List<SellRequestVo> sellRequestVos = sellRequestDao.getByStatus(status);
+        sellRequestVos = sellRequestVos.stream()
+                .sorted(Comparator.comparing(SellRequestVo::getCreatedDate).reversed())
+                .toList();
+
+        // Lấy Customer
+        List<Long> customerIds = sellRequestVos.stream().map(SellRequestVo::getCustomerId).distinct().toList();
+        Map<Long, CustomerDto> mapCustomerDtos = customerDao.getByIds(customerIds).stream()
+                .collect(Collectors.toMap(CustomerDto::getId, Function.identity()));
+
+        // Lấy Motorbike
+        List<Long> motorbikeIds = sellRequestVos.stream().map(SellRequestVo::getMotorbikeId).distinct().toList();
+        Map<Long, MotorbikeDto> mapMotorbikeDto = motorbikeDao.getByIds(motorbikeIds).stream()
+                .collect(Collectors.toMap(MotorbikeDto::getId, Function.identity()));
+
+        sellRequestVos.forEach(sellRequestVo -> {
+            sellRequestVo.setCustomerDto(mapCustomerDtos.get(sellRequestVo.getCustomerId()));
+            sellRequestVo.setMotorbikeDto(mapMotorbikeDto.get(sellRequestVo.getMotorbikeId()));
+        });
+
+        return sellRequestVos;
+    }
+
+    public List<SellRequestVo> getListSellRequestByIds(List<Long> ids) {
+        List<SellRequestVo> sellRequestVos = sellRequestDao.getByIds(ids);
+        sellRequestVos = sellRequestVos.stream()
+                .sorted(Comparator.comparing(SellRequestVo::getCreatedDate).reversed())
+                .toList();
+
+        // Lấy Customer
+        List<Long> customerIds = sellRequestVos.stream().map(SellRequestVo::getCustomerId).distinct().toList();
+        Map<Long, CustomerDto> mapCustomerDtos = customerDao.getByIds(customerIds).stream()
+                .collect(Collectors.toMap(CustomerDto::getId, Function.identity()));
+
+        // Lấy Motorbike
+        List<Long> motorbikeIds = sellRequestVos.stream().map(SellRequestVo::getMotorbikeId).distinct().toList();
+        Map<Long, MotorbikeDto> mapMotorbikeDto = motorbikeDao.getByIds(motorbikeIds).stream()
+                .collect(Collectors.toMap(MotorbikeDto::getId, Function.identity()));
+
+        sellRequestVos.forEach(sellRequestVo -> {
+            sellRequestVo.setCustomerDto(mapCustomerDtos.get(sellRequestVo.getCustomerId()));
+            sellRequestVo.setMotorbikeDto(mapMotorbikeDto.get(sellRequestVo.getMotorbikeId()));
+        });
+
+        return sellRequestVos;
+    }
+
     @Transactional(rollbackOn = {Exception.class})
     public Boolean deleteById(Long id) {
         sellRequestDao.deleteById(id);
@@ -239,9 +287,18 @@ public class SellRequestService {
         }
         this.updateStatus(id, SellRequestEnum.CHECKED.getCode());
 
-        if (!Objects.isNull(sellRequestFilter.getMotorbikeDto())) {
-            motorbikeDao.updateOne(sellRequestFilter.getMotorbikeDto());
+        if (!Objects.isNull(sellRequestFilter.getMotorbikeVo())) {
+            motorbikeDao.updateVo(sellRequestFilter.getMotorbikeVo());
+            motorbikeImageDao.deleteByMotorbikeId(sellRequestFilter.getMotorbikeVo().getId());
+            if (!Objects.isNull(sellRequestFilter.getMotorbikeVo().getMotorbikeImageDtos())) {
+                sellRequestFilter.getMotorbikeVo().getMotorbikeImageDtos().forEach(motorbikeImageDto -> {
+                    motorbikeImageDto.setMotorbikeId(sellRequestFilter.getMotorbikeVo().getId());
+                    motorbikeImageDto.setId(null);
+                });
+                motorbikeImageDao.createAll(sellRequestFilter.getMotorbikeVo().getMotorbikeImageDtos());
+            }
         }
+
         CheckedSellRequestDto checkedSellRequestDto = sellRequestFilter.getCheckedSellRequestDto();
         checkedSellRequestDto.setCheckedDate(LocalDateTime.now());
         checkedSellRequestDto.setSellRequestId(id);
@@ -256,6 +313,10 @@ public class SellRequestService {
             throw new BusinessException(ApiMessageCode.INVALID_STATUS_MOVING);
         }
         loadingDto.setStatus(newStatus);
+
+        if (Objects.equals(newStatus, SellRequestEnum.APPROVED.getCode())) {
+            loadingDto.setApprovedDate(LocalDateTime.now());
+        }
         sellRequestDao.updateOne(loadingDto);
         return true;
     }

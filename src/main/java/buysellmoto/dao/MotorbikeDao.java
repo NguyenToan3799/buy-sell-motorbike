@@ -2,6 +2,7 @@ package buysellmoto.dao;
 
 import buysellmoto.model.dto.MotorbikeDto;
 import buysellmoto.model.mapper.MotorbikeMapper;
+import buysellmoto.model.vo.MotorbikeVo;
 import buysellmoto.repository.MotorbikeRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,11 @@ public class MotorbikeDao {
     @Transactional(rollbackOn = {Exception.class})
     public MotorbikeDto updateOne(MotorbikeDto dto) {
         return mapper.toDto(motorbikeRepository.save(mapper.toEntity(dto)));
+    }
+
+    @Transactional(rollbackOn = {Exception.class})
+    public MotorbikeDto updateVo(MotorbikeVo vo) {
+        return mapper.toDto(motorbikeRepository.save(mapper.voToEntity(vo)));
     }
 
     @Transactional(rollbackOn = {Exception.class})

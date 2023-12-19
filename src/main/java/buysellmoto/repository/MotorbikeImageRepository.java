@@ -14,4 +14,6 @@ public interface MotorbikeImageRepository extends JpaRepository<MotorbikeImageEn
 
     List<MotorbikeImageEntity> findByMotorbikeIdIn(List<Long> motorbikeIds);
 
+    void deleteAllByMotorbikeId(Long motorbikeId);
+
 }

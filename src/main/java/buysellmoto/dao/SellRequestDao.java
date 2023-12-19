@@ -38,6 +38,12 @@ public class SellRequestDao {
     }
 
     @Transactional(rollbackOn = {Exception.class})
+    public Boolean updateAll(List<SellRequestVo> vos) {
+        sellRequestRepository.saveAll(mapper.voToEntity(vos));
+        return true;
+    }
+
+    @Transactional(rollbackOn = {Exception.class})
     public boolean deleteById(Long id) {
         sellRequestRepository.delete(sellRequestRepository.findById(id).orElseThrow());
         return true;
@@ -45,6 +51,14 @@ public class SellRequestDao {
 
     public List<SellRequestVo> getByShowroomIdAndStatus(Long showroomId, String status){
         return mapper.entityToVo(sellRequestRepository.findAllByShowroomIdAndStatus(showroomId, status));
+    }
+
+    public List<SellRequestVo> getByStatus(String status){
+        return mapper.entityToVo(sellRequestRepository.findAllByStatus(status));
+    }
+
+    public List<SellRequestVo> getByIds(List<Long> ids) {
+        return mapper.entityToVo(sellRequestRepository.findAllByIdIn(ids));
     }
 
     public List<SellRequestVo> findAllByCustomerId(Long customerId){

@@ -33,10 +33,14 @@ public interface MotorbikeMapper {
     @IterableMapping(qualifiedByName = "toDto")
     List<MotorbikeDto> toDto(List<MotorbikeEntity> entities);
 
-    @Named("dtoToVo")
-    MotorbikeDto dtoToVo(MotorbikeVo vo);
-
     @Named("voToDto")
-    MotorbikeVo voToDto(MotorbikeDto dto);
+    MotorbikeDto voToDto(MotorbikeVo vo);
+
+    @Named("dtoToVo")
+    MotorbikeVo dtoToVo(MotorbikeDto dto);
+
+    @Named("voToEntity")
+    MotorbikeEntity voToEntity(MotorbikeVo dto);
+
 
 }
