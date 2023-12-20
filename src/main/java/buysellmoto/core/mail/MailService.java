@@ -98,7 +98,36 @@ public class MailService {
         context.setVariable("sellRequestId", sellRequestVo.getId());
         context.setVariable("motorbikeName", sellRequestVo.getMotorbikeDto().getName());
         context.setVariable("checkedDate", sellRequestVo.getCheckedSellRequestDto()
-                .getCheckedDate().format(DateTimeFormatter.ofPattern("ddMMyyyy")));
+                .getCheckedDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        context.setVariable("phone", sellRequestVo.getShowroomDto().getPhone());
+        context.setVariable("email", sellRequestVo.getShowroomDto().getEmail());
+
+        // Process the Thymeleaf template with the context
+        String emailContent = templateEngine.process("email-template-3", context);
+
+        // Set the email content
+        helper.setText(emailContent, true);
+
+        // Send the email
+        javaMailSender.send(mimeMessage);
+    }
+
+    public void rejectSellRequest(SellRequestVo sellRequestVo) throws MessagingException {
+        String subject = "Thông Báo: Từ Chối Yêu Cầu Bán Xe Của Bạn";
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+
+        // Set the recipient, subject, and the template
+        helper.setTo(sellRequestVo.getUserDto().getEmail());
+        helper.setSubject(subject);
+
+        // Create a Thymeleaf context
+        Context context = new Context();
+
+        context.setVariable("customerName", sellRequestVo.getCustomerVo().getFullName());
+        context.setVariable("showroomName", sellRequestVo.getShowroomDto().getName());
+        context.setVariable("rejectedReason", sellRequestVo.getRejectRequestDto().getRejectedReason());
         context.setVariable("phone", sellRequestVo.getShowroomDto().getPhone());
         context.setVariable("email", sellRequestVo.getShowroomDto().getEmail());
 

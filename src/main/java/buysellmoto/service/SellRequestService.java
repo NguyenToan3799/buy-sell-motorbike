@@ -261,7 +261,7 @@ public class SellRequestService {
             throw new BusinessException(ApiMessageCode.SELL_REQUEST_NOT_EXIST);
         }
         this.updateStatus(id, SellRequestEnum.APPROVED.getCode());
-        mailService.approveSellRequest(this.getById(sellRequestDto.getId()));
+//        mailService.approveSellRequest(this.getById(sellRequestDto.getId()));
         return true;
     }
 
@@ -280,6 +280,7 @@ public class SellRequestService {
     }
 
 
+    @SneakyThrows
     @Transactional(rollbackOn = {Exception.class})
     public Boolean rejectedSellRequest(Long id, SellRequestFilter sellRequestFilter) {
         if (Objects.isNull(sellRequestDao.getById(id))) {
@@ -290,6 +291,9 @@ public class SellRequestService {
         sellRequestFilter.getRejectRequestDto().setRejectedDate(LocalDateTime.now());
         sellRequestFilter.getRejectRequestDto().setSellRequestId(id);
         rejectRequestDao.createOne(sellRequestFilter.getRejectRequestDto());
+
+        mailService.rejectSellRequest(this.getById(id));
+
         return true;
     }
 
@@ -318,7 +322,7 @@ public class SellRequestService {
         checkedSellRequestDto.setSellRequestId(id);
         checkedSellRequestDao.createOne(checkedSellRequestDto);
 
-        mailService.checkedSellRequest(this.getById(id));
+//        mailService.checkedSellRequest(this.getById(id));
 
         return true;
     }
