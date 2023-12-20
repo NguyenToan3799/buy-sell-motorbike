@@ -64,7 +64,7 @@ public class SellRequestService {
         sellRequestVo.setShowroomDto(showroomDao.getById(sellRequestVo.getShowroomId()));
         sellRequestVo.setCustomerVo(customerMapper.dtoToVo(customerDao.getById(sellRequestVo.getCustomerId())));
         sellRequestVo.getCustomerVo().setPhone(userDao.getById(sellRequestVo.getCustomerVo().getUserId()).getPhone());
-
+        sellRequestVo.setMotorbikeDto(motorbikeDao.getById(sellRequestVo.getMotorbikeId()));
         sellRequestVo.setMotorbikeImageDto(motorbikeImageDao.getByMotorbikeId(sellRequestVo.getMotorbikeId()));
         sellRequestVo.setUserDto(userDao.getById(sellRequestVo.getCustomerVo().getUserId()));
 
