@@ -4,6 +4,7 @@ import buysellmoto.core.enumeration.BuyRequestEnum;
 import buysellmoto.core.enumeration.SellRequestEnum;
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
+import buysellmoto.core.mail.MailService;
 import buysellmoto.dao.*;
 import buysellmoto.model.dto.*;
 import buysellmoto.model.filter.BuyRequestFilter;
@@ -13,6 +14,7 @@ import buysellmoto.model.vo.BuyRequestVo;
 import buysellmoto.model.vo.CustomerVo;
 import buysellmoto.model.vo.SellRequestVo;
 import jakarta.transaction.Transactional;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,6 +59,8 @@ public class BuyRequestService {
     private CustomerMapper customerMapper;
     @Autowired
     private BuyRequestMapper buyRequestMapper;
+    @Autowired
+    private MailService mailService;
 
     public BuyRequestVo getById(Long id) {
         BuyRequestVo buyRequestVo = buyRequestMapper.dtoToVo(buyRequestDao.getById(id));
@@ -121,13 +125,14 @@ public class BuyRequestService {
         return true;
     }
 
+    @SneakyThrows
     @Transactional(rollbackOn = {Exception.class})
     public Boolean confirmBuyRequest(Long id) {
         if (Objects.isNull(buyRequestDao.getById(id))) {
             throw new BusinessException(ApiMessageCode.BUY_REQUEST_ID_REQUIRED);
         }
         this.updateStatus(id, CONFIRMED.getCode());
-
+        mailService.approveBuyRequest(this.getById(id));
         return true;
     }
 
