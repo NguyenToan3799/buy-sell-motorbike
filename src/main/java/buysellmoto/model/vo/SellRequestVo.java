@@ -1,9 +1,11 @@
 package buysellmoto.model.vo;
 
+import buysellmoto.dao.PurchaseAppointmentDao;
 import buysellmoto.dao.RejectRequestDao;
 import buysellmoto.dao.ShowroomDao;
 import buysellmoto.model.dto.*;
 import buysellmoto.model.mapper.RejectRequestMapper;
+import buysellmoto.repository.PurchaseAppointmentRepository;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
@@ -37,5 +39,7 @@ public class SellRequestVo extends SellRequestDto {
     private PostDto postDto;
 
     private List<TransactionDto> transactionDtos;
+
+    private PurchaseAppointmentDto purchaseAppointmentDto;
 
 }

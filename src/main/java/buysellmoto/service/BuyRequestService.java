@@ -68,12 +68,12 @@ public class BuyRequestService {
         buyRequestVo.setPostDto(postDao.getById(buyRequestVo.getPostId()));
         buyRequestVo.setMotorbikeDto(motorbikeDao.getById(buyRequestVo.getMotorbikeId()));
         buyRequestVo.setTransactionDtos(transactionDao.getByBuyRequestId(buyRequestVo.getId()));
-
+        buyRequestVo.setUserDto(userDao.getById(buyRequestVo.getCustomerVo().getUserId()));
         if (buyRequestVo.getStatus().equals(CONFIRMED.getCode())) {
             buyRequestVo.setCheckingAppointmentDto(checkingAppointmentDao.getByBuyRequestId(id));
         }
-        if (buyRequestVo.getStatus().equals(CONFIRMED.getCode())) {
-            buyRequestVo.setCheckingAppointmentDto(checkingAppointmentDao.getByBuyRequestId(id));
+        if (buyRequestVo.getStatus().equals(SCHEDULED.getCode())) {
+            buyRequestVo.setPurchaseAppointmentDto(purchaseAppointmentDao.getByMotorbikeId(buyRequestVo.getMotorbikeId()));
         }
         return buyRequestVo;
     }
@@ -127,6 +127,7 @@ public class BuyRequestService {
             throw new BusinessException(ApiMessageCode.BUY_REQUEST_ID_REQUIRED);
         }
         this.updateStatus(id, CONFIRMED.getCode());
+
         return true;
     }
 
@@ -296,10 +297,10 @@ public class BuyRequestService {
 
     private boolean validateStatusMoving(BuyRequestEnum preStatus, BuyRequestEnum newStatus) {
         Map<BuyRequestEnum, List<?>> stateMachine = Map.of(
-            CREATED, List.of(CONFIRMED, CANCELLED),
-            CONFIRMED, List.of(DEPOSITED, CANCELLED),
-            DEPOSITED, List.of(SCHEDULED, CANCELLED),
-            SCHEDULED, List.of(COMPLETED, CANCELLED)
+                CREATED, List.of(CONFIRMED, CANCELLED),
+                CONFIRMED, List.of(DEPOSITED, CANCELLED),
+                DEPOSITED, List.of(SCHEDULED, CANCELLED),
+                SCHEDULED, List.of(COMPLETED, CANCELLED)
         );
 
         var movableStatuses = stateMachine.getOrDefault(preStatus, List.of());

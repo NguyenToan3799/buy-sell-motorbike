@@ -50,6 +50,8 @@ public class SellRequestService {
     @Autowired
     private PostDao postDao;
     @Autowired
+    private PurchaseAppointmentDao purchaseAppointmentDao;
+    @Autowired
     private TransactionDao transactionDao;
     @Autowired
     private MotorbikeMapper motorbikeMapper;
@@ -76,6 +78,7 @@ public class SellRequestService {
         }
         if (sellRequestVo.getStatus().equals(SellRequestEnum.POSTED.getCode())) {
             sellRequestVo.setPostDto(postDao.getBySellRequestId(sellRequestVo.getId()));
+            sellRequestVo.setPurchaseAppointmentDto(purchaseAppointmentDao.getByMotorbikeId(sellRequestVo.getMotorbikeId()));
         }
         sellRequestVo.setTransactionDtos(transactionDao.getBySellRequestId(sellRequestVo.getId()));
         return sellRequestVo;
@@ -177,6 +180,8 @@ public class SellRequestService {
             sellRequestVo.setMotorbikeDto(mapMotorbikeDto.get(sellRequestVo.getMotorbikeId()));
             sellRequestVo.setMotorbikeImageDto(mapMotorbikeImage.get(sellRequestVo.getMotorbikeId()));
         });
+
+
 
         return sellRequestVos;
     }

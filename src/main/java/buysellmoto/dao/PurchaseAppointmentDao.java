@@ -26,10 +26,9 @@ public class PurchaseAppointmentDao {
         return mapper.toDto(purchaseAppointmentRepository.findAll());
     }
 
-//    public List<PurchaseAppointmentDto> getAll() {
-//        return mapper.toDto(purchaseAppointmentRepository.findAll());
-//    }
-
+    public PurchaseAppointmentDto getByMotorbikeId(Long motorbikeId) {
+        return mapper.toDto(purchaseAppointmentRepository.findByMotorbikeId(motorbikeId).orElse(null));
+    }
 
     @Transactional(rollbackOn = {Exception.class})
     public PurchaseAppointmentDto createOne(PurchaseAppointmentDto dto) {

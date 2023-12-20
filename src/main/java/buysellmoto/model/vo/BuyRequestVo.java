@@ -19,6 +19,8 @@ public class BuyRequestVo extends BuyRequestDto {
 
     private MotorbikeDto motorbikeDto;
 
+    private UserDto userDto;
+
     private List<MotorbikeImageDto> motorbikeImageDto;
 
     private ShowroomDto showroomDto;
