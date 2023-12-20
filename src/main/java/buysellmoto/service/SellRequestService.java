@@ -311,13 +311,14 @@ public class SellRequestService {
                 });
                 motorbikeImageDao.createAll(sellRequestFilter.getMotorbikeVo().getMotorbikeImageDtos());
             }
-            mailService.checkedSellRequest(sellRequestDao.getById(id));
         }
 
         CheckedSellRequestDto checkedSellRequestDto = sellRequestFilter.getCheckedSellRequestDto();
         checkedSellRequestDto.setCheckedDate(LocalDateTime.now());
         checkedSellRequestDto.setSellRequestId(id);
         checkedSellRequestDao.createOne(checkedSellRequestDto);
+
+        mailService.checkedSellRequest(this.getById(id));
 
         return true;
     }
