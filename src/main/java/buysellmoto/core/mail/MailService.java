@@ -132,7 +132,7 @@ public class MailService {
         context.setVariable("email", sellRequestVo.getShowroomDto().getEmail());
 
         // Process the Thymeleaf template with the context
-        String emailContent = templateEngine.process("email-template-3", context);
+        String emailContent = templateEngine.process("email-template-4", context);
 
         // Set the email content
         helper.setText(emailContent, true);

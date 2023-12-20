@@ -48,6 +48,10 @@ public class BuyRequestService {
     @Autowired
     private PostDao postDao;
     @Autowired
+    private CheckingAppointmentDao checkingAppointmentDao;
+    @Autowired
+    private PurchaseAppointmentDao purchaseAppointmentDao;
+    @Autowired
     private TransactionDao transactionDao;
     @Autowired
     private CustomerMapper customerMapper;
@@ -64,6 +68,13 @@ public class BuyRequestService {
         buyRequestVo.setPostDto(postDao.getById(buyRequestVo.getPostId()));
         buyRequestVo.setMotorbikeDto(motorbikeDao.getById(buyRequestVo.getMotorbikeId()));
         buyRequestVo.setTransactionDtos(transactionDao.getByBuyRequestId(buyRequestVo.getId()));
+
+        if (buyRequestVo.getStatus().equals(CONFIRMED.getCode())) {
+            buyRequestVo.setCheckingAppointmentDto(checkingAppointmentDao.getByBuyRequestId(id));
+        }
+        if (buyRequestVo.getStatus().equals(CONFIRMED.getCode())) {
+            buyRequestVo.setCheckingAppointmentDto(checkingAppointmentDao.getByBuyRequestId(id));
+        }
         return buyRequestVo;
     }
 

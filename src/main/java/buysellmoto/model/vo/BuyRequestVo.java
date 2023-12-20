@@ -27,4 +27,8 @@ public class BuyRequestVo extends BuyRequestDto {
 
     private List<TransactionDto> transactionDtos;
 
+    private CheckingAppointmentDto checkingAppointmentDto;
+
+    private PurchaseAppointmentDto purchaseAppointmentDto;
+
 }

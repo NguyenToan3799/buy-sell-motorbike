@@ -26,6 +26,11 @@ public class PurchaseAppointmentDao {
         return mapper.toDto(purchaseAppointmentRepository.findAll());
     }
 
+//    public List<PurchaseAppointmentDto> getAll() {
+//        return mapper.toDto(purchaseAppointmentRepository.findAll());
+//    }
+
+
     @Transactional(rollbackOn = {Exception.class})
     public PurchaseAppointmentDto createOne(PurchaseAppointmentDto dto) {
         return mapper.toDto(purchaseAppointmentRepository.save(mapper.toEntity(dto)));

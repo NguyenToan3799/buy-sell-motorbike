@@ -36,6 +36,10 @@ public class CheckingAppointmentDao {
         return mapper.entityToVo(checkingAppointmentRepository.findAllByShowroomIdAndStatus(showroomId, CheckingAppointmentEnum.ACTIVE.getCode()));
     }
 
+    public CheckingAppointmentDto getByBuyRequestId(Long buyRequestId) {
+        return mapper.toDto(checkingAppointmentRepository.findByBuyRequestId(buyRequestId));
+    }
+
     @Transactional(rollbackOn = {Exception.class})
     public CheckingAppointmentDto createOne(CheckingAppointmentDto dto) {
         return mapper.toDto(checkingAppointmentRepository.save(mapper.toEntity(dto)));

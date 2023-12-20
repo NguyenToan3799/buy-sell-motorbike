@@ -1,5 +1,7 @@
 package buysellmoto.repository;
 
+import buysellmoto.core.enumeration.CheckingAppointmentEnum;
+import buysellmoto.model.dto.CheckingAppointmentDto;
 import buysellmoto.model.entity.CheckingAppointmentEntity;
 import buysellmoto.model.entity.RejectRequestEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,4 +15,7 @@ public interface CheckingAppointmentRepository extends JpaRepository<CheckingApp
     List<CheckingAppointmentEntity> findAllByShowroomIdAndStatus(Long showroomId, String status);
 
     List<CheckingAppointmentEntity> findAllByStatus(String status);
+
+    CheckingAppointmentEntity findByBuyRequestId(Long buyRequestId);
+
 }
