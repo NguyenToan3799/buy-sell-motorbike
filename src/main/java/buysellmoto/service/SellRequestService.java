@@ -1,13 +1,12 @@
 package buysellmoto.service;
 
+import buysellmoto.core.enumeration.PostStatusEnum;
 import buysellmoto.core.enumeration.SellRequestEnum;
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
 import buysellmoto.core.mail.MailService;
 import buysellmoto.dao.*;
 import buysellmoto.model.dto.*;
-import buysellmoto.model.filter.MotorbikeFilter;
-import buysellmoto.model.filter.RejectRequestFilter;
 import buysellmoto.model.filter.SellRequestFilter;
 import buysellmoto.model.mapper.*;
 import buysellmoto.model.vo.MotorbikeVo;
@@ -15,7 +14,6 @@ import buysellmoto.model.vo.SellRequestVo;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.SneakyThrows;
-import org.apache.catalina.User;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,7 +75,7 @@ public class SellRequestService {
             sellRequestVo.setCheckedSellRequestDto(checkedSellRequestDao.getBySellRequestId(sellRequestVo.getId()));
         }
         if (sellRequestVo.getStatus().equals(SellRequestEnum.POSTED.getCode())) {
-            sellRequestVo.setPostDtos(postDao.getBySellRequestId(sellRequestVo.getId()));
+            sellRequestVo.setPostDto(postDao.getBySellRequestId(sellRequestVo.getId()));
         }
         sellRequestVo.setTransactionDtos(transactionDao.getBySellRequestId(sellRequestVo.getId()));
         return sellRequestVo;
@@ -266,6 +264,21 @@ public class SellRequestService {
         mailService.approveSellRequest(this.getById(sellRequestDto.getId()));
         return true;
     }
+
+    @Transactional(rollbackOn = {Exception.class})
+    public void renewSellRequest(Long id) {
+        if (Objects.isNull(sellRequestDao.getById(id))) {
+            throw new BusinessException(ApiMessageCode.SELL_REQUEST_NOT_EXIST);
+        }
+        this.updateStatus(id, SellRequestEnum.POSTED.getCode());
+
+        PostDto postDto = postDao.getBySellRequestId(id);
+        postDto.setStatus(PostStatusEnum.ACTIVE.getCode());
+        postDto.setExpiredDate(LocalDateTime.now().plusDays(30));
+
+        postDao.updateOne(postDto);
+    }
+
 
     @Transactional(rollbackOn = {Exception.class})
     public Boolean rejectedSellRequest(Long id, SellRequestFilter sellRequestFilter) {

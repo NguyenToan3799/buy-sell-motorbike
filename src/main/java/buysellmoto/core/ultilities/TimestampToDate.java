@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 public class TimestampToDate extends StdDeserializer<LocalDateTime> {
 
@@ -21,7 +22,10 @@ public class TimestampToDate extends StdDeserializer<LocalDateTime> {
 
     @Override
     public LocalDateTime deserialize(JsonParser jsonparser, DeserializationContext context) throws IOException {
+//        Long timestamp = Long.valueOf(jsonparser.getText());
+//        return LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
+
         Long timestamp = Long.valueOf(jsonparser.getText());
-        return LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.systemDefault());
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), ZoneId.of(ZoneOffset.UTC.toString()));
     }
 }

@@ -72,8 +72,8 @@ public class PostDao {
         return postRepository.getPostByShowroomId(showroomId, status);
     }
 
-    public List<PostDto> getBySellRequestId(Long sellRequestId) {
-        return mapper.toDto(postRepository.findAllBySellRequestId(sellRequestId));
+    public PostDto getBySellRequestId(Long sellRequestId) {
+        return mapper.toDto(postRepository.findBySellRequestId(sellRequestId));
     }
 
     public List<PostDto> getAllPostActive() {

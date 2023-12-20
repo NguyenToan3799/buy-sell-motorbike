@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 public class DateToTimestamp extends StdSerializer<LocalDateTime> {
 
@@ -20,7 +21,7 @@ public class DateToTimestamp extends StdSerializer<LocalDateTime> {
 
     @Override
     public void serialize(LocalDateTime value, JsonGenerator gen, SerializerProvider sp) throws IOException {
-        Long epoch = value.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        Long epoch = value.atZone(ZoneId.of(ZoneOffset.UTC.toString())).toInstant().toEpochMilli();
         gen.writeString(epoch.toString());
     }
 }

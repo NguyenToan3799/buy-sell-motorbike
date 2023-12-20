@@ -78,6 +78,11 @@ public class BuyRequestService {
         preparingDto.setId(null);
         preparingDto.setCreatedDate(LocalDateTime.now());
         buyRequestDao.createOne(preparingDto);
+
+        MotorbikeDto motorbikeDto = motorbikeDao.getById(filter.getCriteria().getMotorbikeId());
+        if (Objects.equals(filter.getCriteria().getCustomerId(), motorbikeDto.getCustomerId())) {
+            throw new BusinessException(ApiMessageCode.CAN_NOT_BUY_YOUR_CAR);
+        }
         return true;
     }
 

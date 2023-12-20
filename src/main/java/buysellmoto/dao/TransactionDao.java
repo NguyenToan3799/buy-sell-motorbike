@@ -1,12 +1,15 @@
 package buysellmoto.dao;
 
 import buysellmoto.model.dto.TransactionDto;
+import buysellmoto.model.entity.TransactionEntity;
 import buysellmoto.model.mapper.TransactionMapper;
+import buysellmoto.model.vo.SellRequestVo;
 import buysellmoto.repository.TransactionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -51,11 +54,15 @@ public class TransactionDao {
     }
 
     public List<TransactionDto> getByBuyRequestId(Long buyRequestId) {
-        return transactionMapper.toDto(transactionRepository.findAllByBuyRequestId(buyRequestId));
+        return transactionMapper.toDto(transactionRepository.findAllByBuyRequestId(buyRequestId).stream()
+                .sorted(Comparator.comparing(TransactionEntity::getRecordedDate).reversed())
+                .toList());
     }
 
     public List<TransactionDto> getBySellRequestId(Long sellRequestId) {
-        return transactionMapper.toDto(transactionRepository.findAllBySellRequestId(sellRequestId));
+        return transactionMapper.toDto(transactionRepository.findAllBySellRequestId(sellRequestId).stream()
+                .sorted(Comparator.comparing(TransactionEntity::getRecordedDate).reversed())
+                .toList());
     }
 
 }
