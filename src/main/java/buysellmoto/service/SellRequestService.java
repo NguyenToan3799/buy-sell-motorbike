@@ -293,6 +293,7 @@ public class SellRequestService {
         return true;
     }
 
+    @SneakyThrows
     @Transactional(rollbackOn = {Exception.class})
     public Boolean checkedSellRequest(Long id, SellRequestFilter sellRequestFilter) {
         if (Objects.isNull(sellRequestDao.getById(id))) {
@@ -310,6 +311,7 @@ public class SellRequestService {
                 });
                 motorbikeImageDao.createAll(sellRequestFilter.getMotorbikeVo().getMotorbikeImageDtos());
             }
+            mailService.checkedSellRequest(sellRequestDao.getById(id));
         }
 
         CheckedSellRequestDto checkedSellRequestDto = sellRequestFilter.getCheckedSellRequestDto();

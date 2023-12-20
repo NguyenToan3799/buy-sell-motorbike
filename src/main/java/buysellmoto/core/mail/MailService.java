@@ -12,6 +12,11 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 @Service
 public class MailService {
 
@@ -67,6 +72,38 @@ public class MailService {
 
         // Process the Thymeleaf template with the context
         String emailContent = templateEngine.process("email-template-2", context);
+
+        // Set the email content
+        helper.setText(emailContent, true);
+
+        // Send the email
+        javaMailSender.send(mimeMessage);
+    }
+
+    public void checkedSellRequest(SellRequestVo sellRequestVo) throws MessagingException {
+        String subject = "Thông Báo: Tiếp Nhận Thành Công Xe Của Bạn";
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+
+        // Set the recipient, subject, and the template
+        helper.setTo(sellRequestVo.getUserDto().getEmail());
+        helper.setSubject(subject);
+
+        // Create a Thymeleaf context
+        Context context = new Context();
+
+        context.setVariable("customerName", sellRequestVo.getCustomerVo().getFullName());
+        context.setVariable("showroomName", sellRequestVo.getShowroomDto().getName());
+        context.setVariable("sellRequestId", sellRequestVo.getId());
+        context.setVariable("motorbikeName", sellRequestVo.getMotorbikeDto().getName());
+        context.setVariable("checkedDate", sellRequestVo.getCheckedSellRequestDto()
+                .getCheckedDate().format(DateTimeFormatter.ofPattern("ddMMyyyy")));
+        context.setVariable("phone", sellRequestVo.getShowroomDto().getPhone());
+        context.setVariable("email", sellRequestVo.getShowroomDto().getEmail());
+
+        // Process the Thymeleaf template with the context
+        String emailContent = templateEngine.process("email-template-3", context);
 
         // Set the email content
         helper.setText(emailContent, true);

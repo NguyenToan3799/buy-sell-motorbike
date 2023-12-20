@@ -90,7 +90,6 @@ public class CheckingAppointmentService {
         postDao.updateOne(postDto);
         buyRequestService.confirmBuyRequest(filter.getCriteria().getBuyRequestId());
 
-
         List<BuyRequestVo> buyRequestVos = buyRequestService.getListBuyRequestByPostId(postDto.getId());
         if (!ObjectUtils.isEmpty(buyRequestVos)) {
             buyRequestVos.forEach(buyRequestVo -> {
