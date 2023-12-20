@@ -88,6 +88,7 @@ public class CheckingAppointmentService {
         PostDto postDto = postDao.getById(buyRequestDto.getPostId());
         postDto.setStatus(PostStatusEnum.SCHEDULED.getCode());
         postDao.updateOne(postDto);
+        preparingDto = checkingAppointmentDao.createOne(preparingDto);
         buyRequestService.confirmBuyRequest(filter.getCriteria().getBuyRequestId());
 
         List<BuyRequestVo> buyRequestVos = buyRequestService.getListBuyRequestByPostId(postDto.getId());
@@ -101,7 +102,7 @@ public class CheckingAppointmentService {
             //Todo: Gửi mail xin lỗi khách hàng
 
         }
-        return checkingAppointmentDao.createOne(preparingDto);
+        return preparingDto;
     }
 
     @Transactional(rollbackOn = {Exception.class})
