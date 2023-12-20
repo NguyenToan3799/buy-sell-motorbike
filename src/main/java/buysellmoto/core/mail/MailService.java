@@ -15,6 +15,7 @@ import org.thymeleaf.context.Context;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -159,6 +160,8 @@ public class MailService {
         context.setVariable("showroomName", buyRequestVo.getShowroomDto().getName());
         context.setVariable("address", buyRequestVo.getShowroomDto().getAddress());
         context.setVariable("time", buyRequestVo.getCheckingAppointmentDto().getAppointmentDate()
+                .atZone(ZoneId.of("UTC"))
+                .withZoneSameInstant(ZoneId.of("Asia/Ho_Chi_Minh"))
                 .format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
         context.setVariable("phone", buyRequestVo.getShowroomDto().getPhone());
         context.setVariable("email", buyRequestVo.getShowroomDto().getEmail());
