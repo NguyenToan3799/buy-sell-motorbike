@@ -132,7 +132,7 @@ public class BuyRequestService {
             throw new BusinessException(ApiMessageCode.BUY_REQUEST_ID_REQUIRED);
         }
         this.updateStatus(id, CONFIRMED.getCode());
-//        mailService.approveBuyRequest(this.getById(id));
+        mailService.approveBuyRequest(this.getById(id));
         return true;
     }
 

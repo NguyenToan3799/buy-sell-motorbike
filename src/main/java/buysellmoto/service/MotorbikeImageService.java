@@ -48,6 +48,20 @@ public class MotorbikeImageService {
     }
 
     @Transactional(rollbackOn = {Exception.class})
+    public Boolean updateAll(Long motorbikeId, MotorbikeImageFilter filter) {
+        if (Objects.isNull(filter.getMotorbikeImageDtos())) {
+            throw new BusinessException(ApiMessageCode.DATA_REQUIRED);
+        }
+        motorbikeImageDao.deleteByMotorbikeId(motorbikeId);
+        filter.getMotorbikeImageDtos().forEach(motorbikeImageDto -> {
+            motorbikeImageDto.setMotorbikeId(motorbikeId);
+            motorbikeImageDto.setId(null);
+        });
+        motorbikeImageDao.createAll(filter.getMotorbikeImageDtos());
+        return true;
+    }
+
+    @Transactional(rollbackOn = {Exception.class})
     public Boolean deleteById(Long id) {
         motorbikeImageDao.deleteById(id);
         return true;

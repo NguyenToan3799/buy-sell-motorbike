@@ -42,6 +42,12 @@ public class MotorbikeImageController {
         return ResponseEntity.ok(motorbikeImageService.updateOne(filter));
     }
 
+    @Operation(summary = "Update Existing Motorbike Image")
+    @PutMapping("/all")
+    public ResponseEntity<Boolean> updateAll(@RequestParam Long motorbikeId, @RequestBody MotorbikeImageFilter filter) {
+        return ResponseEntity.ok(motorbikeImageService.updateAll(motorbikeId, filter));
+    }
+
     @Operation(summary = "Delete Existing Motorbike Image")
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteById(@PathVariable Long id) {

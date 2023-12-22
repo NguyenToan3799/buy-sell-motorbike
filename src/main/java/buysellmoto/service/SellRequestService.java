@@ -266,7 +266,7 @@ public class SellRequestService {
             throw new BusinessException(ApiMessageCode.SELL_REQUEST_NOT_EXIST);
         }
         this.updateStatus(id, SellRequestEnum.APPROVED.getCode());
-//        mailService.approveSellRequest(this.getById(sellRequestDto.getId()));
+        mailService.approveSellRequest(this.getById(sellRequestDto.getId()));
         return true;
     }
 
@@ -312,14 +312,6 @@ public class SellRequestService {
 
         if (!Objects.isNull(sellRequestFilter.getMotorbikeVo())) {
             motorbikeDao.updateVo(sellRequestFilter.getMotorbikeVo());
-            motorbikeImageDao.deleteByMotorbikeId(sellRequestFilter.getMotorbikeVo().getId());
-            if (!Objects.isNull(sellRequestFilter.getMotorbikeVo().getMotorbikeImageDtos())) {
-                sellRequestFilter.getMotorbikeVo().getMotorbikeImageDtos().forEach(motorbikeImageDto -> {
-                    motorbikeImageDto.setMotorbikeId(sellRequestFilter.getMotorbikeVo().getId());
-                    motorbikeImageDto.setId(null);
-                });
-                motorbikeImageDao.createAll(sellRequestFilter.getMotorbikeVo().getMotorbikeImageDtos());
-            }
         }
 
         CheckedSellRequestDto checkedSellRequestDto = sellRequestFilter.getCheckedSellRequestDto();
@@ -327,7 +319,7 @@ public class SellRequestService {
         checkedSellRequestDto.setSellRequestId(id);
         checkedSellRequestDao.createOne(checkedSellRequestDto);
 
-//        mailService.checkedSellRequest(this.getById(id));
+        mailService.checkedSellRequest(this.getById(id));
 
         return true;
     }
