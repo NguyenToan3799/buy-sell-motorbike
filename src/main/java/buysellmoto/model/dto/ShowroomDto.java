@@ -31,4 +31,10 @@ public class ShowroomDto implements Serializable {
 
     private String phone;
 
+    private String bankName;
+
+    private String accountNumber;
+
+    private String accountHolder;
+
 }
