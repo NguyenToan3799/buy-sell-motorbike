@@ -4,6 +4,7 @@ import buysellmoto.core.enumeration.PostStatusEnum;
 import buysellmoto.core.enumeration.SellRequestEnum;
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
+import buysellmoto.core.exception.StatusException;
 import buysellmoto.core.mail.MailService;
 import buysellmoto.dao.*;
 import buysellmoto.model.dto.*;
@@ -327,7 +328,7 @@ public class SellRequestService {
     private Boolean updateStatus(Long id, String newStatus) {
         SellRequestDto loadingDto = sellRequestDao.getById(id);
         if (!validateStatusMoving(SellRequestEnum.of(loadingDto.getStatus()), SellRequestEnum.of(newStatus))) {
-            throw new BusinessException(ApiMessageCode.INVALID_STATUS_MOVING);
+            throw new StatusException(ApiMessageCode.INVALID_STATUS_MOVING);
         }
         loadingDto.setStatus(newStatus);
 

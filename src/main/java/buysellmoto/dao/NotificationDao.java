@@ -10,6 +10,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -23,6 +27,10 @@ public class NotificationDao {
     
     @Transactional(rollbackOn = {Exception.class})
     public NotificationDto createOne(NotificationDto dto) {
+        dto.setId(null);
+        dto.setNotificationDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
+        dto.setIsSeen(false);
+        dto.setIsNotified(false);
         return mapper.toDto(notificationRepository.save(mapper.toEntity(dto)));
     }
 
@@ -41,9 +49,8 @@ public class NotificationDao {
         return mapper.toDto(notificationRepository.findByCustomerId(customerId));
     }
 
-    public NotificationDto getByCustomerIdAndIsNotified(Long customerId, Boolean isNotified) {
-        return mapper.toDto(notificationRepository.findByCustomerIdAndIsNotified(customerId, isNotified)
-                .orElse(new NotificationEntity()));
+    public List<NotificationDto> getNotificationNotYetAnnouncedByCustomerId(Long customerId, Boolean isNotified) {
+        return mapper.toDto(notificationRepository.findByCustomerIdAndIsNotified(customerId, isNotified));
     }
-    
+
 }

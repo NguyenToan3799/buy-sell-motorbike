@@ -1,9 +1,13 @@
 package buysellmoto.model.dto;
 
+import buysellmoto.core.ultilities.DateToTimestamp;
+import buysellmoto.core.ultilities.TimestampToDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +32,8 @@ public class NotificationDto implements Serializable {
 
     private String notificationContent;
 
+    @JsonSerialize(using = DateToTimestamp.class)
+    @JsonDeserialize(using = TimestampToDate.class)
     private LocalDateTime notificationDate;
 
     private Boolean isNotified;

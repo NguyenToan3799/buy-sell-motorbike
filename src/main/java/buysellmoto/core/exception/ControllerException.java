@@ -67,4 +67,20 @@ public class ControllerException {
         log.error(ex.getMessage(), ex);
         return ApiResponse.error(HttpStatus.UNAUTHORIZED, ex.getMessage(), ex.getFields());
     }
+
+    @ExceptionHandler(StatusException.class)
+    @ResponseStatus(value = HttpStatus.CONFLICT)
+    public ApiResponse<Object> handleConflictException(MethodArgumentNotValidException ex) {
+        log.error(ex.getMessage(), ex);
+        FieldError e = ex.getBindingResult().getFieldError();
+
+        List<ApiMessageField> fields = Arrays.asList(ApiMessageField.builder()
+                .fieldName(e.getField())
+                .object(e.getRejectedValue())
+                .message(e.getDefaultMessage())
+                .build());
+
+        return ApiResponse.error(HttpStatus.CONFLICT, ex.getMessage(), fields);
+    }
+
 }

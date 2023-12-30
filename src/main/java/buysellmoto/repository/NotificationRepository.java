@@ -12,6 +12,6 @@ public interface NotificationRepository extends JpaRepository<NotificationEntity
 
     List<NotificationEntity> findByCustomerId(Long customerId);
 
-    Optional<NotificationEntity> findByCustomerIdAndIsNotified(Long customerId, boolean isNotified);
+    List<NotificationEntity> findByCustomerIdAndIsNotified(Long customerId, boolean isNotified);
 
 }
