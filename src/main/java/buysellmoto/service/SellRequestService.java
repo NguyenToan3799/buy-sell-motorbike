@@ -1,6 +1,7 @@
 package buysellmoto.service;
 
 import buysellmoto.core.enumeration.PostStatusEnum;
+import buysellmoto.core.enumeration.RequestTypeEnum;
 import buysellmoto.core.enumeration.SellRequestEnum;
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
@@ -60,6 +61,8 @@ public class SellRequestService {
     private CustomerMapper customerMapper;
     @Autowired
     private MailService mailService;
+    @Autowired
+    private NotificationDao notificationDao;
 
     public SellRequestVo getById(Long id) {
         SellRequestVo sellRequestVo = sellRequestDao.getById(id);
@@ -267,7 +270,20 @@ public class SellRequestService {
             throw new BusinessException(ApiMessageCode.SELL_REQUEST_NOT_EXIST);
         }
         this.updateStatus(id, SellRequestEnum.APPROVED.getCode());
-        mailService.approveSellRequest(this.getById(sellRequestDto.getId()));
+
+        SellRequestVo sellRequestVo = this.getById(id);
+
+        //Send mail
+        mailService.approveSellRequest(sellRequestVo);
+
+        //Send noti
+        NotificationDto notificationDto = new NotificationDto();
+        notificationDto.setCustomerId(sellRequestVo.getCustomerId());
+        notificationDto.setRequestType(RequestTypeEnum.SELL_REQUEST.getCode());
+        notificationDto.setNotificationContent(
+                "Yêu cầu bán xe #" + sellRequestVo.getId() + ": Đã được chấp nhận!");
+        notificationDao.createOne(notificationDto);
+
         return true;
     }
 
@@ -298,7 +314,18 @@ public class SellRequestService {
         sellRequestFilter.getRejectRequestDto().setSellRequestId(id);
         rejectRequestDao.createOne(sellRequestFilter.getRejectRequestDto());
 
-        mailService.rejectSellRequest(this.getById(id));
+        SellRequestVo sellRequestVo = this.getById(id);
+
+        //Send mail
+        mailService.rejectSellRequest(sellRequestVo);
+
+        //Send noti
+        NotificationDto notificationDto = new NotificationDto();
+        notificationDto.setCustomerId(sellRequestVo.getCustomerId());
+        notificationDto.setRequestType(RequestTypeEnum.SELL_REQUEST.getCode());
+        notificationDto.setNotificationContent(
+                "Yêu cầu bán xe #" + sellRequestVo.getId() + ": Đã bị từ chối!");
+        notificationDao.createOne(notificationDto);
 
         return true;
     }
@@ -320,7 +347,18 @@ public class SellRequestService {
         checkedSellRequestDto.setSellRequestId(id);
         checkedSellRequestDao.createOne(checkedSellRequestDto);
 
-        mailService.checkedSellRequest(this.getById(id));
+        SellRequestVo sellRequestVo = this.getById(id);
+
+        //Send mail
+        mailService.checkedSellRequest(sellRequestVo);
+
+        //Send noti
+        NotificationDto notificationDto = new NotificationDto();
+        notificationDto.setCustomerId(sellRequestVo.getCustomerId());
+        notificationDto.setRequestType(RequestTypeEnum.SELL_REQUEST.getCode());
+        notificationDto.setNotificationContent(
+                "Yêu cầu bán xe #" + sellRequestVo.getId() + ": Đã được nhận xe!");
+        notificationDao.createOne(notificationDto);
 
         return true;
     }

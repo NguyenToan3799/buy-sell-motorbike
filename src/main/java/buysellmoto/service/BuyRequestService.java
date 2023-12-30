@@ -1,6 +1,7 @@
 package buysellmoto.service;
 
 import buysellmoto.core.enumeration.BuyRequestEnum;
+import buysellmoto.core.enumeration.RequestTypeEnum;
 import buysellmoto.core.enumeration.SellRequestEnum;
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
@@ -62,6 +63,8 @@ public class BuyRequestService {
     private BuyRequestMapper buyRequestMapper;
     @Autowired
     private MailService mailService;
+    @Autowired
+    private NotificationDao notificationDao;
 
     public BuyRequestVo getById(Long id) {
         BuyRequestVo buyRequestVo = buyRequestMapper.dtoToVo(buyRequestDao.getById(id));
@@ -123,6 +126,15 @@ public class BuyRequestService {
             throw new BusinessException(ApiMessageCode.BUY_REQUEST_ID_REQUIRED);
         }
         this.updateStatus(id, BuyRequestEnum.CANCELLED.getCode());
+
+        BuyRequestVo buyRequestVo = this.getById(id);
+        //Send noti
+        NotificationDto notificationDto = new NotificationDto();
+        notificationDto.setCustomerId(buyRequestVo.getCustomerId());
+        notificationDto.setRequestType(RequestTypeEnum.BUY_REQUEST.getCode());
+        notificationDto.setNotificationContent(
+                "Yêu cầu mua xe #" + buyRequestVo.getId() + ": Đã bị huỷ!");
+        notificationDao.createOne(notificationDto);
         return true;
     }
 
@@ -133,7 +145,18 @@ public class BuyRequestService {
             throw new BusinessException(ApiMessageCode.BUY_REQUEST_ID_REQUIRED);
         }
         this.updateStatus(id, CONFIRMED.getCode());
-        mailService.approveBuyRequest(this.getById(id));
+
+        BuyRequestVo buyRequestVo = this.getById(id);
+        //Send noti
+        NotificationDto notificationDto = new NotificationDto();
+        notificationDto.setCustomerId(buyRequestVo.getCustomerId());
+        notificationDto.setRequestType(RequestTypeEnum.BUY_REQUEST.getCode());
+        notificationDto.setNotificationContent(
+                "Yêu cầu mua xe #" + buyRequestVo.getId() + ": Đã được xác nhận!");
+        notificationDao.createOne(notificationDto);
+
+        //Send mail
+        mailService.approveBuyRequest(buyRequestVo);
         return true;
     }
 
@@ -143,6 +166,16 @@ public class BuyRequestService {
             throw new BusinessException(ApiMessageCode.BUY_REQUEST_ID_REQUIRED);
         }
         this.updateStatus(id, DEPOSITED.getCode());
+
+        BuyRequestVo buyRequestVo = this.getById(id);
+        //Send noti
+        NotificationDto notificationDto = new NotificationDto();
+        notificationDto.setCustomerId(buyRequestVo.getCustomerId());
+        notificationDto.setRequestType(RequestTypeEnum.BUY_REQUEST.getCode());
+        notificationDto.setNotificationContent(
+                "Yêu cầu mua xe #" + buyRequestVo.getId() + ": Đã thanh toán tiền cọc!");
+        notificationDao.createOne(notificationDto);
+
         return true;
     }
 
@@ -152,6 +185,16 @@ public class BuyRequestService {
             throw new BusinessException(ApiMessageCode.BUY_REQUEST_ID_REQUIRED);
         }
         this.updateStatus(id, BuyRequestEnum.COMPLETED.getCode());
+
+        BuyRequestVo buyRequestVo = this.getById(id);
+        //Send noti
+        NotificationDto notificationDto = new NotificationDto();
+        notificationDto.setCustomerId(buyRequestVo.getCustomerId());
+        notificationDto.setRequestType(RequestTypeEnum.BUY_REQUEST.getCode());
+        notificationDto.setNotificationContent(
+                "Yêu cầu mua xe #" + buyRequestVo.getId() + ": Đã tất toán!");
+        notificationDao.createOne(notificationDto);
+
         return true;
     }
 
