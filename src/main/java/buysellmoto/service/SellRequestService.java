@@ -23,6 +23,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -124,7 +125,7 @@ public class SellRequestService {
         sellRequestDto.setId(null);
         sellRequestDto.setCode(generateCode());
         sellRequestDto.setStatus(SellRequestEnum.CREATED.getCode());
-        sellRequestDto.setCreatedDate(LocalDateTime.now());
+        sellRequestDto.setCreatedDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
         sellRequestDto.setMotorbikeId(motorbikeDto.getId());
 
         sellRequestDto = sellRequestDao.createOne(sellRequestDto);
@@ -296,7 +297,7 @@ public class SellRequestService {
 
         PostDto postDto = postDao.getBySellRequestId(id);
         postDto.setStatus(PostStatusEnum.ACTIVE.getCode());
-        postDto.setExpiredDate(LocalDateTime.now().plusDays(30));
+        postDto.setExpiredDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime().plusDays(30));
 
         postDao.updateOne(postDto);
     }
@@ -310,7 +311,7 @@ public class SellRequestService {
         }
         this.updateStatus(id, SellRequestEnum.REJECTED.getCode());
 
-        sellRequestFilter.getRejectRequestDto().setRejectedDate(LocalDateTime.now());
+        sellRequestFilter.getRejectRequestDto().setRejectedDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
         sellRequestFilter.getRejectRequestDto().setSellRequestId(id);
         rejectRequestDao.createOne(sellRequestFilter.getRejectRequestDto());
 
@@ -343,7 +344,7 @@ public class SellRequestService {
         }
 
         CheckedSellRequestDto checkedSellRequestDto = sellRequestFilter.getCheckedSellRequestDto();
-        checkedSellRequestDto.setCheckedDate(LocalDateTime.now());
+        checkedSellRequestDto.setCheckedDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
         checkedSellRequestDto.setSellRequestId(id);
         checkedSellRequestDao.createOne(checkedSellRequestDto);
 
@@ -371,14 +372,14 @@ public class SellRequestService {
         loadingDto.setStatus(newStatus);
 
         if (Objects.equals(newStatus, SellRequestEnum.APPROVED.getCode())) {
-            loadingDto.setApprovedDate(LocalDateTime.now());
+            loadingDto.setApprovedDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
         }
         sellRequestDao.updateOne(loadingDto);
         return true;
     }
 
     private String generateCode() {
-        Long timestamp = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli();
+        Long timestamp = ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime().toInstant(ZoneOffset.UTC).toEpochMilli();
         String serial = "SR" + RandomStringUtils.random(13, timestamp.toString());
         return serial;
     }

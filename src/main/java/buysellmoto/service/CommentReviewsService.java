@@ -14,6 +14,8 @@ import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,7 +44,7 @@ public class CommentReviewsService {
             throw new BusinessException(ApiMessageCode.COMMENTATOR_TYPE_INVALID);
         }
         preparingDto.setId(null);
-        preparingDto.setCommentDate(LocalDateTime.now());
+        preparingDto.setCommentDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
         return commentReviewsDao.createOne(preparingDto);
     }
 

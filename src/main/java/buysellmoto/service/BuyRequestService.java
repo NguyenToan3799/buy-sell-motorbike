@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -95,7 +96,7 @@ public class BuyRequestService {
         BuyRequestDto preparingDto = filter.getCriteria();
         preparingDto.setStatus(CREATED.getCode());
         preparingDto.setId(null);
-        preparingDto.setCreatedDate(LocalDateTime.now());
+        preparingDto.setCreatedDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
         buyRequestDao.createOne(preparingDto);
 
         MotorbikeDto motorbikeDto = motorbikeDao.getById(filter.getCriteria().getMotorbikeId());
@@ -339,7 +340,7 @@ public class BuyRequestService {
     }
 
     private String generateCode() {
-        Long timestamp = LocalDateTime.now().toInstant(ZoneOffset.UTC).toEpochMilli();
+        Long timestamp = ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime().toInstant(ZoneOffset.UTC).toEpochMilli();
         String serial = "SR" + RandomStringUtils.random(13, timestamp.toString());
         return serial;
     }

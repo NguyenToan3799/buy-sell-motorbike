@@ -20,6 +20,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Configuration
@@ -47,7 +49,7 @@ public class ScheduleConfig {
     public void expiredSellRequestAfterApproved() {
         List<SellRequestVo> sellRequestVos = sellRequestService
                 .getListSellRequestByStatus(SellRequestEnum.APPROVED.getCode());
-        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime today = ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime();
 
         // Lọc ra các SellRequestVo có approvedDate lớn hơn 7 ngày so với hôm nay
         List<SellRequestVo> sellRequestFilterVos = sellRequestVos.stream()
@@ -68,7 +70,7 @@ public class ScheduleConfig {
     @Scheduled(cron = "0 0 0 * * *")
     public void expiredPost() {
         List<PostDto> postDtos = postDao.getAllPostActive();
-        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime today = ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime();
 
         List<PostDto> expiredPosts = postDtos.stream()
                 .filter(post -> post.getExpiredDate() != null && post.getExpiredDate().isBefore(today))
@@ -93,7 +95,7 @@ public class ScheduleConfig {
     public void expireCheckingAppointment() {
         List<CheckingAppointmentVo> checkingAppointmentVos = checkingAppointmentService.getAllActive();
 
-        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime today = ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime();
         List<CheckingAppointmentVo> expiredCheckingAppointmentVos = checkingAppointmentVos.stream()
                 .filter(checkingAppointmentVo -> checkingAppointmentVo.getAppointmentDate() != null
                         && checkingAppointmentVo.getAppointmentDate().isBefore(today))

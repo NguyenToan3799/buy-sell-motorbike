@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -72,7 +74,7 @@ public class CustomerReviewsService {
     public CustomerReviewsDto createOne (CustomerReviewsFilter filter) {
         CustomerReviewsDto preparingDto = filter.getCriteria();
         preparingDto.setId(null);
-        preparingDto.setReviewDate(LocalDateTime.now());
+        preparingDto.setReviewDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
         return customerReviewsDao.createOne(preparingDto);
     }
 
