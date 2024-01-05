@@ -23,7 +23,7 @@ public class CheckedSellRequestDao {
     }
 
     public CheckedSellRequestDto getBySellRequestId(Long sellRequestId) {
-        return mapper.toDto(checkedSellRequestRepository.findBySellRequestId(sellRequestId));
+        return mapper.toDto(checkedSellRequestRepository.findBySellRequestId(sellRequestId).orElse(null));
     }
 
 

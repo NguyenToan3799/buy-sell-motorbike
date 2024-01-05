@@ -78,9 +78,9 @@ public class SellRequestService {
         if (sellRequestVo.getStatus().equals(SellRequestEnum.REJECTED.getCode())) {
             sellRequestVo.setRejectRequestDto(rejectRequestDao.getBySellRequestId(sellRequestVo.getId()));
         }
-        if (sellRequestVo.getStatus().equals(SellRequestEnum.CHECKED.getCode())) {
-            sellRequestVo.setCheckedSellRequestDto(checkedSellRequestDao.getBySellRequestId(sellRequestVo.getId()));
-        }
+
+        sellRequestVo.setCheckedSellRequestDto(checkedSellRequestDao.getBySellRequestId(sellRequestVo.getId()));
+
         if (sellRequestVo.getStatus().equals(SellRequestEnum.POSTED.getCode())) {
             sellRequestVo.setPostDto(postDao.getBySellRequestId(sellRequestVo.getId()));
             sellRequestVo.setPurchaseAppointmentDto(purchaseAppointmentDao.getByMotorbikeId(sellRequestVo.getMotorbikeId()));
@@ -185,7 +185,6 @@ public class SellRequestService {
             sellRequestVo.setMotorbikeDto(mapMotorbikeDto.get(sellRequestVo.getMotorbikeId()));
             sellRequestVo.setMotorbikeImageDto(mapMotorbikeImage.get(sellRequestVo.getMotorbikeId()));
         });
-
 
 
         return sellRequestVos;
