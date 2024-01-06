@@ -2,10 +2,12 @@ package buysellmoto.controller;
 
 import buysellmoto.model.dto.PurchaseAppointmentDto;
 import buysellmoto.model.filter.PurchaseAppointmentFilter;
+import buysellmoto.model.vo.PurchaseAppointmentVo;
 import buysellmoto.service.PurchaseAppointmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,6 +36,12 @@ public class PurchaseAppointmentController {
     @PostMapping()
     public ResponseEntity<PurchaseAppointmentDto> createOne(@RequestBody PurchaseAppointmentFilter filter) {
         return ResponseEntity.ok(purchaseAppointmentService.createOne(filter));
+    }
+
+    @Operation(summary = "Get By Showroom Id")
+    @GetMapping("/showroom/{showroomId}")
+    public ResponseEntity<List<PurchaseAppointmentVo>> getByShowroomId(@PathVariable Long showroomId) {
+        return ResponseEntity.ok(purchaseAppointmentService.getByShowroomId(showroomId));
     }
 
     @Operation(summary = "Update Existing Purchase Appointment")

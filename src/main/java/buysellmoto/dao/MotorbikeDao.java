@@ -20,7 +20,7 @@ public class MotorbikeDao {
     private MotorbikeMapper mapper;
 
     public MotorbikeDto getById(Long id) {
-        return mapper.toDto(motorbikeRepository.findById(id).orElseThrow());
+        return mapper.toDto(motorbikeRepository.findById(id).orElse(null));
     }
 
     public List<MotorbikeDto> getAll() {

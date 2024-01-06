@@ -2,10 +2,16 @@ package buysellmoto.service;
 
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
+import buysellmoto.dao.CustomerDao;
+import buysellmoto.dao.MotorbikeDao;
 import buysellmoto.dao.PurchaseAppointmentDao;
+import buysellmoto.dao.ShowroomDao;
+import buysellmoto.model.dto.CustomerDto;
 import buysellmoto.model.dto.PurchaseAppointmentDto;
 import buysellmoto.model.filter.PurchaseAppointmentFilter;
+import buysellmoto.model.mapper.MotorbikeMapper;
 import buysellmoto.model.mapper.PurchaseAppointmentMapper;
+import buysellmoto.model.vo.PurchaseAppointmentVo;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +26,12 @@ public class PurchaseAppointmentService {
     private PurchaseAppointmentDao purchaseAppointmentDao;
     @Autowired
     private PurchaseAppointmentMapper purchaseAppointmentMapper;
+    @Autowired
+    private CustomerDao customerDao;
+    @Autowired
+    private MotorbikeDao motorbikeDao;
+    @Autowired
+    private ShowroomDao showroomDao;
 
     public PurchaseAppointmentDto getById(Long id) {
         if(Objects.isNull(id)){
@@ -29,6 +41,17 @@ public class PurchaseAppointmentService {
     
     public List<PurchaseAppointmentDto> getAll() {
         return purchaseAppointmentDao.getAll();
+    }
+
+    public List<PurchaseAppointmentVo> getByShowroomId(Long showroomId) {
+        List<PurchaseAppointmentVo> purchaseAppointmentVos = purchaseAppointmentDao.getByShowroomId(showroomId);
+        purchaseAppointmentVos.forEach(purchaseAppointmentVo -> {
+            purchaseAppointmentVo.setBuyerDto(customerDao.getById(purchaseAppointmentVo.getBuyerId()));
+            purchaseAppointmentVo.setSellerDto(customerDao.getById(purchaseAppointmentVo.getSellerId()));
+            purchaseAppointmentVo.setMotorbikeDto(motorbikeDao.getById(purchaseAppointmentVo.getMotorbikeId()));
+            purchaseAppointmentVo.setShowroomDto(showroomDao.getById(purchaseAppointmentVo.getShowroomId()));
+        });
+        return purchaseAppointmentVos;
     }
 
     @Transactional(rollbackOn = {Exception.class})

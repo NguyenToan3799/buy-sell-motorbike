@@ -23,7 +23,7 @@ public class ShowroomDao {
     private ShowroomMapper mapper;
 
     public ShowroomDto getById(Long id) {
-        return mapper.toDto(showroomRepository.findById(id).orElseThrow());
+        return mapper.toDto(showroomRepository.findById(id).orElse(null));
     }
 
     public List<ShowroomDto> getByIds(List<Long> ids) {

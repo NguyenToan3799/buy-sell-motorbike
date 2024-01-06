@@ -19,7 +19,7 @@ public class CustomerDao {
     private CustomerMapper mapper;
 
     public CustomerDto getById(Long id) {
-        return mapper.toDto(customerRepository.findById(id).orElseThrow());
+        return mapper.toDto(customerRepository.findById(id).orElse(null));
     }
 
     public CustomerDto getByUserId(Long userId) {
