@@ -32,16 +32,16 @@ public class PurchaseAppointmentDto implements Serializable {
     @JsonDeserialize(using = TimestampToDate.class)
     private LocalDateTime appointmentDate;
 
-    @Column(nullable = false, columnDefinition = "BIGINT")
     private Long buyerId;
 
-    @Column(nullable = false, columnDefinition = "BIGINT")
     private Long sellerId;
 
-    @Column(nullable = false, columnDefinition = "BIGINT")
     private Long showroomId;
 
-    @Column(nullable = false, columnDefinition = "BIGINT")
     private Long motorbikeId;
+
+    private Long buyRequestId;
+
+    private Long sellRequestId;
 
 }

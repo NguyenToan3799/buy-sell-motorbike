@@ -38,18 +38,24 @@ public class CheckingAppointmentService {
     @Autowired
     private BuyRequestService buyRequestService;
     @Autowired
-    private CheckingAppointmentMapper checkingAppointmentMapper;
+    private MotorbikeDao motorbikeDao;
 
     public CheckingAppointmentVo getById(Long id) {
         CheckingAppointmentVo checkingAppointmentVo = checkingAppointmentDao.getById(id);
-        checkingAppointmentVo.setBuyRequestVo(buyRequestService.getById(checkingAppointmentVo.getBuyRequestId()));
+        checkingAppointmentVo.setBuyRequestDto(buyRequestService.getById(checkingAppointmentVo.getBuyRequestId()));
+        if (!Objects.isNull(checkingAppointmentVo.getBuyRequestDto()))
+            checkingAppointmentVo.setMotorbikeDto(motorbikeDao.getById(checkingAppointmentVo.getBuyRequestDto().getMotorbikeId()));
+        checkingAppointmentVo.setCustomerDto(customerDao.getById(checkingAppointmentVo.getCustomerId()));
         return checkingAppointmentVo;
     }
 
     public List<CheckingAppointmentVo> getAllActive() {
         List<CheckingAppointmentVo> checkingAppointmentVos = checkingAppointmentDao.getAllActive();
         checkingAppointmentVos.forEach(checkingAppointmentVo -> {
-            checkingAppointmentVo.setBuyRequestVo(buyRequestService.getById(checkingAppointmentVo.getBuyRequestId()));
+            checkingAppointmentVo.setBuyRequestDto(buyRequestService.getById(checkingAppointmentVo.getBuyRequestId()));
+            if (!Objects.isNull(checkingAppointmentVo.getBuyRequestDto()))
+                checkingAppointmentVo.setMotorbikeDto(motorbikeDao.getById(checkingAppointmentVo.getBuyRequestDto().getMotorbikeId()));
+            checkingAppointmentVo.setCustomerDto(customerDao.getById(checkingAppointmentVo.getCustomerId()));
         });
         return checkingAppointmentVos;
     }
@@ -58,17 +64,18 @@ public class CheckingAppointmentService {
         List<CheckingAppointmentVo> checkingAppointmentVos = checkingAppointmentDao.getByShowroomId(showroomId);
 
         List<Long> customerIds = checkingAppointmentVos.stream().map(CheckingAppointmentVo::getCustomerId).distinct().toList();
-        Map<Long, CustomerDto> mapCustomerDtos = customerDao.getByIds(customerIds).stream()
-                .collect(Collectors.toMap(CustomerDto::getId, Function.identity()));
+        Map<Long, CustomerDto> mapCustomerDtos = customerDao.getByIds(customerIds).stream().collect(Collectors.toMap(CustomerDto::getId, Function.identity()));
 
         List<Long> buyRequestIds = checkingAppointmentVos.stream().map(CheckingAppointmentVo::getBuyRequestId).distinct().toList();
-        Map<Long, BuyRequestDto> mapBuyRequestDtos = buyRequestDao.getByIds(customerIds).stream()
-                .collect(Collectors.toMap(BuyRequestDto::getId, Function.identity()));
+        Map<Long, BuyRequestDto> mapBuyRequestDtos = buyRequestDao.getByIds(buyRequestIds).stream().collect(Collectors.toMap(BuyRequestDto::getId, Function.identity()));
 
         checkingAppointmentVos.forEach(checkingAppointmentVo -> {
             checkingAppointmentVo.setBuyRequestDto(mapBuyRequestDtos.get(checkingAppointmentVo.getBuyRequestId()));
             checkingAppointmentVo.setCustomerDto(mapCustomerDtos.get(checkingAppointmentVo.getCustomerId()));
+            if (!Objects.isNull(checkingAppointmentVo.getBuyRequestDto()))
+                checkingAppointmentVo.setMotorbikeDto(motorbikeDao.getById(checkingAppointmentVo.getBuyRequestDto().getMotorbikeId()));
         });
+
 
         return checkingAppointmentVos;
     }
@@ -78,7 +85,7 @@ public class CheckingAppointmentService {
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public CheckingAppointmentDto createOne (CheckingAppointmentFilter filter) {
+    public CheckingAppointmentDto createOne(CheckingAppointmentFilter filter) {
         CheckingAppointmentDto preparingDto = filter.getCriteria();
         preparingDto.setId(null);
         preparingDto.setStatus(CheckingAppointmentEnum.ACTIVE.getCode());

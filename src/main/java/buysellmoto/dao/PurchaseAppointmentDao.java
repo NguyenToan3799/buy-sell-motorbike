@@ -19,8 +19,8 @@ public class PurchaseAppointmentDao {
     @Autowired
     private PurchaseAppointmentMapper mapper;
 
-    public PurchaseAppointmentDto getById(Long id) {
-        return mapper.toDto(purchaseAppointmentRepository.findById(id).orElseThrow());
+    public PurchaseAppointmentVo getById(Long id) {
+        return mapper.entityToVo(purchaseAppointmentRepository.findById(id).orElseThrow());
     }
 
     public List<PurchaseAppointmentDto> getAll() {

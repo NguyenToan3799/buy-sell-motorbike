@@ -1,5 +1,6 @@
 package buysellmoto.model.vo;
 
+import buysellmoto.dao.MotorbikeDao;
 import buysellmoto.model.dto.*;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -19,6 +20,8 @@ public class CheckingAppointmentVo extends CheckingAppointmentDto {
 
     private BuyRequestDto buyRequestDto;
 
-    private BuyRequestVo buyRequestVo;
+//    private BuyRequestVo buyRequestVo;
+
+    private MotorbikeDto motorbikeDto;
 
 }

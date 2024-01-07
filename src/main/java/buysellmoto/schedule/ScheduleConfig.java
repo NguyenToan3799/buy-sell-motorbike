@@ -6,6 +6,7 @@ import buysellmoto.core.enumeration.SellRequestEnum;
 import buysellmoto.dao.CheckingAppointmentDao;
 import buysellmoto.dao.PostDao;
 import buysellmoto.dao.SellRequestDao;
+import buysellmoto.model.dto.BuyRequestDto;
 import buysellmoto.model.dto.PostDto;
 import buysellmoto.model.vo.BuyRequestVo;
 import buysellmoto.model.vo.CheckingAppointmentVo;
@@ -106,9 +107,9 @@ public class ScheduleConfig {
         });
 
         List<Long> postIds = expiredCheckingAppointmentVos.stream()
-                .map(CheckingAppointmentVo::getBuyRequestVo).toList()
+                .map(CheckingAppointmentVo::getBuyRequestDto).toList()
                 .stream()
-                .map(BuyRequestVo::getPostId)
+                .map(BuyRequestDto::getPostId)
                 .toList();
 
         // update lại status post để hiển thị lên lại

@@ -39,4 +39,10 @@ public class PurchaseAppointmentEntity implements Serializable {
     @Column(nullable = false, columnDefinition = "BIGINT")
     private Long motorbikeId;
 
+    @Column(nullable = false, columnDefinition = "BIGINT")
+    private Long buyRequestId;
+
+    @Column(nullable = false, columnDefinition = "BIGINT")
+    private Long sellRequestId;
+
 }

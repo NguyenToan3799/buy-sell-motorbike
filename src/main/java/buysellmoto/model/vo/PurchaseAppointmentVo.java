@@ -20,4 +20,8 @@ public class PurchaseAppointmentVo extends PurchaseAppointmentDto {
 
     private MotorbikeDto motorbikeDto;
 
+    private BuyRequestDto buyRequestDto;
+
+    private SellRequestDto sellRequestDto;
+
 }

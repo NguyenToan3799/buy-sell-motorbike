@@ -2,12 +2,11 @@ package buysellmoto.service;
 
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
-import buysellmoto.dao.CustomerDao;
-import buysellmoto.dao.MotorbikeDao;
-import buysellmoto.dao.PurchaseAppointmentDao;
-import buysellmoto.dao.ShowroomDao;
+import buysellmoto.dao.*;
+import buysellmoto.model.dto.BuyRequestDto;
 import buysellmoto.model.dto.CustomerDto;
 import buysellmoto.model.dto.PurchaseAppointmentDto;
+import buysellmoto.model.dto.SellRequestDto;
 import buysellmoto.model.filter.PurchaseAppointmentFilter;
 import buysellmoto.model.mapper.MotorbikeMapper;
 import buysellmoto.model.mapper.PurchaseAppointmentMapper;
@@ -32,13 +31,29 @@ public class PurchaseAppointmentService {
     private MotorbikeDao motorbikeDao;
     @Autowired
     private ShowroomDao showroomDao;
+    @Autowired
+    private BuyRequestDao buyRequestDao;
+    @Autowired
+    private SellRequestDao sellRequestDao;
 
-    public PurchaseAppointmentDto getById(Long id) {
-        if(Objects.isNull(id)){
+    public PurchaseAppointmentVo getById(Long id) {
+        PurchaseAppointmentVo purchaseAppointmentVo = purchaseAppointmentDao.getById(id);
+        purchaseAppointmentVo.setBuyerDto(customerDao.getById(purchaseAppointmentVo.getBuyerId()));
+        purchaseAppointmentVo.setSellerDto(customerDao.getById(purchaseAppointmentVo.getSellerId()));
+
+        if (!Objects.isNull(purchaseAppointmentVo.getMotorbikeId()))
+            purchaseAppointmentVo.setMotorbikeDto(motorbikeDao.getById(purchaseAppointmentVo.getMotorbikeId()));
+        purchaseAppointmentVo.setShowroomDto(showroomDao.getById(purchaseAppointmentVo.getShowroomId()));
+
+        if (!Objects.isNull(purchaseAppointmentVo.getSellRequestId())) {
+            purchaseAppointmentVo.setSellRequestDto(sellRequestDao.getById(purchaseAppointmentVo.getSellRequestId()));
         }
-        return purchaseAppointmentDao.getById(id);
+        if (!Objects.isNull(purchaseAppointmentVo.getBuyRequestId())) {
+            purchaseAppointmentVo.setBuyRequestDto(buyRequestDao.getById(purchaseAppointmentVo.getBuyRequestId()));
+        }
+        return purchaseAppointmentVo;
     }
-    
+
     public List<PurchaseAppointmentDto> getAll() {
         return purchaseAppointmentDao.getAll();
     }
@@ -50,12 +65,19 @@ public class PurchaseAppointmentService {
             purchaseAppointmentVo.setSellerDto(customerDao.getById(purchaseAppointmentVo.getSellerId()));
             purchaseAppointmentVo.setMotorbikeDto(motorbikeDao.getById(purchaseAppointmentVo.getMotorbikeId()));
             purchaseAppointmentVo.setShowroomDto(showroomDao.getById(purchaseAppointmentVo.getShowroomId()));
+
+            if (!Objects.isNull(purchaseAppointmentVo.getSellRequestId())) {
+                purchaseAppointmentVo.setSellRequestDto(sellRequestDao.getById(purchaseAppointmentVo.getSellRequestId()));
+            }
+            if (!Objects.isNull(purchaseAppointmentVo.getBuyRequestId())) {
+                purchaseAppointmentVo.setBuyRequestDto(buyRequestDao.getById(purchaseAppointmentVo.getBuyRequestId()));
+            }
         });
         return purchaseAppointmentVos;
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public PurchaseAppointmentDto createOne (PurchaseAppointmentFilter filter) {
+    public PurchaseAppointmentDto createOne(PurchaseAppointmentFilter filter) {
         PurchaseAppointmentDto preparingDto = filter.getCriteria();
         preparingDto.setId(null);
         return purchaseAppointmentDao.createOne(preparingDto);

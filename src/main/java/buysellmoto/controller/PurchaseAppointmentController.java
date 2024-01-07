@@ -22,7 +22,7 @@ public class PurchaseAppointmentController {
 
     @Operation(summary = "Get Purchase Appointment By Id")
     @GetMapping("/{id}")
-    public ResponseEntity<PurchaseAppointmentDto> getById(@PathVariable Long id) {
+    public ResponseEntity<PurchaseAppointmentVo> getById(@PathVariable Long id) {
         return ResponseEntity.ok(purchaseAppointmentService.getById(id));
     }
 
