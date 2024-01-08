@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "NOTIFICATION")
+@Table(name = "REQUEST_HISTORY")
 public class RequestHistoryEntity implements Serializable {
 
     @Id
