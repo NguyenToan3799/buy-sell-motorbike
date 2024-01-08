@@ -66,6 +66,8 @@ public class BuyRequestService {
     private MailService mailService;
     @Autowired
     private NotificationDao notificationDao;
+    @Autowired
+    private RequestHistoryDao requestHistoryDao;
 
     public BuyRequestVo getById(Long id) {
         BuyRequestVo buyRequestVo = buyRequestMapper.dtoToVo(buyRequestDao.getById(id));
@@ -78,12 +80,10 @@ public class BuyRequestService {
         buyRequestVo.setMotorbikeDto(motorbikeDao.getById(buyRequestVo.getMotorbikeId()));
         buyRequestVo.setTransactionDtos(transactionDao.getByBuyRequestId(buyRequestVo.getId()));
         buyRequestVo.setUserDto(userDao.getById(buyRequestVo.getCustomerVo().getUserId()));
-        if (buyRequestVo.getStatus().equals(CONFIRMED.getCode())) {
-            buyRequestVo.setCheckingAppointmentDto(checkingAppointmentDao.getByBuyRequestId(id));
-        }
-        if (buyRequestVo.getStatus().equals(SCHEDULED.getCode())) {
-            buyRequestVo.setPurchaseAppointmentDto(purchaseAppointmentDao.getByMotorbikeId(buyRequestVo.getMotorbikeId()));
-        }
+        buyRequestVo.setCheckingAppointmentDto(checkingAppointmentDao.getByBuyRequestId(id));
+        buyRequestVo.setPurchaseAppointmentDto(purchaseAppointmentDao.getByMotorbikeId(buyRequestVo.getMotorbikeId()));
+
+        buyRequestVo.setRequestHistoryDtos(requestHistoryDao.getByRequestIdAndRequestType(buyRequestVo.getId(), RequestTypeEnum.BUY_REQUEST.getCode()));
         return buyRequestVo;
     }
 

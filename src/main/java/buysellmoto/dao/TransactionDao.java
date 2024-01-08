@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -60,7 +61,8 @@ public class TransactionDao {
     }
 
     public List<TransactionDto> getBySellRequestId(Long sellRequestId) {
-        return transactionMapper.toDto(transactionRepository.findAllBySellRequestId(sellRequestId).stream()
+        return transactionMapper.toDto(transactionRepository.findAllBySellRequestId(sellRequestId)
+                .orElse(new ArrayList<>()).stream()
                 .sorted(Comparator.comparing(TransactionEntity::getRecordedDate).reversed())
                 .toList());
     }

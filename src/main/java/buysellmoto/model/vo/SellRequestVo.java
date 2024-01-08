@@ -42,4 +42,6 @@ public class SellRequestVo extends SellRequestDto {
 
     private PurchaseAppointmentDto purchaseAppointmentDto;
 
+    private List<RequestHistoryDto> requestHistoryDtos;
+
 }

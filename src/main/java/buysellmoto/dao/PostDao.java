@@ -73,7 +73,7 @@ public class PostDao {
     }
 
     public PostDto getBySellRequestId(Long sellRequestId) {
-        return mapper.toDto(postRepository.findBySellRequestId(sellRequestId));
+        return mapper.toDto(postRepository.findBySellRequestId(sellRequestId).orElse(null));
     }
 
     public List<PostDto> getAllPostActive() {

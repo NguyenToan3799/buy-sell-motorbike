@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<TransactionEntity, Long> {
@@ -13,7 +14,7 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
 
     List<TransactionEntity> findAllByShowroomIdAndType(Long showroomId, String type);
 
-    List<TransactionEntity> findAllBySellRequestId(Long sellRequestId);
+    Optional<List<TransactionEntity>> findAllBySellRequestId(Long sellRequestId);
 
     List<TransactionEntity> findAllByBuyRequestId(Long buyRequestId);
 

@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<PostEntity, Long> {
@@ -51,7 +52,7 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
 
     List<PostEntity> findAllByIdIn(List<Long> ids);
 
-    PostEntity findBySellRequestId(Long sellRequestId);
+    Optional<PostEntity> findBySellRequestId(Long sellRequestId);
 
     List<PostEntity> findAllByStatus(String status);
 }

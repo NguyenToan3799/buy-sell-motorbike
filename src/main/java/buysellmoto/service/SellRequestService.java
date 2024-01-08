@@ -64,6 +64,8 @@ public class SellRequestService {
     private MailService mailService;
     @Autowired
     private NotificationDao notificationDao;
+    @Autowired
+    private RequestHistoryDao requestHistoryDao;
 
     public SellRequestVo getById(Long id) {
         SellRequestVo sellRequestVo = sellRequestDao.getById(id);
@@ -75,17 +77,17 @@ public class SellRequestService {
         sellRequestVo.setMotorbikeImageDto(motorbikeImageDao.getByMotorbikeId(sellRequestVo.getMotorbikeId()));
         sellRequestVo.setUserDto(userDao.getById(sellRequestVo.getCustomerVo().getUserId()));
 
-        if (sellRequestVo.getStatus().equals(SellRequestEnum.REJECTED.getCode())) {
-            sellRequestVo.setRejectRequestDto(rejectRequestDao.getBySellRequestId(sellRequestVo.getId()));
-        }
+        sellRequestVo.setRejectRequestDto(rejectRequestDao.getBySellRequestId(sellRequestVo.getId()));
+
 
         sellRequestVo.setCheckedSellRequestDto(checkedSellRequestDao.getBySellRequestId(sellRequestVo.getId()));
 
-        if (sellRequestVo.getStatus().equals(SellRequestEnum.POSTED.getCode())) {
-            sellRequestVo.setPostDto(postDao.getBySellRequestId(sellRequestVo.getId()));
-            sellRequestVo.setPurchaseAppointmentDto(purchaseAppointmentDao.getByMotorbikeId(sellRequestVo.getMotorbikeId()));
-        }
+        sellRequestVo.setPostDto(postDao.getBySellRequestId(sellRequestVo.getId()));
+        sellRequestVo.setPurchaseAppointmentDto(purchaseAppointmentDao.getByMotorbikeId(sellRequestVo.getMotorbikeId()));
+
         sellRequestVo.setTransactionDtos(transactionDao.getBySellRequestId(sellRequestVo.getId()));
+
+        sellRequestVo.setRequestHistoryDtos(requestHistoryDao.getByRequestIdAndRequestType(sellRequestVo.getId(), RequestTypeEnum.SELL_REQUEST.getCode()));
         return sellRequestVo;
     }
 
