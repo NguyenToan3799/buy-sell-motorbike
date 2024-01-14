@@ -282,6 +282,7 @@ public class SellRequestService {
         NotificationDto notificationDto = new NotificationDto();
         notificationDto.setCustomerId(sellRequestVo.getCustomerId());
         notificationDto.setRequestType(RequestTypeEnum.SELL_REQUEST.getCode());
+        notificationDto.setRequestId(id);
         notificationDto.setNotificationContent(
                 "Yêu cầu bán xe #" + sellRequestVo.getId() + ": Đã được chấp nhận!");
         notificationDao.createOne(notificationDto);
@@ -325,6 +326,7 @@ public class SellRequestService {
         NotificationDto notificationDto = new NotificationDto();
         notificationDto.setCustomerId(sellRequestVo.getCustomerId());
         notificationDto.setRequestType(RequestTypeEnum.SELL_REQUEST.getCode());
+        notificationDto.setRequestId(id);
         notificationDto.setNotificationContent(
                 "Yêu cầu bán xe #" + sellRequestVo.getId() + ": Đã bị từ chối!");
         notificationDao.createOne(notificationDto);
@@ -358,6 +360,7 @@ public class SellRequestService {
         NotificationDto notificationDto = new NotificationDto();
         notificationDto.setCustomerId(sellRequestVo.getCustomerId());
         notificationDto.setRequestType(RequestTypeEnum.SELL_REQUEST.getCode());
+        notificationDto.setRequestId(id);
         notificationDto.setNotificationContent(
                 "Yêu cầu bán xe #" + sellRequestVo.getId() + ": Đã được nhận xe!");
         notificationDao.createOne(notificationDto);

@@ -55,8 +55,9 @@ public class BuyRequestController {
 
     @Operation(summary = "Cancel Buy Request")
     @PostMapping("/{id}/cancel")
-    public ResponseEntity<Boolean> cancelBuyRequest(@PathVariable Long id) {
-        return ResponseEntity.ok(buyRequestService.cancelBuyRequest(id));
+    public ResponseEntity<Boolean> cancelBuyRequest(@PathVariable Long id,
+                                                    @RequestParam(required = false) String reason) {
+        return ResponseEntity.ok(buyRequestService.cancelBuyRequest(id, reason));
     }
 
     @Operation(summary = "Update Existing Buy Request")

@@ -1,6 +1,7 @@
 package buysellmoto.service;
 
 import buysellmoto.core.enumeration.BuyRequestEnum;
+import buysellmoto.core.enumeration.PostStatusEnum;
 import buysellmoto.core.enumeration.RequestTypeEnum;
 import buysellmoto.core.enumeration.SellRequestEnum;
 import buysellmoto.core.exception.ApiMessageCode;
@@ -17,6 +18,7 @@ import buysellmoto.model.vo.CustomerVo;
 import buysellmoto.model.vo.SellRequestVo;
 import jakarta.transaction.Transactional;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -122,17 +124,30 @@ public class BuyRequestService {
     }
 
     @Transactional(rollbackOn = {Exception.class})
-    public Boolean cancelBuyRequest(Long id) {
-        if (Objects.isNull(buyRequestDao.getById(id))) {
+    public Boolean cancelBuyRequest(Long id, String reason) {
+        BuyRequestDto buyRequestDto = buyRequestDao.getById(id);
+
+        if (Objects.isNull(buyRequestDto)) {
             throw new BusinessException(ApiMessageCode.BUY_REQUEST_ID_REQUIRED);
         }
+
+        if (!buyRequestDto.getStatus().equals(CREATED.getCode())) {
+            PostDto postDto = postDao.getById(buyRequestDto.getPostId());
+            postDto.setStatus(PostStatusEnum.ACTIVE.getCode());
+            postDao.updateOne(postDto);
+        }
+
         this.updateStatus(id, BuyRequestEnum.CANCELLED.getCode());
 
         BuyRequestVo buyRequestVo = this.getById(id);
+        buyRequestVo.setCancelReason(!ObjectUtils.isEmpty(reason) ? reason : "Khách hàng huỷ yêu cầu!!!" );
+        buyRequestDao.updateOne(buyRequestVo);
+
         //Send noti
         NotificationDto notificationDto = new NotificationDto();
         notificationDto.setCustomerId(buyRequestVo.getCustomerId());
         notificationDto.setRequestType(RequestTypeEnum.BUY_REQUEST.getCode());
+        notificationDto.setRequestId(id);
         notificationDto.setNotificationContent(
                 "Yêu cầu mua xe #" + buyRequestVo.getId() + ": Đã bị huỷ!");
         notificationDao.createOne(notificationDto);
@@ -152,6 +167,7 @@ public class BuyRequestService {
         NotificationDto notificationDto = new NotificationDto();
         notificationDto.setCustomerId(buyRequestVo.getCustomerId());
         notificationDto.setRequestType(RequestTypeEnum.BUY_REQUEST.getCode());
+        notificationDto.setRequestId(id);
         notificationDto.setNotificationContent(
                 "Yêu cầu mua xe #" + buyRequestVo.getId() + ": Đã được xác nhận!");
         notificationDao.createOne(notificationDto);
@@ -173,6 +189,7 @@ public class BuyRequestService {
         NotificationDto notificationDto = new NotificationDto();
         notificationDto.setCustomerId(buyRequestVo.getCustomerId());
         notificationDto.setRequestType(RequestTypeEnum.BUY_REQUEST.getCode());
+        notificationDto.setRequestId(id);
         notificationDto.setNotificationContent(
                 "Yêu cầu mua xe #" + buyRequestVo.getId() + ": Đã thanh toán tiền cọc!");
         notificationDao.createOne(notificationDto);
@@ -192,6 +209,7 @@ public class BuyRequestService {
         NotificationDto notificationDto = new NotificationDto();
         notificationDto.setCustomerId(buyRequestVo.getCustomerId());
         notificationDto.setRequestType(RequestTypeEnum.BUY_REQUEST.getCode());
+        notificationDto.setRequestId(id);
         notificationDto.setNotificationContent(
                 "Yêu cầu mua xe #" + buyRequestVo.getId() + ": Đã tất toán!");
         notificationDao.createOne(notificationDto);
@@ -331,10 +349,6 @@ public class BuyRequestService {
             throw new StatusException(ApiMessageCode.INVALID_STATUS_MOVING + " : from=" + loadingDto.getStatus() + " -> to=" + newStatus);
         }
         loadingDto.setStatus(newStatus);
-        if (SellRequestEnum.CANCELLED.getCode().equals(newStatus)) {
-            loadingDto.setCancelReason("Khách hàng huỷ yêu cầu");
-        }
-
         buyRequestDao.updateOne(loadingDto);
         return true;
     }
