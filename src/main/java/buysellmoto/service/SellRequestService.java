@@ -390,7 +390,7 @@ public class SellRequestService {
 
     private boolean validateStatusMoving(SellRequestEnum preStatus, SellRequestEnum newStatus) {
         return switch (preStatus) {
-            case CREATED -> newStatus == SellRequestEnum.APPROVED || newStatus == SellRequestEnum.REJECTED;
+            case CREATED -> newStatus == SellRequestEnum.APPROVED || newStatus == SellRequestEnum.REJECTED || newStatus == SellRequestEnum.CANCELLED;
             case APPROVED -> newStatus == SellRequestEnum.CHECKED || newStatus == SellRequestEnum.REJECTED;
             case CHECKED -> newStatus == SellRequestEnum.POSTED;
             case POSTED -> newStatus == SellRequestEnum.COMPLETED || newStatus == SellRequestEnum.EXPIRED;
