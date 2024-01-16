@@ -131,6 +131,15 @@ public class SellRequestService {
         sellRequestDto.setMotorbikeId(motorbikeDto.getId());
 
         sellRequestDto = sellRequestDao.createOne(sellRequestDto);
+
+        // Tạo Request History
+        RequestHistoryDto requestHistoryDto = new RequestHistoryDto();
+        requestHistoryDto.setRequestType(RequestTypeEnum.SELL_REQUEST.getCode());
+        requestHistoryDto.setRequestId(sellRequestDto.getId());
+        requestHistoryDto.setCreatedDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
+        requestHistoryDto.setContent("Yêu cầu bán xe của bạn đã được gửi đi");
+        requestHistoryDao.createOne(requestHistoryDto);
+
         return sellRequestDto;
     }
 
@@ -252,6 +261,15 @@ public class SellRequestService {
             throw new BusinessException(ApiMessageCode.SELL_REQUEST_NOT_EXIST);
         }
         this.updateStatus(id, SellRequestEnum.CANCELLED.getCode());
+
+        // Tạo Request History
+        RequestHistoryDto requestHistoryDto = new RequestHistoryDto();
+        requestHistoryDto.setRequestType(RequestTypeEnum.SELL_REQUEST.getCode());
+        requestHistoryDto.setRequestId(id);
+        requestHistoryDto.setCreatedDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
+        requestHistoryDto.setContent("Bạn đã huỷ yêu cầu bán xe #" + id);
+        requestHistoryDao.createOne(requestHistoryDto);
+
         return true;
     }
 
@@ -261,6 +279,15 @@ public class SellRequestService {
             throw new BusinessException(ApiMessageCode.SELL_REQUEST_NOT_EXIST);
         }
         this.updateStatus(id, SellRequestEnum.COMPLETED.getCode());
+
+        // Tạo Request History
+        RequestHistoryDto requestHistoryDto = new RequestHistoryDto();
+        requestHistoryDto.setRequestType(RequestTypeEnum.SELL_REQUEST.getCode());
+        requestHistoryDto.setRequestId(id);
+        requestHistoryDto.setCreatedDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
+        requestHistoryDto.setContent("Yêu cầu bán xe đã hoàn tất");
+        requestHistoryDao.createOne(requestHistoryDto);
+
         return true;
     }
 
@@ -287,6 +314,14 @@ public class SellRequestService {
                 "Yêu cầu bán xe #" + sellRequestVo.getId() + ": Đã được chấp nhận!");
         notificationDao.createOne(notificationDto);
 
+        // Tạo Request History
+        RequestHistoryDto requestHistoryDto = new RequestHistoryDto();
+        requestHistoryDto.setRequestType(RequestTypeEnum.SELL_REQUEST.getCode());
+        requestHistoryDto.setRequestId(id);
+        requestHistoryDto.setCreatedDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
+        requestHistoryDto.setContent("Yêu cầu bán xe đã được chấp nhận");
+        requestHistoryDao.createOne(requestHistoryDto);
+
         return true;
     }
 
@@ -302,6 +337,15 @@ public class SellRequestService {
         postDto.setExpiredDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime().plusDays(30));
 
         postDao.updateOne(postDto);
+
+        // Tạo Request History
+        RequestHistoryDto requestHistoryDto = new RequestHistoryDto();
+        requestHistoryDto.setRequestType(RequestTypeEnum.SELL_REQUEST.getCode());
+        requestHistoryDto.setRequestId(id);
+        requestHistoryDto.setCreatedDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
+        requestHistoryDto.setContent("Yêu cầu bán xe đã được gia hạn");
+        requestHistoryDao.createOne(requestHistoryDto);
+
     }
 
 
@@ -330,6 +374,15 @@ public class SellRequestService {
         notificationDto.setNotificationContent(
                 "Yêu cầu bán xe #" + sellRequestVo.getId() + ": Đã bị từ chối!");
         notificationDao.createOne(notificationDto);
+
+        // Tạo Request History
+        RequestHistoryDto requestHistoryDto = new RequestHistoryDto();
+        requestHistoryDto.setRequestType(RequestTypeEnum.SELL_REQUEST.getCode());
+        requestHistoryDto.setRequestId(id);
+        requestHistoryDto.setCreatedDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
+        requestHistoryDto.setContent("Yêu cầu bán xe của bạn đã bị từ chối vì: "
+                + sellRequestFilter.getRejectRequestDto().getRejectedReason());
+        requestHistoryDao.createOne(requestHistoryDto);
 
         return true;
     }
@@ -364,6 +417,14 @@ public class SellRequestService {
         notificationDto.setNotificationContent(
                 "Yêu cầu bán xe #" + sellRequestVo.getId() + ": Đã được nhận xe!");
         notificationDao.createOne(notificationDto);
+
+        // Tạo Request History
+        RequestHistoryDto requestHistoryDto = new RequestHistoryDto();
+        requestHistoryDto.setRequestType(RequestTypeEnum.SELL_REQUEST.getCode());
+        requestHistoryDto.setRequestId(id);
+        requestHistoryDto.setCreatedDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
+        requestHistoryDto.setContent("Tiếp nhận xe thành công");
+        requestHistoryDao.createOne(requestHistoryDto);
 
         return true;
     }

@@ -48,6 +48,7 @@ public class ShowroomService {
     public ShowroomDto createOne (ShowroomFilter filter) {
         ShowroomDto preparingDto = filter.getCriteria();
         preparingDto.setId(null);
+        preparingDto.setProvince("Hồ Chí Minh");
         return showroomDao.createOne(preparingDto);
     }
 
@@ -56,7 +57,10 @@ public class ShowroomService {
         if (Objects.isNull(filter.getCriteria().getId())) {
             throw new BusinessException(ApiMessageCode.REQUIRED_ID);
         }
+        ShowroomDto loadingDto = showroomDao.getById(filter.getCriteria().getId());
+
         ShowroomDto preparingDto = filter.getCriteria();
+        preparingDto.setProvince(loadingDto.getProvince());
         return showroomDao.updateOne(preparingDto);
     }
 

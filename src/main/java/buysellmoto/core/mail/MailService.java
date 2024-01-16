@@ -100,7 +100,10 @@ public class MailService {
         context.setVariable("sellRequestId", sellRequestVo.getId());
         context.setVariable("motorbikeName", sellRequestVo.getMotorbikeDto().getName());
         context.setVariable("checkedDate", sellRequestVo.getCheckedSellRequestDto()
-                .getCheckedDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                .getCheckedDate()
+                .atZone(ZoneId.of("UTC"))
+                .withZoneSameInstant(ZoneId.of("Asia/Ho_Chi_Minh"))
+                .format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         context.setVariable("phone", sellRequestVo.getShowroomDto().getPhone());
         context.setVariable("email", sellRequestVo.getShowroomDto().getEmail());
 
