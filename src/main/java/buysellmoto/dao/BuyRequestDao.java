@@ -69,8 +69,7 @@ public class BuyRequestDao {
 
     public BuyRequestDto findByCustomerIdAndMotorbikeIdAndStatus(Long customerId, Long motorbikeId, String status) {
         return mapper.toDto(buyRequestRepository
-                .findByCustomerIdAndMotorbikeIdAndStatus(customerId, motorbikeId, status)
-                .orElseThrow(() -> new BusinessException("Bạn không thể gửi yêu cầu xe này thêm lần nữa")));
+                .findByCustomerIdAndMotorbikeIdAndStatus(customerId, motorbikeId, status));
     }
 
 }

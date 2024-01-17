@@ -95,8 +95,10 @@ public class BuyRequestService {
 
     @Transactional(rollbackOn = {Exception.class})
     public Boolean createOne(BuyRequestFilter filter) {
-        buyRequestDao.findByCustomerIdAndMotorbikeIdAndStatus(filter.getCriteria().getCustomerId(),
-                filter.getCriteria().getMotorbikeId(), CREATED.getCode());
+        if (!Objects.isNull(buyRequestDao.findByCustomerIdAndMotorbikeIdAndStatus(filter.getCriteria().getCustomerId(),
+                filter.getCriteria().getMotorbikeId(), CREATED.getCode()))) {
+            throw new BusinessException("Bạn không thể gửi yêu cầu xe này thêm lần nữa");
+        }
 
         BuyRequestDto preparingDto = filter.getCriteria();
         preparingDto.setStatus(CREATED.getCode());
