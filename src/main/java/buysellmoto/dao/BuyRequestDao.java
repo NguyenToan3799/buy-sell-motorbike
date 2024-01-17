@@ -1,5 +1,7 @@
 package buysellmoto.dao;
 
+import buysellmoto.core.exception.ApiMessageCode;
+import buysellmoto.core.exception.BusinessException;
 import buysellmoto.model.dto.BuyRequestDto;
 import buysellmoto.model.mapper.BuyRequestMapper;
 import buysellmoto.model.vo.BuyRequestVo;
@@ -63,6 +65,12 @@ public class BuyRequestDao {
 
     public List<BuyRequestVo> findAllByPostIdAndStatus(Long postId, String status) {
         return mapper.entityToVo(buyRequestRepository.findAllByPostIdAndStatus(postId, status));
+    }
+
+    public BuyRequestDto findByCustomerIdAndMotorbikeIdAndStatus(Long customerId, Long motorbikeId, String status) {
+        return mapper.toDto(buyRequestRepository
+                .findByCustomerIdAndMotorbikeIdAndStatus(customerId, motorbikeId, status)
+                .orElseThrow(() -> new BusinessException("Bạn không thể gửi yêu cầu xe này thêm lần nữa")));
     }
 
 }

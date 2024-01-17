@@ -95,6 +95,9 @@ public class BuyRequestService {
 
     @Transactional(rollbackOn = {Exception.class})
     public Boolean createOne(BuyRequestFilter filter) {
+        buyRequestDao.findByCustomerIdAndMotorbikeIdAndStatus(filter.getCriteria().getCustomerId(),
+                filter.getCriteria().getMotorbikeId(), CREATED.getCode());
+
         BuyRequestDto preparingDto = filter.getCriteria();
         preparingDto.setStatus(CREATED.getCode());
         preparingDto.setId(null);
