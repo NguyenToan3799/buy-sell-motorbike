@@ -104,12 +104,21 @@ public class BuyRequestService {
         preparingDto.setStatus(CREATED.getCode());
         preparingDto.setId(null);
         preparingDto.setCreatedDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
-        buyRequestDao.createOne(preparingDto);
+        BuyRequestDto createdBuyRequest = buyRequestDao.createOne(preparingDto);
 
         MotorbikeDto motorbikeDto = motorbikeDao.getById(filter.getCriteria().getMotorbikeId());
         if (Objects.equals(filter.getCriteria().getCustomerId(), motorbikeDto.getCustomerId())) {
             throw new BusinessException(ApiMessageCode.CAN_NOT_BUY_YOUR_CAR);
         }
+
+        // Tạo Request History
+        RequestHistoryDto requestHistoryDto = new RequestHistoryDto();
+        requestHistoryDto.setRequestType(RequestTypeEnum.BUY_REQUEST.getCode());
+        requestHistoryDto.setRequestId(createdBuyRequest.getId());
+        requestHistoryDto.setCreatedDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
+        requestHistoryDto.setContent("Yêu cầu mua xe của bạn đã được gửi đi");
+        requestHistoryDao.createOne(requestHistoryDto);
+
         return true;
     }
 
@@ -156,6 +165,14 @@ public class BuyRequestService {
         notificationDto.setNotificationContent(
                 "Yêu cầu mua xe #" + buyRequestVo.getId() + ": Đã bị huỷ!");
         notificationDao.createOne(notificationDto);
+
+        // Tạo Request History
+        RequestHistoryDto requestHistoryDto = new RequestHistoryDto();
+        requestHistoryDto.setRequestType(RequestTypeEnum.BUY_REQUEST.getCode());
+        requestHistoryDto.setRequestId(id);
+        requestHistoryDto.setCreatedDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
+        requestHistoryDto.setContent("Yêu cầu mua xe của bạn đã bị huỷ");
+        requestHistoryDao.createOne(requestHistoryDto);
         return true;
     }
 
@@ -176,6 +193,14 @@ public class BuyRequestService {
         notificationDto.setNotificationContent(
                 "Yêu cầu mua xe #" + buyRequestVo.getId() + ": Đã được xác nhận!");
         notificationDao.createOne(notificationDto);
+
+        // Tạo Request History
+        RequestHistoryDto requestHistoryDto = new RequestHistoryDto();
+        requestHistoryDto.setRequestType(RequestTypeEnum.BUY_REQUEST.getCode());
+        requestHistoryDto.setRequestId(id);
+        requestHistoryDto.setCreatedDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
+        requestHistoryDto.setContent("Yêu cầu mua xe của bạn đã được xác nhận");
+        requestHistoryDao.createOne(requestHistoryDto);
 
         //Send mail
         mailService.approveBuyRequest(buyRequestVo);
@@ -199,6 +224,14 @@ public class BuyRequestService {
                 "Yêu cầu mua xe #" + buyRequestVo.getId() + ": Đã thanh toán tiền cọc!");
         notificationDao.createOne(notificationDto);
 
+        // Tạo Request History
+        RequestHistoryDto requestHistoryDto = new RequestHistoryDto();
+        requestHistoryDto.setRequestType(RequestTypeEnum.BUY_REQUEST.getCode());
+        requestHistoryDto.setRequestId(id);
+        requestHistoryDto.setCreatedDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
+        requestHistoryDto.setContent("Bạn đã đặt cọc xe thành công");
+        requestHistoryDao.createOne(requestHistoryDto);
+
         return true;
     }
 
@@ -218,6 +251,14 @@ public class BuyRequestService {
         notificationDto.setNotificationContent(
                 "Yêu cầu mua xe #" + buyRequestVo.getId() + ": Đã tất toán!");
         notificationDao.createOne(notificationDto);
+
+        // Tạo Request History
+        RequestHistoryDto requestHistoryDto = new RequestHistoryDto();
+        requestHistoryDto.setRequestType(RequestTypeEnum.BUY_REQUEST.getCode());
+        requestHistoryDto.setRequestId(id);
+        requestHistoryDto.setCreatedDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
+        requestHistoryDto.setContent("Bạn đã tất toán xe thành công");
+        requestHistoryDao.createOne(requestHistoryDto);
 
         return true;
     }

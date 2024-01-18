@@ -262,6 +262,17 @@ public class SellRequestService {
         }
         this.updateStatus(id, SellRequestEnum.CANCELLED.getCode());
 
+        SellRequestDto sellRequestDto = sellRequestDao.getById(id);
+
+        //Send noti
+        NotificationDto notificationDto = new NotificationDto();
+        notificationDto.setCustomerId(sellRequestDto.getCustomerId());
+        notificationDto.setRequestType(RequestTypeEnum.SELL_REQUEST.getCode());
+        notificationDto.setRequestId(sellRequestDto.getId());
+        notificationDto.setNotificationContent(
+                "Yêu cầu bán xe #" + sellRequestDto.getId() + " của bạn đã huỷ!");
+        notificationDao.createOne(notificationDto);
+
         // Tạo Request History
         RequestHistoryDto requestHistoryDto = new RequestHistoryDto();
         requestHistoryDto.setRequestType(RequestTypeEnum.SELL_REQUEST.getCode());
@@ -279,6 +290,17 @@ public class SellRequestService {
             throw new BusinessException(ApiMessageCode.SELL_REQUEST_NOT_EXIST);
         }
         this.updateStatus(id, SellRequestEnum.COMPLETED.getCode());
+
+        SellRequestDto sellRequestDto = sellRequestDao.getById(id);
+
+        //Send noti
+        NotificationDto notificationDto = new NotificationDto();
+        notificationDto.setCustomerId(sellRequestDto.getCustomerId());
+        notificationDto.setRequestType(RequestTypeEnum.SELL_REQUEST.getCode());
+        notificationDto.setRequestId(sellRequestDto.getId());
+        notificationDto.setNotificationContent(
+                "Yêu cầu bán xe #" + sellRequestDto.getId() + " của bạn đã thành công!");
+        notificationDao.createOne(notificationDto);
 
         // Tạo Request History
         RequestHistoryDto requestHistoryDto = new RequestHistoryDto();

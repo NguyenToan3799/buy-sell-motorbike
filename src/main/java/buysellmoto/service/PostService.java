@@ -1,14 +1,12 @@
 package buysellmoto.service;
 
 import buysellmoto.core.enumeration.PostStatusEnum;
+import buysellmoto.core.enumeration.RequestTypeEnum;
 import buysellmoto.core.enumeration.SellRequestEnum;
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
 import buysellmoto.dao.*;
-import buysellmoto.model.dto.MotorbikeDto;
-import buysellmoto.model.dto.MotorbikeImageDto;
-import buysellmoto.model.dto.PostDto;
-import buysellmoto.model.dto.SellRequestDto;
+import buysellmoto.model.dto.*;
 import buysellmoto.model.filter.PostFilter;
 import buysellmoto.model.mapper.PostMapper;
 import buysellmoto.model.vo.PostProjection;
@@ -18,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,6 +34,10 @@ public class PostService {
     private MotorbikeDao motorbikeDao;
     @Autowired
     private MotorbikeImageDao motorbikeImageDao;
+    @Autowired
+    private NotificationDao notificationDao;
+    @Autowired
+    private RequestHistoryDao requestHistoryDao;
 
     @Autowired
     private PostMapper postMapper;
@@ -63,6 +67,24 @@ public class PostService {
         PostDto preparingDto = filter.getCriteria();
         preparingDto.setId(null);
         preparingDto.setStatus(PostStatusEnum.ACTIVE.getCode());
+
+        //Send noti
+        NotificationDto notificationDto = new NotificationDto();
+        notificationDto.setCustomerId(sellRequestDto.getCustomerId());
+        notificationDto.setRequestType(RequestTypeEnum.SELL_REQUEST.getCode());
+        notificationDto.setRequestId(sellRequestDto.getId());
+        notificationDto.setNotificationContent(
+                "Xe #" + sellRequestDto.getId() + " của bạn đã được đăng bài!");
+        notificationDao.createOne(notificationDto);
+
+        // Tạo Request History
+        RequestHistoryDto requestHistoryDto = new RequestHistoryDto();
+        requestHistoryDto.setRequestType(RequestTypeEnum.SELL_REQUEST.getCode());
+        requestHistoryDto.setRequestId(sellRequestDto.getId());
+        requestHistoryDto.setCreatedDate(ZonedDateTime.now(ZoneOffset.UTC).toLocalDateTime());
+        requestHistoryDto.setContent("Đã đăng bài thành công");
+        requestHistoryDao.createOne(requestHistoryDto);
+
         return postDao.createOne(preparingDto);
     }
 
