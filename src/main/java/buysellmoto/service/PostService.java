@@ -93,7 +93,10 @@ public class PostService {
         if (Objects.isNull(filter.getCriteria().getId())) {
             throw new BusinessException(ApiMessageCode.REQUIRED_ID);
         }
+        PostDto postDto = postDao.getById(filter.getCriteria().getId());
+
         PostDto preparingDto = filter.getCriteria();
+        preparingDto.setPrice(postDto.getPrice());
         return postDao.updateOne(preparingDto);
     }
 
