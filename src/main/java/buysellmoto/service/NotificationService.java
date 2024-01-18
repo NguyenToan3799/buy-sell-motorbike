@@ -21,7 +21,7 @@ public class NotificationService {
 
     public List<NotificationDto> getByCustomerId(Long customerId) {
         return notificationDao.getByCustomerId(customerId).stream()
-                .sorted(Comparator.comparing(NotificationDto::getNotificationDate))
+                .sorted(Comparator.comparing(NotificationDto::getNotificationDate).reversed())
                 .toList();
     }
 
