@@ -40,7 +40,7 @@ public class CheckingAppointmentController {
 
     @Operation(summary = "Create New Checking Appointment")
     @PostMapping()
-    public ResponseEntity<CheckingAppointmentDto> createOne(@RequestBody CheckingAppointmentFilter filter) {
+    public synchronized ResponseEntity<CheckingAppointmentDto> createOne(@RequestBody CheckingAppointmentFilter filter) {
         return ResponseEntity.ok(checkingAppointmentService.createOne(filter));
     }
 

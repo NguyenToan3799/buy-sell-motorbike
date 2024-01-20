@@ -50,27 +50,27 @@ public class SellRequestController {
 
     @Operation(summary = "Approve Sell Request")
     @GetMapping("/{id}/approve")
-    public ResponseEntity<Boolean> approvedSellRequest(@PathVariable Long id) {
+    public synchronized ResponseEntity<Boolean> approvedSellRequest(@PathVariable Long id) {
         return ResponseEntity.ok(sellRequestService.approvedSellRequest(id));
     }
 
     @Operation(summary = "Reject Sell Request")
     @PostMapping("/{id}/reject")
-    public ResponseEntity<Boolean> rejectedSellRequest(@PathVariable Long id,
+    public synchronized ResponseEntity<Boolean> rejectedSellRequest(@PathVariable Long id,
                                                        @RequestBody SellRequestFilter sellRequestFilter) {
         return ResponseEntity.ok(sellRequestService.rejectedSellRequest(id, sellRequestFilter));
     }
 
     @Operation(summary = "Checked Sell Request")
     @PostMapping("/{id}/checked")
-    public ResponseEntity<Boolean> checkedSellRequest(@PathVariable Long id,
+    public synchronized ResponseEntity<Boolean> checkedSellRequest(@PathVariable Long id,
                                                       @RequestBody SellRequestFilter sellRequestFilter) {
         return ResponseEntity.ok(sellRequestService.checkedSellRequest(id, sellRequestFilter));
     }
 
     @Operation(summary = "Cancel Sell Request")
     @PostMapping("/{id}/cancel")
-    public ResponseEntity<Boolean> cancelSellRequest(@PathVariable Long id) {
+    public synchronized ResponseEntity<Boolean> cancelSellRequest(@PathVariable Long id) {
         return ResponseEntity.ok(sellRequestService.cancelSellRequest(id));
     }
 

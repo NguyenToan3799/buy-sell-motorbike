@@ -16,8 +16,10 @@ import buysellmoto.model.vo.SellRequestVo;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.SneakyThrows;
+import lombok.Synchronized;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -370,7 +372,6 @@ public class SellRequestService {
 
     }
 
-
     @SneakyThrows
     @Transactional(rollbackOn = {Exception.class})
     public Boolean rejectedSellRequest(Long id, SellRequestFilter sellRequestFilter) {
@@ -450,6 +451,7 @@ public class SellRequestService {
 
         return true;
     }
+
 
     private Boolean updateStatus(Long id, String newStatus) {
         SellRequestDto loadingDto = sellRequestDao.getById(id);
