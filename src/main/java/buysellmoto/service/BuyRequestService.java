@@ -1,9 +1,6 @@
 package buysellmoto.service;
 
-import buysellmoto.core.enumeration.BuyRequestEnum;
-import buysellmoto.core.enumeration.PostStatusEnum;
-import buysellmoto.core.enumeration.RequestTypeEnum;
-import buysellmoto.core.enumeration.SellRequestEnum;
+import buysellmoto.core.enumeration.*;
 import buysellmoto.core.exception.ApiMessageCode;
 import buysellmoto.core.exception.BusinessException;
 import buysellmoto.core.exception.StatusException;
@@ -213,6 +210,10 @@ public class BuyRequestService {
             throw new BusinessException(ApiMessageCode.BUY_REQUEST_ID_REQUIRED);
         }
         this.updateStatus(id, DEPOSITED.getCode());
+
+        CheckingAppointmentDto checkingAppointmentDto = checkingAppointmentDao.getByBuyRequestId(id);
+        checkingAppointmentDto.setStatus(CheckingAppointmentEnum.IN_ACTIVE.getCode());
+        checkingAppointmentDao.updateOne(checkingAppointmentDto);
 
         BuyRequestVo buyRequestVo = this.getById(id);
         //Send noti

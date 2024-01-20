@@ -17,6 +17,6 @@ public interface CheckingAppointmentRepository extends JpaRepository<CheckingApp
 
     List<CheckingAppointmentEntity> findAllByStatus(String status);
 
-    Optional<CheckingAppointmentEntity> findByBuyRequestId(Long buyRequestId);
+    Optional<CheckingAppointmentEntity> findByBuyRequestIdAndStatus(Long buyRequestId, String status);
 
 }

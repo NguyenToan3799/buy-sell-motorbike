@@ -37,7 +37,7 @@ public class CheckingAppointmentDao {
     }
 
     public CheckingAppointmentDto getByBuyRequestId(Long buyRequestId) {
-        return mapper.toDto(checkingAppointmentRepository.findByBuyRequestId(buyRequestId).orElse(null));
+        return mapper.toDto(checkingAppointmentRepository.findByBuyRequestIdAndStatus(buyRequestId, CheckingAppointmentEnum.ACTIVE.getCode()).orElse(null));
     }
 
     @Transactional(rollbackOn = {Exception.class})
