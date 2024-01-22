@@ -295,6 +295,10 @@ public class SellRequestService {
 
         SellRequestDto sellRequestDto = sellRequestDao.getById(id);
 
+        PostDto postDto = postDao.getBySellRequestId(id);
+        postDto.setStatus(PostStatusEnum.COMPLETED.getCode());
+        postDao.updateOne(postDto);
+
         //Send noti
         NotificationDto notificationDto = new NotificationDto();
         notificationDto.setCustomerId(sellRequestDto.getCustomerId());
